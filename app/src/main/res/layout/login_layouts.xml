@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="#DDDDDD"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:lines="2"
+        android:minLines="2"
+        android:text="Log in"
+        android:textSize="40dp"
+        android:textStyle="bold" />
+   <LinearLayout
+       android:layout_width="350dp"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:layout_gravity="center"
+       android:gravity="bottom"
+       android:layout_marginBottom="20dp">
+
+
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="120sp"
+           android:layout_gravity="center"
+           android:gravity="center"
+           android:orientation="vertical">
+
+
+           <LinearLayout
+               android:layout_width="330dp"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center"
+               android:layout_marginTop="15dp"
+               android:background="@drawable/radius_back"
+               android:gravity="center"
+               android:orientation="horizontal"
+               android:padding="10dp">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginRight="10dp"
+                   android:text="PHONE"
+                   android:textSize="15dp" />
+
+               <EditText
+                   android:id="@+id/et_phone_id"
+                   android:layout_width="230dp"
+                   android:layout_height="40dp"
+                   android:backgroundTint="@color/colorAccent"
+                   android:inputType="phone"
+                   android:maxLines="1"
+                   android:imeOptions="actionDone"/>
+           </LinearLayout>
+
+       </LinearLayout>
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_marginTop="10dp"
+           android:gravity="bottom"
+           >
+
+           <Button
+               android:id="@+id/btn_login_id"
+               android:layout_width="250dp"
+               android:layout_height="50dp"
+               android:layout_gravity="center_horizontal"
+               android:layout_marginBottom="10dp"
+               android:background="@drawable/radiusmargin"
+               android:text="Log In"
+               android:textColor="#FFF" />
+
+
+       </LinearLayout>
+   </LinearLayout>
+
+
+</LinearLayout>
