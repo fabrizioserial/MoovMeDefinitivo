@@ -9,6 +9,7 @@ import com.spacetech.moovme.exceptions.ZoneAlreadyExistsException;
 import com.spacetech.moovme.exceptions.ZoneDoesNotExistException;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class RepositoryZone implements IRepository<HashMap>{
 
@@ -23,7 +24,7 @@ public class RepositoryZone implements IRepository<HashMap>{
         if(zones.get(name) != null){
             throw new ZoneAlreadyExistsException();
         }else {
-            zones.put(name, new Zone(name));
+            zones.put(name, new Zone(name,null));
             Toast.makeText(ctx,name + "has been created", Toast.LENGTH_SHORT).show();
         }
     }
@@ -43,5 +44,15 @@ public class RepositoryZone implements IRepository<HashMap>{
         } else {
             throw new ZoneDoesNotExistException();
         }
+    }
+
+    @Override
+    public List<HashMap> getList() {
+        return null;
+    }
+
+    @Override
+    public void add(HashMap objeto) {
+
     }
 }
