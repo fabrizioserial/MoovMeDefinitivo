@@ -4,16 +4,14 @@ package Users;
 import Assets.AssetBatch;
 import Assets.AssetType;
 import Assets.Zone;
-import Exeptions.*;
 import Points.PointTable;
-import Users.Data;
-import Repository.*;
 
-public class Administrator extends Operators{
 
-    private final Data data;
+public class Administrator extends Users.Operators {
 
-    public Administrator(Data data) {
+    private final Users.Data data;
+
+    public Administrator(Users.Data data) {
         this.data=data;
     }
 
@@ -23,33 +21,24 @@ public class Administrator extends Operators{
 
 
 
-    public void setUserLock(UserManager userMananger, PhoneNumber aPhoneNumber, boolean lockUser) throws UserIsNotRegistered {
-        User userToBlock=userMananger.find(aPhoneNumber);
-        try{
-            userToBlock.userLocking(true);
-        } catch (UserIsAlreadyLockedExeption userIsAlreadyLockedExeption) {
-            if(userToBlock.getLock()==lockUser){
-                userIsAlreadyLockedExeption.printStackTrace();
-                //inform via pop up that user was already in that state and do nothing
-            }
-
-        }
+    public void setUserLock(Users.User user, boolean lockUser) throws Exeptions.UserIsAlreadyLockedExeption {
+        user.userLocking(true);
     }
 
-    public void registerAdmin(RepositoryAdmins repositoryAdmins,Data data){
-        repositoryAdmins.add(data);
+    public void registerAdmin(Repository.Repository<Administrator> repositoryAdmins, Users.Data data){
+        repositoryAdmins.add(new Administrator(data));
     }
 
-    public void buyBatch(AssetType assetType, int cuantity, Zone zone, ListAssetBachCodes listBachCodes, int precioDeAlquilerDelLote){
+    public void buyBatch(AssetType assetType, int cuantity, Zone zone, Repository.ListAssetBachCodes listBachCodes, int precioDeAlquilerDelLote){
         AssetBatch assetBatch =new AssetBatch(assetType,cuantity,listBachCodes.createNewCode(),precioDeAlquilerDelLote);
         zone.addNewBach(assetBatch);
     }
 
-    public void createNewZone(Repository<Zone> zones,String name,PointTable pointTable) throws ZoneAlreadyExistsException, ElementExistExeption {
+    public void createNewZone(Repository.Repository<Zone> zones, String name, PointTable pointTable) throws  Exeptions.ElementExistExeption {
         zones.add(new Zone(name,pointTable));
     }
 
-    public void deleteZone(Repository<Zone> zones,Zone zoneToDelete) throws ZoneDoesNotExistException {
-        zones.remove(zone);
+    public void deleteZone(Repository.Repository<Zone> zones, Zone zoneToDelete) throws Exeptions.ItemDoesNotExistExeption {
+        zones.remove(zoneToDelete);
     }
 }

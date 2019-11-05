@@ -3,21 +3,21 @@ package Assets;
 import java.util.ArrayList;
 
 public class AssetBatch {
-    private final ArrayList<Asset> assetList;
+    private final ArrayList<Assets.Asset> assetList;
     private final Integer code;
-    private final AssetType type;
+    private final Assets.AssetType type;
 
 
-    public AssetBatch(AssetType assetType, int cuantity, Integer newCode, int precioDeAlquilerDelLote){
-        assetList = new ArrayList<Asset>();
+    public AssetBatch(Assets.AssetType assetType, int cuantity, Integer newCode, int precioDeAlquilerDelLote){
+        assetList = new ArrayList<Assets.Asset>();
         for (int i = 0; i <cuantity; i++) {
-            assetList.add(new Asset(assetType,precioDeAlquilerDelLote));
+            assetList.add(new Assets.Asset(assetType,precioDeAlquilerDelLote));
         }
         this.code=newCode;
         this.type=assetType;
     }
 
-    public ArrayList<Asset> getAssetList() {
+    public ArrayList<Assets.Asset> getAssetList() {
         return assetList;
     }
 
@@ -25,7 +25,7 @@ public class AssetBatch {
         return code;
     }
 
-    public AssetType getType() {
+    public Assets.AssetType getType() {
         return type;
     }
 }

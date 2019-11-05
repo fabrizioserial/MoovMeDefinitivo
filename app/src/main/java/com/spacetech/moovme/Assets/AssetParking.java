@@ -5,7 +5,7 @@ import Users.Data;
 
 public class AssetParking {
 
-    private final Zone zone;
+    private final Assets.Zone zone;
 
     AssetParking(Zone zone){
         this.zone=zone;

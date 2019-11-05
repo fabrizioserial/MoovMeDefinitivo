@@ -2,11 +2,11 @@ package Assets;
 
 public class Asset {
 
-    private final AssetType assetType;
+    private final Assets.AssetType assetType;
     private final double price;
     boolean assetIsOcupied;
 
-    public Asset(AssetType assetType, int precioDeAlquilerDelLote){
+    public Asset(Assets.AssetType assetType, int precioDeAlquilerDelLote){
         this.assetType=assetType;
         this.price=precioDeAlquilerDelLote;
     }
@@ -19,7 +19,7 @@ public class Asset {
         return price;
     }
 
-    public AssetType getAssetType() {
+    public Assets.AssetType getAssetType() {
         return assetType;
     }
 }

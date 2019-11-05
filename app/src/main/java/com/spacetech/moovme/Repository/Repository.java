@@ -1,4 +1,4 @@
-package com.spacetech.moovme.Repository;
+package Repository;
 
 import java.util.ArrayList;
 
@@ -10,8 +10,8 @@ public class Repository<T> {
     private ArrayList<T> arrayListGeneric;
     private final T typeOfRepo ;
 
-    Repository(){
-
+    Repository(T typeOfRepo){
+       this.typeOfRepo = typeOfRepo;
     }
 
 
@@ -31,6 +31,6 @@ public class Repository<T> {
         else throw new ItemDoesNotExistExeption();
     }
     public T GetTypeOfRepository(){
-        return ;
+        return typeOfRepo;
     }
 }

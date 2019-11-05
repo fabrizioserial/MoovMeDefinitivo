@@ -1,9 +1,8 @@
 package Assets;
 
 import Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
-import Points.NameAndScore;
 import Points.PointTable;
-import Repository.RepositoryDiscount;
+import Repository.Repository;
 import Users.Data;
 
 import java.util.ArrayList;
@@ -11,9 +10,9 @@ import java.util.ArrayList;
 public class Zone {
     private final String name;
 
-    private final ArrayList<AssetBatch> assetList=new ArrayList<AssetBatch>();
-    private final ArrayList<Asset> totalAssets=new ArrayList<>();
-    private final Tarifario tarifario=new Tarifario();
+    private final Repository<Assets.AssetType> assetTypeRepository = new Repository<Assets.AssetType>();
+    private final ArrayList<Assets.Asset> totalAssets=new ArrayList<>();
+    private final Assets.Tarifario tarifario=new Assets.Tarifario();
     private final PointTable pointTable;//create in construtor or leave it like that? implement after knowing persistance
     private PointCounter pointCounter;
     private RepositoryDiscount repositoryDiscount=new RepositoryDiscount();
@@ -25,7 +24,7 @@ public class Zone {
         this.pointCounter=new PointCounter();
     }
 
-    public void addNewBach(AssetBatch assetBatch) {
+    public void addNewBach(Assets.AssetBatch assetBatch) {
         assetList.add(assetBatch);
         for (Asset asset: assetBatch.getAssetList()) {
             totalAssets.add(asset);
