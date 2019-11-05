@@ -1,13 +1,15 @@
 package com.spacetech.moovme.Assets;
 
-import Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
-import Users.Data;
+
+import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
+import com.spacetech.moovme.Users.Data;
+
 
 public class AssetParking {
 
-    private final Assets.Zone zone;
+    private final Zone zone;
 
-    AssetParking(Assets.Zone zone){
+    AssetParking(Zone zone){
         this.zone=zone;
     }
 
@@ -22,15 +24,15 @@ public class AssetParking {
         return assetToOccupy;
     }
 
-    public double returnAsset(Assets.Travel travel, int points) {
+    public double returnAsset(Travel travel, int points) {
         return zone.calculateFee(travel.getAsset(),points);
     }
 
-    public Integer ganarPuntos(Assets.Travel actualTravel, Data data, Integer points) {
+    public Integer ganarPuntos(Travel actualTravel, Data data, Integer points) {
         return zone.actualizarPuntos(actualTravel,data,points);
     }
 
-    public Assets.Zone getZone() {
+    public Zone getZone() {
         return zone;
     }
 }

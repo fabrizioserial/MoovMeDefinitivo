@@ -3,7 +3,7 @@ package com.spacetech.moovme.Assets;
 public class PointCounter {
 
 
-    public int calculateAquiredPoints(Assets.Travel travel){
+    public int calculateAquiredPoints(Travel travel){
         if(travel.checkTime(System.nanoTime())){
             return (int) (travel.getAsset().getAssetType().getPoint()*1.2);
         }

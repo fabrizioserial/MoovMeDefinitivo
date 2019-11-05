@@ -13,7 +13,7 @@ public class Discount {
         this.percentageMultiplier=discountPercentage/100;
     }
 
-    public double applyDiscount(int points, double fee)throws CantApplyDiscountExeption {
+    public double applyDiscount(AssetType assetType, int points, double fee)throws CantApplyDiscountExeption {
         if(points>=minimumPoints){
             return fee*percentageMultiplier;
         }

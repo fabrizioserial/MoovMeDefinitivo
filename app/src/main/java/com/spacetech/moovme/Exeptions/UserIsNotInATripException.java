@@ -1,4 +1,4 @@
-package Exeptions;
+package com.spacetech.moovme.Exeptions;
 
 public class UserIsNotInATripException extends Exception {
     public UserIsNotInATripException(){

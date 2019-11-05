@@ -1,4 +1,4 @@
-package Users;
+package com.spacetech.moovme.Users;
 
 
 public class Timer {
@@ -11,9 +11,9 @@ public class Timer {
     public long actualTimePassSinceStartedTimer(final long actualTime){
         return actualTime-startTime;
     }
-    /*public boolean compareTime(Integer expectedTime) {
-
-    }*/
+    public int compareTime(long expectedTime) {
+         return 0;
+    }
 
     //TODO implement methods
 

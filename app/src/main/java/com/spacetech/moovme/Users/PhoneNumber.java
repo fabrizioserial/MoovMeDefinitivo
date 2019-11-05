@@ -1,4 +1,4 @@
-package Users;
+package com.spacetech.moovme.Users;
 
 public class PhoneNumber {
 
