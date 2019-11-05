@@ -1,4 +1,4 @@
-package Repository;
+package com.spacetech.moovme.Repository;
 
 public class ListAssetBachCodes {
     Integer lastCodeValue=0;

@@ -14,18 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.spacetech.moovme.Adapters.AssettypeAdapter;
+import com.spacetech.moovme.Adapters.ZoneAdapter;
+import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.R;
-import com.spacetech.moovme.Repository.IRepository;
-import com.spacetech.moovme.Repository.RepositoryAdmin;
-import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Users.Administrator;
-import com.spacetech.moovme.Assets.AssetType;
-import com.spacetech.moovme.Repository.ListAssetBachCodes;
-import com.spacetech.moovme.Users.PhoneNumber;
-import com.spacetech.moovme.Assets.Zone;
-import com.spacetech.moovme.exceptions.ZoneAlreadyExistsException;
-import com.spacetech.moovme.exceptions.ZoneDoesNotExistException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,7 +31,7 @@ public class menu_admin extends AppCompatActivity {
     String name,UserPhone,assetTypename;
     Button btn_addadmin,btn_blockuser,btn_addzone,btn_deletezone, btn_addassettype,btn_assetbatch;
     Spinner sp_assettype,sp_zone;
-    AssetType assetTypeActive;
+    Assets.AssetType assetTypeActive;
     Zone zoneactive;
     RepositoryAdmin repositoryAdmin;
 
@@ -110,7 +103,7 @@ public class menu_admin extends AppCompatActivity {
                 try {
                     adminaddZone(et_zonename,et_zonepoint,activeAdmin);
                     saveInformation("Zone",Mooveme.getRepositoryZone());
-                } catch (ZoneAlreadyExistsException e) {
+                } catch (Exeptions.ZoneAlreadyExistsException e) {
                     Toast.makeText(getApplicationContext(),"This zone already exist",Toast.LENGTH_LONG).show();
                 }catch (NumberFormatException e){
                     Toast.makeText(getApplicationContext(),"Error input points",Toast.LENGTH_LONG).show();
@@ -124,7 +117,7 @@ public class menu_admin extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     admindeletezone(et_zonename,activeAdmin);
-                } catch (ZoneDoesNotExistException e) {
+                } catch (Exeptions.ZoneDoesNotExistException e) {
                     Toast.makeText(getApplicationContext(),"This zone doesnt exist", Toast.LENGTH_LONG).show();
                 }
 
@@ -161,7 +154,7 @@ public class menu_admin extends AppCompatActivity {
         int cantidad = Integer.parseInt(et_aBatchcant.getText().toString());
         int price = Integer.parseInt(et_aBatchprice.getText().toString());
         Integer codeint = Integer.parseInt(et_aBatchcode.getText().toString());
-        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,new ListAssetBachCodes(),price);
+        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,new Repository.ListAssetBachCodes(),price);
         Toast.makeText(getApplicationContext(),"u've buyed " + cantidad + " " + assetTypeActive.getName(), Toast.LENGTH_SHORT).show();
 
     }
@@ -170,12 +163,12 @@ public class menu_admin extends AppCompatActivity {
         AssettypeAdapter adapter = new AssettypeAdapter(getApplicationContext(),assetTypes);
         sp_assettype.setAdapter(adapter);
         assetTypename = sp_assettype.getSelectedItem().toString();
-        assetTypeActive = (AssetType) sp_assettype.getSelectedItem();
+        assetTypeActive = (Assets.AssetType) sp_assettype.getSelectedItem();
 
     }
     public void adminblockuser(EditText et_phonenumber, Administrator administrator) throws NullPointerException {
         UserPhone = et_phoneuser.getText().toString();
-        administrator.setUserLock(Mooveme.getRepositoryUser(),new PhoneNumber(UserPhone),true);
+        administrator.setUserLock(Mooveme.getRepositoryUser(),new Users.PhoneNumber(UserPhone),true);
     }
 
     public void addnewAdmin(EditText et_name, Administrator administrator) throws Exception{
@@ -190,12 +183,12 @@ public class menu_admin extends AppCompatActivity {
         administrator.createAssetType(assetName,points,Mooveme.getRepositoryAsset());
         Toast.makeText(getApplicationContext(),"Se creo el asset con nombre " + assetName , Toast.LENGTH_SHORT).show();
     }
-    public void adminaddZone(EditText et_zone,EditText et_point_zone,Administrator administrator) throws ZoneAlreadyExistsException,NumberFormatException {
+    public void adminaddZone(EditText et_zone,EditText et_point_zone,Administrator administrator) throws Exeptions.ZoneAlreadyExistsException,NumberFormatException {
         String zonename = et_zone.getText().toString();
         int point = Integer.parseInt(et_point_zone.getText().toString());
         administrator.createNewZone(Mooveme.getRepositoryZone(),point,zonename,getApplicationContext());
     }
-    public void admindeletezone(EditText et_zonename, Administrator administrator) throws ZoneDoesNotExistException {
+    public void admindeletezone(EditText et_zonename, Administrator administrator) throws Exeptions.ZoneDoesNotExistException {
         String zonename = et_zonename.getText().toString();
         administrator.deleteZone(Mooveme.getRepositoryZone(),zonename);
     }

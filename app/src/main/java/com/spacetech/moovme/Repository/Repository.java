@@ -1,4 +1,4 @@
-package Repository;
+package com.spacetech.moovme.Repository;
 
 import java.util.ArrayList;
 
@@ -8,10 +8,8 @@ import Exeptions.ItemDoesNotExistExeption;
 public class Repository<T> {
 
     private ArrayList<T> arrayListGeneric;
-    private final T typeOfRepo ;
 
-    Repository(T typeOfRepo){
-       this.typeOfRepo = typeOfRepo;
+    public Repository(){
     }
 
 
@@ -29,8 +27,5 @@ public class Repository<T> {
     public void remove(T t)throws ItemDoesNotExistExeption {
         if(arrayListGeneric.contains(t)) arrayListGeneric.remove(t);
         else throw new ItemDoesNotExistExeption();
-    }
-    public T GetTypeOfRepository(){
-        return typeOfRepo;
     }
 }

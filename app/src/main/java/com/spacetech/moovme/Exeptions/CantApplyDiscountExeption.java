@@ -1,4 +1,4 @@
-package Exeptions;
+package com.spacetech.moovme.Exeptions;
 
 public class CantApplyDiscountExeption extends Exception {
     public CantApplyDiscountExeption(){

@@ -1,6 +1,6 @@
-package Users;
+package com.spacetech.moovme.Users;
 
-import Assets.*;
+
 import Exeptions.UserIsAlreadyLockedExeption;
 import Exeptions.UserIsNotInATripException;
 import Points.PointsStoredInUserForEachZone;

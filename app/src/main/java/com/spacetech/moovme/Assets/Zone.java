@@ -1,11 +1,11 @@
-package Assets;
+package com.spacetech.moovme.Assets;
+
+import java.util.ArrayList;
 
 import Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
 import Points.PointTable;
 import Repository.Repository;
 import Users.Data;
-
-import java.util.ArrayList;
 
 public class Zone {
     private final String name;
@@ -14,27 +14,27 @@ public class Zone {
     private final ArrayList<Assets.Asset> totalAssets=new ArrayList<>();
     private final Assets.Tarifario tarifario=new Assets.Tarifario();
     private final PointTable pointTable;//create in construtor or leave it like that? implement after knowing persistance
-    private PointCounter pointCounter;
+    private Assets.PointCounter pointCounter;
     private RepositoryDiscount repositoryDiscount=new RepositoryDiscount();
 
     public Zone(String name,PointTable pointTable){
 
         this.name=name;
         this.pointTable=pointTable;
-        this.pointCounter=new PointCounter();
+        this.pointCounter=new Assets.PointCounter();
     }
 
     public void addNewBach(Assets.AssetBatch assetBatch) {
         assetList.add(assetBatch);
-        for (Asset asset: assetBatch.getAssetList()) {
+        for (Assets.Asset asset: assetBatch.getAssetList()) {
             totalAssets.add(asset);
         }
     }
 
-    public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
-        for(AssetBatch batch : assetList){
+    public Assets.Asset getAssetwithDesignatedType(Assets.AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
+        for(Assets.AssetBatch batch : assetList){
             if(batch.getType() == assetType){
-                for(Asset asset: batch.getAssetList()){
+                for(Assets.Asset asset: batch.getAssetList()){
                     if(!asset.assetIsOcupied){
                         return asset;
                     }
@@ -44,23 +44,23 @@ public class Zone {
         throw new AssetTypeDoesNotExistInSpecifiedZone();
     }
 
-    public double calculateFee(Asset assetUsed, int points) {
+    public double calculateFee(Assets.Asset assetUsed, int points) {
         return tarifario.calculatePrice(assetUsed,repositoryDiscount.find(assetUsed.getAssetType()),points);
     }
 
-    public void addDiscount(Discount discount){
+    public void addDiscount(Assets.Discount discount){
         repositoryDiscount.add(discount);
     }
 
-    public ArrayList<Discount> showDiscounts(){
+    public ArrayList<Assets.Discount> showDiscounts(){
         return repositoryDiscount.showDiscounts();
     }
 
-    public ArrayList<Asset> getTotalAssets() {
+    public ArrayList<Assets.Asset> getTotalAssets() {
         return totalAssets;
     }
 
-    public Integer actualizarPuntos(Travel actualTravel, Data data, Integer points) {
+    public Integer actualizarPuntos(Assets.Travel actualTravel, Data data, Integer points) {
         Integer aquiredPoints=points+pointCounter.calculateAquiredPoints(actualTravel);
         pointTable.updateScore(aquiredPoints,data);
         return aquiredPoints;

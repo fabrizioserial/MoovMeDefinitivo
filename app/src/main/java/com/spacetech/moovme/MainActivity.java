@@ -11,13 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.SlidePage.Menu_activity;
+import com.spacetech.moovme.Users.Administrator;
+import com.spacetech.moovme.Users.User;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
-import Users.Administrator;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,8 +29,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<Repository> repositories = new ArrayList<>();
-        repositories.add(new Repository());
+
+        Repository<Administrator> administratorRepository = new Repository<>();
+        Repository<User> usersRepository  = new Repository<>();
+        Repository<Zone> zoneRepository = new Repository<>();
+
+        Mooveme mooveme = new Mooveme();
+        mooveme.addAdminRepository(administratorRepository);
+        mooveme.addUserRepository(usersRepository);
+        mooveme.addZoneRepository(zoneRepository);
 
 
 
@@ -49,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("com.spacetech.moovme.Mooveme", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Zone", null);
-        Type type = new TypeToken<HashMap<String, Assets.Zone>>() {}.getType();
+        Type type = new TypeToken<HashMap<String,Zone>>() {}.getType();
         HashMap hashMap = gson.fromJson(json, type);
         repositoryZone.setZones(hashMap);
     }
