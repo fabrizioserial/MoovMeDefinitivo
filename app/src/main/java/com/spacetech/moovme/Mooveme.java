@@ -19,10 +19,10 @@ public class Mooveme {
     }
 
     public void addAdminRepository(Repository admin){
-        this.admin = admin;
+        this.adminRepository = admin;
     }
     public void addUserRepository(Repository user){
-        this.user = user;
+        this.userRepository = user;
     }
     public void addZoneRepository(Repository zone){
         this.zone = zone;
