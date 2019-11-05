@@ -6,17 +6,17 @@ import Exeptions.UserIsNotInATripException;
 import Points.PointsStoredInUserForEachZone;
 
 
-public class User extends Operators{
+public class User extends Users.Operators {
 
 
-    private final Data data;
+    private final Users.Data data;
     private boolean isLocked=false;
     PointsStoredInUserForEachZone points;
 
-    Travel actualTravel=null;
-    Asset assetUsed=null; //crear clase de viaje o sesion
+    Assets.Travel actualTravel=null;
+    Assets.Asset assetUsed=null; //crear clase de viaje o sesion
 
-    public User(Data data) {
+    public User(Users.Data data) {
         this.points=new PointsStoredInUserForEachZone();
         this.data =data;
     }
@@ -25,7 +25,7 @@ public class User extends Operators{
             isLocked=lockUser;
     }
 
-    public PhoneNumber getPhoneNumber(){
+    public Users.PhoneNumber getPhoneNumber(){
         return data.getPhoneNumber();
     }
 

@@ -8,7 +8,7 @@ public class AssetBatch {
     private final AssetType type;
 
 
-    public AssetBatch(AssetType assetType, int cuantity, Integer newCode, int precioDeAlquilerDelLote){
+    public AssetBatch(Assets.AssetType assetType, int cuantity, Integer newCode, int precioDeAlquilerDelLote){
         assetList = new ArrayList<Asset>();
         for (int i = 0; i <cuantity; i++) {
             assetList.add(new Asset(assetType,precioDeAlquilerDelLote));
