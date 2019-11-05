@@ -1,7 +1,6 @@
 package com.spacetech.moovme.adminJava;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,16 +11,18 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
 import com.spacetech.moovme.Adapters.AssettypeAdapter;
 import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
+import com.spacetech.moovme.Exeptions.ElementExistExeption;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
 import com.spacetech.moovme.R;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Administrator;
+import com.spacetech.moovme.Users.Data;
+import com.spacetech.moovme.Users.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +30,7 @@ import java.util.HashMap;
 
 public class menu_admin extends AppCompatActivity {
 
-    String ActiveAdmin;
+    Administrator ActiveAdmin;
     EditText et_name,et_phoneuser,et_zonename,et_zonepoint, et_assettypename, et_assettypepoint,et_aBatchprice,et_aBatchcant,et_aBatchcode;
     String name,UserPhone,assetTypename;
     Button btn_addadmin,btn_blockuser,btn_addzone,btn_deletezone, btn_addassettype,btn_assetbatch;
@@ -46,9 +47,8 @@ public class menu_admin extends AppCompatActivity {
 
         mooveme = Persistence.loadMoovme(getApplicationContext());
 
-        Intent i = new Intent();
-        i = getIntent();
-        ActiveAdmin = i.getStringExtra("name");
+        Intent i = getIntent();
+        ActiveAdmin = (Administrator)i.getSerializableExtra("name");
         sp_assettype = (Spinner) findViewById(R.id.spn_assettype);
         sp_zone = (Spinner) findViewById(R.id.spn_zone);
 
@@ -69,17 +69,17 @@ public class menu_admin extends AppCompatActivity {
         btn_addassettype = (Button) findViewById(R.id.btn_addassettype_id);
         btn_assetbatch = (Button)findViewById(R.id.btn_addassetbatch_id);
 
-        repositoryAdmin =();
+        repositoryAdmin =mooveme.getAdministratorRepository();
         //Toast.makeText(getApplicationContext(), phoneActiveAdmin,Toast.LENGTH_LONG).show();
-        final Administrator activeAdmin = repositoryAdmin.findAdmin(ActiveAdmin);
+
 
         btn_addadmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!et_name.getText().toString().isEmpty()){
                     try {
-                        addnewAdmin(et_name,activeAdmin);
-                        saveInformation("Admins",Mooveme.getRepositoryZone());
+                        addnewAdmin(et_name,ActiveAdmin);
+                        Persistence.saveInformation(getApplicationContext(),mooveme);
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(),"Complete the field text",Toast.LENGTH_SHORT).show();
                     }
@@ -95,7 +95,7 @@ public class menu_admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    adminblockuser(et_phoneuser,activeAdmin);
+                    adminBlockUser(et_phoneuser,ActiveAdmin);
                 } catch (NullPointerException e) {
                     Toast.makeText(getApplicationContext(),"Complete the field text",Toast.LENGTH_SHORT).show();
 
@@ -172,15 +172,24 @@ public class menu_admin extends AppCompatActivity {
         assetTypeActive = (Assets.AssetType) sp_assettype.getSelectedItem();
 
     }
-    public void adminblockuser(EditText et_phonenumber, Administrator administrator) throws NullPointerException {
+    public void adminBlockUser(EditText et_phonenumber, Administrator administrator) {
         UserPhone = et_phoneuser.getText().toString();
-        administrator.setUserLock(Mooveme.getRepositoryUser(),new Users.PhoneNumber(UserPhone),true);
+
+        User userThatWannaBlock =
+        administrator.setUserLock(,true);
     }
 
-    public void addnewAdmin(EditText et_name, Administrator administrator) throws Exception{
-        name = et_name.getText().toString();
-        administrator.registerAdmin(repositoryAdmin,name);
-        Toast.makeText(getApplicationContext(), name + " had been added",Toast.LENGTH_SHORT).show();
+    public void addnewAdmin(EditText et_name, Administrator administrator){
+        try {
+            name = et_name.getText().toString();
+            Data adminData = new Data(name);
+            administrator.registerAdmin(repositoryAdmin,adminData);
+        } catch (ElementExistExeption elementExistExeption) {
+            elementExistExeption.printStackTrace();
+        }finally {
+            Toast.makeText(getApplicationContext(), name + " had been added",Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     public void adminCreateAssetType(EditText et_assetname, EditText et_assetpoint,Administrator administrator){

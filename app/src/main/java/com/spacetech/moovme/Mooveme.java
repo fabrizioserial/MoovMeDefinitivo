@@ -1,5 +1,6 @@
 package com.spacetech.moovme;
 
+import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Administrator;
 import com.spacetech.moovme.Users.User;
@@ -44,5 +45,16 @@ public class Mooveme {
         for(User users:(ArrayList<User>)userRepository.getRepository()){
             if(user.get)
         }
+    }
+    public
+
+    public Repository<Administrator> getAdministratorRepository(){
+        return adminRepository;
+    }
+    public Repository<User> getUserRepository(){
+        return userRepository;
+    }
+    public Repository<Zone> getZoneRepository(){
+        return zoneRepository;
     }
 }

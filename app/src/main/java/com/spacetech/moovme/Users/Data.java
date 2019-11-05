@@ -4,7 +4,7 @@ public class Data {
     private final String name;
     private final PhoneNumber phoneNumber;
 
-    Data(String name){
+    public Data(String name){
         this.name=name;
         this.phoneNumber=null;
     }
