@@ -1,62 +1,34 @@
 package com.spacetech.moovme;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.SlidePage.Menu_activity;
 
-
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import Users.Administrator;
 
 public class MainActivity extends AppCompatActivity {
 
-    Repository.RepositoryZone repositoryZone;
-    RepositoryAdmin repositoryAdmin;
-    RepositoryUser repositoryUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        repositoryAdmin = new RepositoryAdmin();
-        loadAdmin();
-        if (repositoryAdmin == null){
-            repositoryAdmin = new RepositoryAdmin();
-        }
-        repositoryUser = new RepositoryUser();
-
-        repositoryZone = new RepositoryZone();
-        loadZone();
-        if (repositoryZone == null) {
-            repositoryZone = new RepositoryZone();
-        }
-
-
-
-        try {
-            repositoryZone.add(15,"Palermo",getApplicationContext());
-        } catch (Exeptions.ZoneAlreadyExistsException e) {
-            e.printStackTrace();
-        }
-
-        RepositoryAsset repositoryAsset = new RepositoryAsset();
-        repositoryAsset.addAssetType(new AssetType(5,"Moto"));
-        Mooveme mooveme = new Mooveme(repositoryUser,repositoryAdmin,repositoryZone,repositoryAsset);
-        String name = "Fabro";
-
-        Mooveme.registeradmin(name);
-        if(Mooveme.loginadmin(name)){
-            Toast.makeText(getApplicationContext(), "creado el admin",Toast.LENGTH_LONG).show();
-        }
-        Mooveme.register("Agus",new Users.PhoneNumber("1"));
-        mooveme.setName("Estacreadalamierda");
+        ArrayList<Repository> repositories = new ArrayList<>();
+        repositories.add(new Repository());
 
 
 
@@ -77,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("com.spacetech.moovme.Mooveme", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Zone", null);
-        Type type = new TypeToken<HashMap<String, Zone>>() {}.getType();
+        Type type = new TypeToken<HashMap<String, Assets.Zone>>() {}.getType();
         HashMap hashMap = gson.fromJson(json, type);
         repositoryZone.setZones(hashMap);
     }
@@ -85,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("com.spacetech.moovme.Mooveme", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Admins",null);
-        Type type = new TypeToken<HashMap<String, Administrator>>(){}.getType();
+        Type type = new TypeToken<HashMap<String, Users.Administrator>>(){}.getType();
         HashMap hashMap = gson.fromJson(json,type);
         repositoryAdmin.setAdmin(hashMap);
     }

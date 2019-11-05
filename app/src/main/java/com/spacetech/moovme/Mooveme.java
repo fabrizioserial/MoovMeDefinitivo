@@ -18,7 +18,7 @@ public class Mooveme {
 
     public void SplitRepositories(ArrayList<Repository> arrayList){
         for(Repository repository:arrayList){
-            if(repository.GetTypeOfRepository()instanceof Users.Administrator){
+            if(repository.getClass().isInstance()){
 
             }
         }

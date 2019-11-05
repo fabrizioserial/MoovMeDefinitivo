@@ -1,17 +1,17 @@
-package Repository;
+package com.spacetech.moovme.Repository;
+
+import java.util.ArrayList;
 
 import Exeptions.ElementExistExeption;
 import Exeptions.ItemDoesNotExistExeption;
-
-import java.util.ArrayList;
 
 public class Repository<T> {
 
     private ArrayList<T> arrayListGeneric;
     private final T typeOfRepo ;
 
-    Repository(T typeOfRepo){
-       this.typeOfRepo = typeOfRepo;
+    Repository(){
+
     }
 
 
@@ -31,6 +31,6 @@ public class Repository<T> {
         else throw new ItemDoesNotExistExeption();
     }
     public T GetTypeOfRepository(){
-        return typeOfRepo;
+        return ;
     }
 }
