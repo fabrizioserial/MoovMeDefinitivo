@@ -4,7 +4,7 @@ import Exeptions.CantApplyDiscountExeption;
 
 public class Tarifario {
 
-    public double calculatePrice(Asset assetUsed, Discount discount, int points) {
+    public double calculatePrice(Assets.Asset assetUsed, Assets.Discount discount, int points) {
         try {
             return discount.applyDiscount(assetUsed.getAssetType(), points, assetUsed.getPrice());
         } catch (CantApplyDiscountExeption cantApplyDiscountExeption) {
