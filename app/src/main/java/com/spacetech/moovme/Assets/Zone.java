@@ -1,39 +1,40 @@
-package Assets;
+package com.spacetech.moovme.Assets;
+
+import com.spacetech.moovme.Repository.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
 import Points.PointTable;
-import Repository.Repository;
 import Users.Data;
 
 public class Zone {
     private final String name;
 
-    private final Repository<Assets.AssetType> assetTypeRepository = new Repository<Assets.AssetType>();
-    private final ArrayList<Assets.AssetBatch> totalAssetsBatchList =new ArrayList<>();
+    private final Repository<AssetType> assetTypeRepository = new Repository<AssetType>();
+    private final ArrayList<AssetBatch> totalAssetsBatchList =new ArrayList<>();
     private final Assets.Tarifario tarifario=new Assets.Tarifario();
     private final PointTable pointTable;//create in construtor or leave it like that? implement after knowing persistance
-    private HashMap<Assets.AssetType, Assets.Discount> discountOrganizedByAssetType= new HashMap<>();
-    private Assets.PointCounter pointCounter;
+    private HashMap<AssetType, Discount> discountOrganizedByAssetType= new HashMap<>();
+    private PointCounter pointCounter;
 
     public Zone(String name,PointTable pointTable){
 
         this.name=name;
         this.pointTable=pointTable;
-        this.pointCounter=new Assets.PointCounter();
+        this.pointCounter=new PointCounter();
     }
 
-    public void addNewBach(Assets.AssetBatch assetBatch) {
+    public void addNewBach(AssetBatch assetBatch) {
 
         totalAssetsBatchList.add(assetBatch);
     }
 
-    public Assets.Asset getAssetwithDesignatedType(Assets.AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
-        for(Assets.AssetBatch batch : totalAssetsBatchList){
+    public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
+        for(AssetBatch batch : totalAssetsBatchList){
             if(batch.getType() == assetType){
-                for(Assets.Asset asset: batch.getAssetList()){
+                for(Asset asset: batch.getAssetList()){
                     if(!asset.assetIsOcupied){
                         return asset;
                     }
@@ -43,12 +44,12 @@ public class Zone {
         throw new AssetTypeDoesNotExistInSpecifiedZone();
     }
 
-    public double calculateFee(Assets.Asset assetUsed, int points) {
+    public double calculateFee(Asset assetUsed, int points) {
 
         return tarifario.calculatePrice(assetUsed,discountOrganizedByAssetType.get(assetUsed.getAssetType()),points);
     }
 
-    public void addDiscount(Assets.Discount discount, Assets.AssetType assetType) throws Exeptions.ElementExistExeption {
+    public void addDiscount(Discount discount, AssetType assetType) throws Exeptions.ElementExistExeption {
         discountOrganizedByAssetType.put(assetType,discount);
     }
 

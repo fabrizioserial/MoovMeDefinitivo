@@ -2,6 +2,7 @@ package com.spacetech.moovme;
 
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Administrator;
+import com.spacetech.moovme.Users.User;
 
 import java.util.ArrayList;
 
@@ -25,13 +26,23 @@ public class Mooveme {
         this.userRepository = user;
     }
     public void addZoneRepository(Repository zone){
-        this.zone = zone;
+        this.zoneRepository = zone;
     }
 
-    public Administrator loginAdministrator(Administrator administrator){
+    public Administrator loginAdministrator(Administrator administrator) throws AdministratorDoesntFoundExeption{
+        boolean Found= false;
         for(Administrator adminis:(ArrayList<Administrator>)adminRepository.getRepository()){
-
+            if(administrator.getName().equals(adminis.getName())){
+                Found = true;
+                return adminis;
+            }
         }
-        return administrator;
+        throw new AdministratorDoesntFoundExeption();
+    }
+
+    public User loginUser(User user){
+        for(User users:(ArrayList<User>)userRepository.getRepository()){
+            if(user.get)
+        }
     }
 }
