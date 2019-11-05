@@ -3,7 +3,7 @@ package Assets;
 public class PointCounter {
 
 
-    public int calculateAquiredPoints(Travel travel){
+    public int calculateAquiredPoints(Assets.Travel travel){
         if(travel.checkTime(System.nanoTime())){
             return (int) (travel.getAsset().getAssetType().getPoint()*1.2);
         }

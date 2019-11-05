@@ -7,12 +7,12 @@ public class AssetParking {
 
     private final Assets.Zone zone;
 
-    AssetParking(Zone zone){
+    AssetParking(Assets.Zone zone){
         this.zone=zone;
     }
 
-    public Asset rentAsset(AssetType assetType) {
-        Asset assetToOccupy=null;
+    public Assets.Asset rentAsset(Assets.AssetType assetType) {
+        Assets.Asset assetToOccupy=null;
         try{
             assetToOccupy=zone.getAssetwithDesignatedType(assetType);
         } catch (AssetTypeDoesNotExistInSpecifiedZone assetTypeDoesNotExistInSpecifiedZone) {
@@ -22,15 +22,15 @@ public class AssetParking {
         return assetToOccupy;
     }
 
-    public double returnAsset(Travel travel, int points) {
+    public double returnAsset(Assets.Travel travel, int points) {
         return zone.calculateFee(travel.getAsset(),points);
     }
 
-    public Integer ganarPuntos(Travel actualTravel, Data data, Integer points) {
+    public Integer ganarPuntos(Assets.Travel actualTravel, Data data, Integer points) {
         return zone.actualizarPuntos(actualTravel,data,points);
     }
 
-    public Zone getZone() {
+    public Assets.Zone getZone() {
         return zone;
     }
 }
