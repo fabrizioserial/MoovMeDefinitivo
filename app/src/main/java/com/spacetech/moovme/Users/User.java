@@ -37,11 +37,11 @@ public class User extends Users.Operators {
         return isLocked;
     }
 
-    public void rentAsset(AssetParking assetParking, AssetType assetType,long expectedTime){
-        Travel travel=new Travel(assetParking.rentAsset(assetType),new Timer(System.nanoTime()),expectedTime);
+    public void rentAsset(Assets.AssetParking assetParking, Assets.AssetType assetType, long expectedTime){
+        Assets.Travel travel=new Assets.Travel(assetParking.rentAsset(assetType),new Users.Timer(System.nanoTime()),expectedTime);
     }
 
-    public double returnAsset(AssetParking assetParking)throws UserIsNotInATripException {
+    public double returnAsset(Assets.AssetParking assetParking)throws UserIsNotInATripException {
         if(actualTravel!=null){
             //boolean returnredAtRightTime=tripTimer.compareTime(ExpectedTime);
             double totalFee = assetParking.returnAsset(actualTravel,points.getPoints(assetParking.getZone()));

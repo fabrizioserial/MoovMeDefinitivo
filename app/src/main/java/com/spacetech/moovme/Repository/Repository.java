@@ -9,7 +9,7 @@ public class Repository<T> {
 
     ArrayList<T> arrayListGeneric;
 
-    Repository(){
+    public Repository(){
     }
 
 
