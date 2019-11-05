@@ -200,7 +200,7 @@ public class menu_admin extends AppCompatActivity {
         administrator.deleteZone(Mooveme.getRepositoryZone(),zonename);
     }
     public void saveInformation(String filename, IRepository repository){
-        SharedPreferences sharedPreferences = getSharedPreferences("Mooveme", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("com.spacetech.moovme.Mooveme", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(repository.getList());

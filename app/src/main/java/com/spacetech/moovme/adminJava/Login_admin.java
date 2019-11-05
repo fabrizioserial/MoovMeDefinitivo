@@ -34,14 +34,14 @@ public class Login_admin extends Fragment {
             public void onClick(View v) {
                 /*
                 String nameadmin = et_name_adm.getText().toString();
-                if(Mooveme.loginadmin(nameadmin)){
+                if(com.spacetech.moovme.Mooveme.loginadmin(nameadmin)){
                     Intent i = new Intent(getContext(), menu_admin.class);
                     i.putExtra("name", nameadmin);
                     startActivity(i);
                     Toast.makeText(getContext(),"Bienvenido",Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(getContext(),Mooveme.getName(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),com.spacetech.moovme.Mooveme.getName(),Toast.LENGTH_LONG).show();
                 }
                 */
                 Intent i = new Intent(getContext(), menu_admin.class);

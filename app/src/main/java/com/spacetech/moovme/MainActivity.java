@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             repositoryZone.add(15,"Palermo",getApplicationContext());
-        } catch (ZoneAlreadyExistsException e) {
+        } catch (Exeptions.ZoneAlreadyExistsException e) {
             e.printStackTrace();
         }
 
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadZone() {
-        SharedPreferences sharedPreferences = getSharedPreferences("Mooveme", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("com.spacetech.moovme.Mooveme", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Zone", null);
         Type type = new TypeToken<HashMap<String, Zone>>() {}.getType();
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         repositoryZone.setZones(hashMap);
     }
     private void loadAdmin(){
-        SharedPreferences sharedPreferences = getSharedPreferences("Mooveme", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("com.spacetech.moovme.Mooveme", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Admins",null);
         Type type = new TypeToken<HashMap<String, Administrator>>(){}.getType();
