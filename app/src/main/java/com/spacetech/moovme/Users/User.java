@@ -1,22 +1,21 @@
 package com.spacetech.moovme.Users;
 
-
 import Exeptions.UserIsAlreadyLockedExeption;
 import Exeptions.UserIsNotInATripException;
 import Points.PointsStoredInUserForEachZone;
 
 
-public class User extends Users.Operators {
+public class User extends Operators {
 
 
-    private final Users.Data data;
+    private final Data data;
     private boolean isLocked=false;
     PointsStoredInUserForEachZone points;
 
     Assets.Travel actualTravel=null;
     Assets.Asset assetUsed=null; //crear clase de viaje o sesion
 
-    public User(Users.Data data) {
+    public User(Data data) {
         this.points=new PointsStoredInUserForEachZone();
         this.data =data;
     }

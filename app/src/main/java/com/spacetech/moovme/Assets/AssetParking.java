@@ -1,4 +1,4 @@
-package Assets;
+package com.spacetech.moovme.Assets;
 
 import Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
 import Users.Data;
@@ -11,8 +11,8 @@ public class AssetParking {
         this.zone=zone;
     }
 
-    public Assets.Asset rentAsset(Assets.AssetType assetType) {
-        Assets.Asset assetToOccupy=null;
+    public Asset rentAsset(AssetType assetType) {
+        Asset assetToOccupy=null;
         try{
             assetToOccupy=zone.getAssetwithDesignatedType(assetType);
         } catch (AssetTypeDoesNotExistInSpecifiedZone assetTypeDoesNotExistInSpecifiedZone) {

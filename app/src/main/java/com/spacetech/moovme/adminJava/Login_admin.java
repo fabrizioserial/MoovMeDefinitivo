@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.content.SharedPreferences;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,13 +16,15 @@ import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.spacetech.moovme.Assets.Zone;
+import com.spacetech.moovme.AdministratorDoesntFoundExeption;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.R;
+import com.spacetech.moovme.Users.Administrator;
+import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.User;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
-import java.util.HashMap;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -47,14 +48,17 @@ public class Login_admin extends Fragment {
             public void onClick(View v) {
 
                 String nameadmin = et_name_adm.getText().toString();
-                if(com.spacetech.moovme.Mooveme.loginadmin(nameadmin)){
+                Data dataCheck = new Data(nameadmin,null);
+                try {
+                    Administrator administrator = mooveme.loginAdministrator(new Administrator(dataCheck));
                     Intent i = new Intent(getContext(), menu_admin.class);
-                    i.putExtra("name", nameadmin);
+                    i.putExtra("name", (Serializable) administrator);
                     startActivity(i);
                     Toast.makeText(getContext(),"Bienvenido",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Toast.makeText(getContext(),com.spacetech.moovme.Mooveme.getName(),Toast.LENGTH_LONG).show();
+
+
+                } catch (AdministratorDoesntFoundExeption administratorDoesntFoundExeption) {
+                    administratorDoesntFoundExeption.printStackTrace();
                 }
                 /*
                 Intent i = new Intent(getContext(), menu_admin.class);
@@ -72,6 +76,7 @@ public class Login_admin extends Fragment {
         String json = sharedPreferences.getString("Mooveme", null);
         Type type = new TypeToken<Mooveme>() {}.getType();
         Mooveme mooveme = gson.fromJson(json, type);
+        this.mooveme = mooveme;
 
     }
 

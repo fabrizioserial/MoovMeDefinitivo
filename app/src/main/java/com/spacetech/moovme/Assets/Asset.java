@@ -1,4 +1,4 @@
-package Assets;
+package com.spacetech.moovme.Assets;
 
 public class Asset {
 
