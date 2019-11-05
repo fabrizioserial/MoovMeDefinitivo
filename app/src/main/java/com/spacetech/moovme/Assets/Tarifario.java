@@ -1,10 +1,10 @@
-package Assets;
+package com.spacetech.moovme.Assets;
 
-import Exeptions.CantApplyDiscountExeption;
+import com.spacetech.moovme.Exeptions.CantApplyDiscountExeption;
 
 public class Tarifario {
 
-    public double calculatePrice(Assets.Asset assetUsed, Assets.Discount discount, int points) {
+    public double calculatePrice(Asset assetUsed, Discount discount, int points) {
         try {
             return discount.applyDiscount(assetUsed.getAssetType(), points, assetUsed.getPrice());
         } catch (CantApplyDiscountExeption cantApplyDiscountExeption) {

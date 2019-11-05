@@ -1,8 +1,13 @@
 package com.spacetech.moovme.Users;
 
-import Exeptions.UserIsAlreadyLockedExeption;
-import Exeptions.UserIsNotInATripException;
-import Points.PointsStoredInUserForEachZone;
+
+import com.spacetech.moovme.Assets.Asset;
+import com.spacetech.moovme.Assets.AssetParking;
+import com.spacetech.moovme.Assets.AssetType;
+import com.spacetech.moovme.Assets.Travel;
+import com.spacetech.moovme.Exeptions.UserIsAlreadyLockedExeption;
+import com.spacetech.moovme.Exeptions.UserIsNotInATripException;
+import com.spacetech.moovme.Points.PointsStoredInUserForEachZone;
 
 
 public class User extends Operators {
@@ -12,8 +17,8 @@ public class User extends Operators {
     private boolean isLocked=false;
     PointsStoredInUserForEachZone points;
 
-    Assets.Travel actualTravel=null;
-    Assets.Asset assetUsed=null; //crear clase de viaje o sesion
+    Travel actualTravel=null;
+    Asset assetUsed=null; //crear clase de viaje o sesion
 
     public User(Data data) {
         this.points=new PointsStoredInUserForEachZone();
@@ -24,7 +29,7 @@ public class User extends Operators {
             isLocked=lockUser;
     }
 
-    public Users.PhoneNumber getPhoneNumber(){
+    public PhoneNumber getPhoneNumber(){
         return data.getPhoneNumber();
     }
 
@@ -36,11 +41,11 @@ public class User extends Operators {
         return isLocked;
     }
 
-    public void rentAsset(Assets.AssetParking assetParking, Assets.AssetType assetType, long expectedTime){
-        Assets.Travel travel=new Assets.Travel(assetParking.rentAsset(assetType),new Users.Timer(System.nanoTime()),expectedTime);
+    public void rentAsset(AssetParking assetParking, AssetType assetType, long expectedTime){
+        Travel travel=new Travel(assetParking.rentAsset(assetType),new Timer(System.nanoTime()),expectedTime);
     }
 
-    public double returnAsset(Assets.AssetParking assetParking)throws UserIsNotInATripException {
+    public double returnAsset(AssetParking assetParking)throws UserIsNotInATripException {
         if(actualTravel!=null){
             //boolean returnredAtRightTime=tripTimer.compareTime(ExpectedTime);
             double totalFee = assetParking.returnAsset(actualTravel,points.getPoints(assetParking.getZone()));

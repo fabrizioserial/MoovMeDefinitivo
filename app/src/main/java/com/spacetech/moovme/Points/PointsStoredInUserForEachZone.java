@@ -1,6 +1,6 @@
-package Points;
+package com.spacetech.moovme.Points;
 
-import Assets.Zone;
+import com.spacetech.moovme.Assets.Zone;
 
 import java.util.HashMap;
 

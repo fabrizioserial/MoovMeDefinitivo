@@ -1,20 +1,20 @@
-package Assets;
+package com.spacetech.moovme.Assets;
 
-import Users.Timer;
+import com.spacetech.moovme.Users.Timer;
 
 public class Travel {
 
-    private final Assets.Asset asset;
+    private final Asset asset;
     private final Timer timer;
     private final long expectedTime;
 
-    public Travel(Assets.Asset asset, Timer timer, long expectedTime){
+    public Travel(Asset asset, Timer timer, long expectedTime){
         this.asset=asset;
         this.timer= new Timer(System.nanoTime()); //TODO pasarle el tiempo que se creo desde que se corre la aplicacion
         this.expectedTime=expectedTime;
     }
 
-    public Assets.Asset getAsset() {
+    public Asset getAsset() {
         return asset;
     }
 

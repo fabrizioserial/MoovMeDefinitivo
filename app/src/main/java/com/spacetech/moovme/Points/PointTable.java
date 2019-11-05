@@ -1,8 +1,7 @@
-package Points;
+package com.spacetech.moovme.Points;
 
-import Users.Data;
+import com.spacetech.moovme.Users.Data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PointTable {

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class AssetBatch {
     private final ArrayList<Asset> assetList;
     private final Integer code;
-    private final Assets.AssetType type;
+    private final AssetType type;
 
 
-    public AssetBatch(Assets.AssetType assetType, int cuantity, Integer newCode, int precioDeAlquilerDelLote){
+    public AssetBatch(AssetType assetType, int cuantity, Integer newCode, int precioDeAlquilerDelLote){
         assetList = new ArrayList<Asset>();
         for (int i = 0; i <cuantity; i++) {
             assetList.add(new Asset(assetType,precioDeAlquilerDelLote));
@@ -25,7 +25,7 @@ public class AssetBatch {
         return code;
     }
 
-    public Assets.AssetType getType() {
+    public AssetType getType() {
         return type;
     }
 }

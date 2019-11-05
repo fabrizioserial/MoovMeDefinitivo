@@ -1,4 +1,4 @@
-package Exeptions;
+package com.spacetech.moovme.Exeptions;
 
 public class ZoneAlreadyExistsException extends Exception {
     public ZoneAlreadyExistsException(){

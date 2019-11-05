@@ -1,20 +1,20 @@
 package com.spacetech.moovme.Assets;
 
+import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
+import com.spacetech.moovme.Exeptions.ElementExistExeption;
+import com.spacetech.moovme.Points.PointTable;
 import com.spacetech.moovme.Repository.Repository;
+import com.spacetech.moovme.Users.Data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
-import Points.PointTable;
-import Users.Data;
 
 public class Zone {
     private final String name;
 
     private final Repository<AssetType> assetTypeRepository = new Repository<AssetType>();
     private final ArrayList<AssetBatch> totalAssetsBatchList =new ArrayList<>();
-    private final Assets.Tarifario tarifario=new Assets.Tarifario();
+    private final Tarifario tarifario=new Tarifario();
     private final PointTable pointTable;//create in construtor or leave it like that? implement after knowing persistance
     private HashMap<AssetType, Discount> discountOrganizedByAssetType= new HashMap<>();
     private PointCounter pointCounter;
@@ -49,19 +49,19 @@ public class Zone {
         return tarifario.calculatePrice(assetUsed,discountOrganizedByAssetType.get(assetUsed.getAssetType()),points);
     }
 
-    public void addDiscount(Discount discount, AssetType assetType) throws Exeptions.ElementExistExeption {
+    public void addDiscount(Discount discount, AssetType assetType) throws ElementExistExeption {
         discountOrganizedByAssetType.put(assetType,discount);
     }
 
-    public ArrayList<Assets.Asset> getTotalAssets() {
-        ArrayList<Assets.Asset> totalAssets=new ArrayList<>();
-        for (Assets.AssetBatch assetBatch:totalAssetsBatchList) {
+    public ArrayList<Asset> getTotalAssets() {
+        ArrayList<Asset> totalAssets=new ArrayList<>();
+        for (AssetBatch assetBatch:totalAssetsBatchList) {
             totalAssets.addAll(assetBatch.getAssetList());
         }
         return totalAssets;
     }
 
-    public Integer actualizarPuntos(Assets.Travel actualTravel, Data data, Integer points) {
+    public Integer actualizarPuntos(Travel actualTravel, Data data, Integer points) {
         Integer aquiredPoints=points+pointCounter.calculateAquiredPoints(actualTravel);
         pointTable.updateScore(aquiredPoints,data);
         return aquiredPoints;
