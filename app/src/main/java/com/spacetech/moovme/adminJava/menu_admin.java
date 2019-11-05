@@ -15,9 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.spacetech.moovme.Adapters.AssettypeAdapter;
 import com.spacetech.moovme.Adapters.ZoneAdapter;
+import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Mooveme;
+import com.spacetech.moovme.Persistence;
 import com.spacetech.moovme.R;
+import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Administrator;
 
 import java.util.ArrayList;
@@ -31,14 +34,17 @@ public class menu_admin extends AppCompatActivity {
     String name,UserPhone,assetTypename;
     Button btn_addadmin,btn_blockuser,btn_addzone,btn_deletezone, btn_addassettype,btn_assetbatch;
     Spinner sp_assettype,sp_zone;
-    Assets.AssetType assetTypeActive;
+    AssetType assetTypeActive;
     Zone zoneactive;
-    RepositoryAdmin repositoryAdmin;
+    Mooveme mooveme;
+    Repository<Administrator> repositoryAdmin;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_menu);
+
+        mooveme = Persistence.loadMoovme(getApplicationContext());
 
         Intent i = new Intent();
         i = getIntent();
@@ -63,7 +69,7 @@ public class menu_admin extends AppCompatActivity {
         btn_addassettype = (Button) findViewById(R.id.btn_addassettype_id);
         btn_assetbatch = (Button)findViewById(R.id.btn_addassetbatch_id);
 
-        repositoryAdmin = Mooveme.getRepositoryAdmin();
+        repositoryAdmin =();
         //Toast.makeText(getApplicationContext(), phoneActiveAdmin,Toast.LENGTH_LONG).show();
         final Administrator activeAdmin = repositoryAdmin.findAdmin(ActiveAdmin);
 
@@ -192,13 +198,6 @@ public class menu_admin extends AppCompatActivity {
         String zonename = et_zonename.getText().toString();
         administrator.deleteZone(Mooveme.getRepositoryZone(),zonename);
     }
-    public void saveInformation(String filename, IRepository repository){
-        SharedPreferences sharedPreferences = getSharedPreferences("com.spacetech.moovme.Mooveme", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(repository.getList());
-        editor.putString(filename,json);
-        editor.apply();
-    }
+
 
 }

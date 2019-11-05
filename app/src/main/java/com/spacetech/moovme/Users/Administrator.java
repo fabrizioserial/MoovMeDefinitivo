@@ -1,13 +1,12 @@
 package com.spacetech.moovme.Users;
 
 
-
-
+import com.spacetech.moovme.Assets.AssetBatch;
+import com.spacetech.moovme.Assets.AssetType;
+import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Repository.ListAssetBachCodes;
 import com.spacetech.moovme.Repository.Repository;
 
-import Assets.AssetBatch;
-import Assets.AssetType;
 import Points.PointTable;
 
 
@@ -33,16 +32,16 @@ public class Administrator extends Users.Operators {
         repositoryAdmins.add(new Administrator(data));
     }
 
-    public void buyBatch(AssetType assetType, int cuantity, Assets.Zone zone, ListAssetBachCodes listBachCodes, int precioDeAlquilerDelLote){
+    public void buyBatch(AssetType assetType, int cuantity, Zone zone, ListAssetBachCodes listBachCodes, int precioDeAlquilerDelLote){
         AssetBatch assetBatch =new AssetBatch(assetType,cuantity,listBachCodes.createNewCode(),precioDeAlquilerDelLote);
         zone.addNewBach(assetBatch);
     }
 
-    public void createNewZone(Repository<Assets.Zone> zones, String name, PointTable pointTable) throws  Exeptions.ElementExistExeption {
-        zones.add(new Assets.Zone(name,pointTable));
+    public void createNewZone(Repository<Zone> zones, String name, PointTable pointTable) throws  Exeptions.ElementExistExeption {
+        zones.add(new Zone(name,pointTable));
     }
 
-    public void deleteZone(Repository<Assets.Zone> zones, Assets.Zone zoneToDelete) throws Exeptions.ItemDoesNotExistExeption {
+    public void deleteZone(Repository<Zone> zones, Zone zoneToDelete) throws Exeptions.ItemDoesNotExistExeption {
         zones.remove(zoneToDelete);
     }
 }

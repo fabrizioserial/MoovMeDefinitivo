@@ -53,9 +53,9 @@ public class Zone {
         discountOrganizedByAssetType.put(assetType,discount);
     }
 
-    public ArrayList<Assets.Asset> getTotalAssets() {
-        ArrayList<Assets.Asset> totalAssets=new ArrayList<>();
-        for (Assets.AssetBatch assetBatch:totalAssetsBatchList) {
+    public ArrayList<Asset> getTotalAssets() {
+        ArrayList<Asset> totalAssets=new ArrayList<>();
+        for (AssetBatch assetBatch:totalAssetsBatchList) {
             totalAssets.addAll(assetBatch.getAssetList());
         }
         return totalAssets;
