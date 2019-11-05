@@ -8,26 +8,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.spacetech.moovme.Repository.RepositoryAdmin;
-import com.spacetech.moovme.Repository.RepositoryAsset;
-import com.spacetech.moovme.Repository.RepositoryUser;
-import com.spacetech.moovme.Repository.RepositoryZone;
 import com.spacetech.moovme.SlidePage.Menu_activity;
-import com.spacetech.moovme.Users.Administrator;
-import com.spacetech.moovme.Assets.AssetType;
-import com.spacetech.moovme.Users.PhoneNumber;
-import com.spacetech.moovme.Assets.Zone;
-import com.spacetech.moovme.exceptions.ZoneAlreadyExistsException;
+
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    RepositoryZone repositoryZone;
+    Repository.RepositoryZone repositoryZone;
     RepositoryAdmin repositoryAdmin;
     RepositoryUser repositoryUser;
     @Override
@@ -65,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         if(Mooveme.loginadmin(name)){
             Toast.makeText(getApplicationContext(), "creado el admin",Toast.LENGTH_LONG).show();
         }
-        Mooveme.register("Agus",new PhoneNumber("1"));
+        Mooveme.register("Agus",new Users.PhoneNumber("1"));
         mooveme.setName("Estacreadalamierda");
 
 

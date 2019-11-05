@@ -1,42 +1,29 @@
 package com.spacetech.moovme;
 
-import Repository.*;
+import java.util.ArrayList;
+
+import Repository.Repository;
 import Users.PhoneNumber;
-import Users.*;
-import UserManager;
 
 public class Mooveme {
 
-    private static Repository.Repository<Users.User> userRepo;
-    private static Repository.UserManager userMananger=new Repository.UserManager(userRepo);
 
-    private static Repository.RepositoryAdmins repositoryAdmins;
+    private Repository admin;
     private static Users.Operators activeuser;
 
-    public Mooveme(Repository.UserManager userMananger, Repository.AdminManager adminMananger){
-        Mooveme.userMananger = userMananger;
-        Mooveme.repositoryAdmins=repositoryAdmins;
+    public Mooveme(ArrayList<Repository> repository){
+        SplitRepositories(repository);
     }
 
     public static void register(String name, PhoneNumber phoneNumber){
         userMananger.add(new Users.Data(name,phoneNumber));
     }
 
-/*
-    public static void login(PhoneNumber phoneNumber) {
+    public void SplitRepositories(ArrayList<Repository> arrayList){
+        for(Repository repository:arrayList){
+            if(repository.GetTypeOfRepository()instanceof Users.Administrator){
 
-        if(repositoryUser.testing(phoneNumber)){
-            activeuser=repositoryUser.findUser(phoneNumber);
+            }
         }
-        //usuario no registrado
     }
-
-    public static void loginAdmin(String name){
-        if(repositoryAdmins.testing(name)){
-            activeuser=repositoryAdmins.findAdmin(name);
-        }
-        //admin no registrado
-    }
-
- */
 }

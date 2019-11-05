@@ -6,6 +6,7 @@ import Assets.AssetType;
 import Assets.Zone;
 import Exeptions.*;
 import Points.PointTable;
+import Users.Data;
 import Repository.*;
 
 public class Administrator extends Operators{

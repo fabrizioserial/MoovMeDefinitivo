@@ -7,9 +7,11 @@ import java.util.ArrayList;
 
 public class Repository<T> {
 
-    ArrayList<T> arrayListGeneric;
+    private ArrayList<T> arrayListGeneric;
+    private final T typeOfRepo ;
 
-    Repository(){
+    Repository(T typeOfRepo){
+       this.typeOfRepo = typeOfRepo;
     }
 
 
@@ -20,12 +22,15 @@ public class Repository<T> {
         arrayListGeneric.add(t);
     }
 
-    public ArrayList<T> get(){
+    public ArrayList<T> getRepository(){
         return arrayListGeneric;
     }
 
     public void remove(T t)throws ItemDoesNotExistExeption {
         if(arrayListGeneric.contains(t)) arrayListGeneric.remove(t);
         else throw new ItemDoesNotExistExeption();
+    }
+    public T GetTypeOfRepository(){
+        return typeOfRepo;
     }
 }
