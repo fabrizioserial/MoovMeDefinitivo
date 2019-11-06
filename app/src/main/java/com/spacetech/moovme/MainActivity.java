@@ -1,7 +1,6 @@
 package com.spacetech.moovme;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -9,16 +8,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.spacetech.moovme.Assets.Asset;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.SlidePage.Menu_activity;
 import com.spacetech.moovme.Users.Administrator;
 import com.spacetech.moovme.Users.User;
-
-import java.lang.reflect.Type;
-import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,12 +28,21 @@ public class MainActivity extends AppCompatActivity {
         Repository<Administrator> administratorRepository = new Repository<>();
         Repository<User> usersRepository  = new Repository<>();
         Repository<Zone> zoneRepository = new Repository<>();
+        Repository<Asset> assetRepository = new Repository<>();
 
         Mooveme mooveme = new Mooveme();
+        mooveme.addAssetRepository(assetRepository);
         mooveme.addAdminRepository(administratorRepository);
         mooveme.addUserRepository(usersRepository);
         mooveme.addZoneRepository(zoneRepository);
 
+        if(Persistence.loadMoovme(getApplicationContext())!= null) {
+            try {
+                mooveme = Persistence.loadMoovme(getApplicationContext());
+            }catch (NullPointerException e){
+            }
+
+        }
 
 
         Handler handler = new Handler();
@@ -54,22 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void loadZone() {
-        SharedPreferences sharedPreferences = getSharedPreferences("com.spacetech.moovme.Mooveme", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("Zone", null);
-        Type type = new TypeToken<HashMap<String,Zone>>() {}.getType();
-        HashMap hashMap = gson.fromJson(json, type);
-        repositoryZone.setZones(hashMap);
-    }
-    private void loadAdmin(){
-        SharedPreferences sharedPreferences = getSharedPreferences("com.spacetech.moovme.Mooveme", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("Admins",null);
-        Type type = new TypeToken<HashMap<String, Users.Administrator>>(){}.getType();
-        HashMap hashMap = gson.fromJson(json,type);
-        repositoryAdmin.setAdmin(hashMap);
-    }
+
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

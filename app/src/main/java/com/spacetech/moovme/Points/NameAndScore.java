@@ -1,4 +1,4 @@
-package Points;
+package com.spacetech.moovme.Points;
 
 public class NameAndScore {
 

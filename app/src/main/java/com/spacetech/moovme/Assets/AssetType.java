@@ -13,4 +13,5 @@ public class AssetType {
     public Integer getPoint() {
         return point;
     }
+    public String getName(){return name;}
 }

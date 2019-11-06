@@ -19,10 +19,10 @@ public class Zone {
     private HashMap<AssetType, Discount> discountOrganizedByAssetType= new HashMap<>();
     private PointCounter pointCounter;
 
-    public Zone(String name,PointTable pointTable){
+    public Zone(String name){
 
         this.name=name;
-        this.pointTable=pointTable;
+        this.pointTable=new PointTable();
         this.pointCounter=new PointCounter();
     }
 

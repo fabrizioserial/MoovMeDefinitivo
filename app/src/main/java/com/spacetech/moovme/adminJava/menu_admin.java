@@ -16,17 +16,21 @@ import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exeptions.ElementExistExeption;
+import com.spacetech.moovme.Exeptions.UserDoesntExistException;
+import com.spacetech.moovme.Exeptions.UserIsAlreadyLockedExeption;
+import com.spacetech.moovme.Exeptions.ZoneAlreadyExistsException;
+import com.spacetech.moovme.Exeptions.ZoneDoesNotExistException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
 import com.spacetech.moovme.R;
+import com.spacetech.moovme.Repository.ListAssetBachCodes;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Administrator;
 import com.spacetech.moovme.Users.Data;
+import com.spacetech.moovme.Users.PhoneNumber;
 import com.spacetech.moovme.Users.User;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 
 public class menu_admin extends AppCompatActivity {
 
@@ -107,11 +111,9 @@ public class menu_admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    adminaddZone(et_zonename,et_zonepoint,activeAdmin);
-                    saveInformation("Zone",Mooveme.getRepositoryZone());
-                } catch (Exeptions.ZoneAlreadyExistsException e) {
-                    Toast.makeText(getApplicationContext(),"This zone already exist",Toast.LENGTH_LONG).show();
-                }catch (NumberFormatException e){
+                    adminAddZone(et_zonename,et_zonepoint,ActiveAdmin);
+                    Persistence.saveInformation(getApplicationContext(),mooveme);
+                } catch (NumberFormatException e){
                     Toast.makeText(getApplicationContext(),"Error input points",Toast.LENGTH_LONG).show();
                 }
                 SpinnerZoneType();
@@ -121,13 +123,8 @@ public class menu_admin extends AppCompatActivity {
         btn_deletezone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    admindeletezone(et_zonename,activeAdmin);
-                } catch (Exeptions.ZoneDoesNotExistException e) {
-                    Toast.makeText(getApplicationContext(),"This zone doesnt exist", Toast.LENGTH_LONG).show();
-                }
-
-                saveInformation("Zone",Mooveme.getRepositoryZone());
+                adminDeleteZone(et_zonename,ActiveAdmin);
+                Persistence.saveInformation(getApplicationContext(),mooveme);
                 SpinnerZoneType();
             }
         });
@@ -135,24 +132,22 @@ public class menu_admin extends AppCompatActivity {
         btn_addassettype.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adminCreateAssetType(et_assettypename,et_assettypepoint,activeAdmin);
+                adminCreateAssetType(et_assettypename,et_assettypepoint,ActiveAdmin);
             }
         });
 
         btn_assetbatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAssetBatch(assetTypename,et_aBatchcant,et_aBatchprice,et_aBatchcode,activeAdmin);
+                addAssetBatch(assetTypename,et_aBatchcant,et_aBatchprice,et_aBatchcode, ActiveAdmin);
             }
         });
         SpinnerAssetType();
         SpinnerZoneType();
     }
     private void SpinnerZoneType() {
-        HashMap zoneHashMap = Mooveme.getRepositoryZone().getCollection();
-        Collection values = zoneHashMap.values();
-        ArrayList<Zone> zoneArrayList = new ArrayList<Zone>(values);
-        ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zoneArrayList);
+        ArrayList zones = mooveme.getZoneRepository().getRepository();
+        ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zones);
         sp_zone.setAdapter(adapter);
         zoneactive = (Zone) sp_zone.getSelectedItem();
     }
@@ -160,23 +155,28 @@ public class menu_admin extends AppCompatActivity {
         int cantidad = Integer.parseInt(et_aBatchcant.getText().toString());
         int price = Integer.parseInt(et_aBatchprice.getText().toString());
         Integer codeint = Integer.parseInt(et_aBatchcode.getText().toString());
-        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,new Repository.ListAssetBachCodes(),price);
+        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,new ListAssetBachCodes(),price);
         Toast.makeText(getApplicationContext(),"u've buyed " + cantidad + " " + assetTypeActive.getName(), Toast.LENGTH_SHORT).show();
 
     }
     public void SpinnerAssetType(){
-        ArrayList assetTypes= Mooveme.getRepositoryAsset().getCollection();
+        ArrayList assetTypes= mooveme.getAssetRepository().getRepository();
         AssettypeAdapter adapter = new AssettypeAdapter(getApplicationContext(),assetTypes);
         sp_assettype.setAdapter(adapter);
         assetTypename = sp_assettype.getSelectedItem().toString();
-        assetTypeActive = (Assets.AssetType) sp_assettype.getSelectedItem();
+        assetTypeActive = (AssetType) sp_assettype.getSelectedItem();
 
     }
     public void adminBlockUser(EditText et_phonenumber, Administrator administrator) {
-        UserPhone = et_phoneuser.getText().toString();
+        UserPhone = et_phonenumber.getText().toString();
+        Data dataOfUser = new Data(null,new PhoneNumber(Integer.parseInt(UserPhone)));
+        try {
+            User userThatWannaBlock = mooveme.findUser(dataOfUser);
+            administrator.setUserLock(userThatWannaBlock,true);
 
-        User userThatWannaBlock =
-        administrator.setUserLock(,true);
+        } catch (UserDoesntExistException | UserIsAlreadyLockedExeption e) {
+            e.printStackTrace();
+        }
     }
 
     public void addnewAdmin(EditText et_name, Administrator administrator){
@@ -195,17 +195,26 @@ public class menu_admin extends AppCompatActivity {
     public void adminCreateAssetType(EditText et_assetname, EditText et_assetpoint,Administrator administrator){
         String assetName = et_assetname.getText().toString();
         int points = Integer.parseInt(et_assetpoint.getText().toString());
-        administrator.createAssetType(assetName,points,Mooveme.getRepositoryAsset());
+        administrator.createAssetType(assetName,points,mooveme.getAssetTypeRepository());
         Toast.makeText(getApplicationContext(),"Se creo el asset con nombre " + assetName , Toast.LENGTH_SHORT).show();
     }
-    public void adminaddZone(EditText et_zone,EditText et_point_zone,Administrator administrator) throws Exeptions.ZoneAlreadyExistsException,NumberFormatException {
-        String zonename = et_zone.getText().toString();
-        int point = Integer.parseInt(et_point_zone.getText().toString());
-        administrator.createNewZone(Mooveme.getRepositoryZone(),point,zonename,getApplicationContext());
+    public void adminAddZone(EditText et_zone,EditText et_point_zone,Administrator administrator) {
+        try {
+            String zonename = et_zone.getText().toString();
+            administrator.createNewZone(mooveme.getZoneRepository(),zonename);
+        } catch (ZoneAlreadyExistsException e) {
+            e.printStackTrace();
+        }
     }
-    public void admindeletezone(EditText et_zonename, Administrator administrator) throws Exeptions.ZoneDoesNotExistException {
-        String zonename = et_zonename.getText().toString();
-        administrator.deleteZone(Mooveme.getRepositoryZone(),zonename);
+    public void adminDeleteZone(EditText et_zonename, Administrator administrator) {
+        try {
+            String zonename = et_zonename.getText().toString();
+            Zone zone = administrator.getZone(mooveme.getZoneRepository(),et_zonename);
+            administrator.deleteZone(mooveme.getZoneRepository(),zone);
+        } catch (ZoneDoesNotExistException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

@@ -7,4 +7,13 @@ public class PhoneNumber {
     public PhoneNumber(int number){
         this.number=number;
     }
+
+
+    public boolean equals(PhoneNumber o){
+        return this.getNumber() == o.getNumber();
+    }
+
+    private int getNumber() {
+        return number;
+    }
 }

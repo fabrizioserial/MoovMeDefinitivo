@@ -12,7 +12,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class  Persistence {
 
-    public static Mooveme loadMoovme(Context ctx){
+    public static Mooveme loadMoovme(Context ctx) throws NullPointerException{
         SharedPreferences sharedPreferences = ctx.getSharedPreferences("Mooveme",MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Mooveme", null);
