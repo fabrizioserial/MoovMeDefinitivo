@@ -3,6 +3,7 @@ package com.spacetech.moovme;
 import com.spacetech.moovme.Assets.Asset;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
+import com.spacetech.moovme.Exeptions.AdministratorDoesntFoundExeption;
 import com.spacetech.moovme.Exeptions.UserDoesntExistException;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Administrator;
@@ -44,7 +45,7 @@ public class Mooveme {
 
 
 
-    public Administrator loginAdministrator(Administrator administrator) throws AdministratorDoesntFoundExeption{
+    public Administrator loginAdministrator(Administrator administrator) throws AdministratorDoesntFoundExeption {
         boolean Found= false;
         for(Administrator adminis:(ArrayList<Administrator>)adminRepository.getRepository()){
             if(administrator.getName().equals(adminis.getName())){

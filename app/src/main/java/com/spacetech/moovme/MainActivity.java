@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                Toast.makeText(getApplicationContext(),"Entro", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"v5", Toast.LENGTH_LONG).show();
                 Intent i = new Intent(getApplication(), Menu_activity.class);
                 startActivity(i);
             }

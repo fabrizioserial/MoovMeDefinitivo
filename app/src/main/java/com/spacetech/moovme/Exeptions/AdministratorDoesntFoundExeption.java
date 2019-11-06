@@ -1,4 +1,4 @@
-package com.spacetech.moovme;
+package com.spacetech.moovme.Exeptions;
 
 public class AdministratorDoesntFoundExeption extends Exception {
     public AdministratorDoesntFoundExeption(){
