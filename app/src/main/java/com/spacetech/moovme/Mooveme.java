@@ -4,6 +4,8 @@ import com.spacetech.moovme.Assets.Asset;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exeptions.AdministratorDoesntFoundExeption;
+import com.spacetech.moovme.Exeptions.ElementExistExeption;
+import com.spacetech.moovme.Exeptions.UserAlreadyExistException;
 import com.spacetech.moovme.Exeptions.UserDoesntExistException;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Administrator;
@@ -63,6 +65,14 @@ public class Mooveme {
             }
         }
         throw new UserDoesntExistException();
+    }
+
+    public void registerUser(User user) throws UserAlreadyExistException {
+        try {
+            userRepository.add(user);
+        } catch (ElementExistExeption elementExistExeption) {
+            throw new UserAlreadyExistException();
+        }
     }
     public User findUser(Data data) throws UserDoesntExistException {
         for(User user:(ArrayList<User>) userRepository.getRepository()){

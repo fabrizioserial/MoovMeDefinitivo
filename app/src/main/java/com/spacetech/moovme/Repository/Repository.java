@@ -15,10 +15,7 @@ public class Repository<T> {
 
 
     public void add(T t) throws ElementExistExeption {
-        if(arrayListGeneric.contains(t)){
-            throw new ElementExistExeption();
-        }
-        arrayListGeneric.add(t);
+        for
     }
 
     public ArrayList<T> getRepository(){

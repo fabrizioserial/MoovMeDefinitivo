@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:gravity="center"
+    android:orientation="vertical"
     >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Moove Me"
+        android:text="Moove Me1"
         android:textStyle="bold"
         android:textSize="50dp"
         android:layout_gravity="center"

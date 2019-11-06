@@ -13,8 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.spacetech.moovme.Exeptions.UserAlreadyExistException;
+import com.spacetech.moovme.Exeptions.UserDoesntExistException;
 import com.spacetech.moovme.Mooveme;
+import com.spacetech.moovme.Persistence;
 import com.spacetech.moovme.R;
+import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.PhoneNumber;
 import com.spacetech.moovme.Users.User;
 
@@ -24,6 +28,7 @@ public class RegisterUser extends Fragment {
     private String name;
     private String phonenumber;
     private Button btn_register,btn_login;
+    private Mooveme mooveme;
 
 
     @Nullable
@@ -37,7 +42,7 @@ public class RegisterUser extends Fragment {
         btn_register = (Button) v.findViewById(R.id.btn_register_id);
         btn_login = (Button) v.findViewById(R.id.btn_login_id);
 
-
+        mooveme = Persistence.loadMoovme(getContext());
 
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,15 +50,20 @@ public class RegisterUser extends Fragment {
                 name = et_name.getText().toString().trim();
                 phonenumber = et_phonenumber.getText().toString().trim();
 
-                if(name.isEmpty() || phonenumber.isEmpty() ){
-                    Toast.makeText(getContext(),"Complete the fields", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"Complete the fields", Toast.LENGTH_LONG).show();
+                PhoneNumber userPhoneNumber = new PhoneNumber(Integer.parseInt(phonenumber));
+                try {
+                    try {
+                        mooveme.findUser(new Data(name,userPhoneNumber));
+                    } catch (UserDoesntExistException e) {
+                        mooveme.registerUser(new User(new Data(name,userPhoneNumber)));
+                    }
 
-                }else {
-                    PhoneNumber userPhoneNumber = new PhoneNumber(phonenumber);
-                    Mooveme.register(name, userPhoneNumber);
-                    User user = Mooveme.getRepositoryUser().findUser(new PhoneNumber(phonenumber));
-                    Toast.makeText(getContext(),user.getPhoneNumber().getPhoneNumber(), Toast.LENGTH_LONG).show();
+                } catch (UserAlreadyExistException e) {
+                    e.printStackTrace();
                 }
+
+
             }
         });
 

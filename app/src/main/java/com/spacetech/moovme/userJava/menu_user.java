@@ -6,16 +6,9 @@ import android.widget.Spinner;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.spacetech.moovme.Adapters.AssettypeAdapter;
-import com.spacetech.moovme.Mooveme;
-import com.spacetech.moovme.R;
-import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import com.spacetech.moovme.R;
 
 public class menu_user extends AppCompatActivity {
 
@@ -32,11 +25,11 @@ public class menu_user extends AppCompatActivity {
 
 
         ///metodos
-        SpinnerAssets();
-        SpinnerZone();
+       // SpinnerAssets();
+        //SpinnerZone();
     }
 
-    private void SpinnerZone() {
+    /*private void SpinnerZone() {
         HashMap zoneHashMap = Mooveme.getRepositoryZone().getCollection();
         Collection values = zoneHashMap.values();
         ArrayList<Zone> zoneArrayList = new ArrayList<Zone>(values);
@@ -52,4 +45,6 @@ public class menu_user extends AppCompatActivity {
         assetTypename = sp_assetType.getSelectedItem().toString();
         assetTypeActive = (AssetType) sp_assetType.getSelectedItem();
     }
+
+     */
 }
