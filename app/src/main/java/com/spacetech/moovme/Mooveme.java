@@ -57,7 +57,7 @@ public class Mooveme {
 
     public User loginUser(User user) throws UserDoesntExistException{
         for(User users:(ArrayList<User>)userRepository.getRepository()){
-            if(user.getPhoneNumber().equals(users.getPhoneNumber()) && user.getName().equals(users.getName())){
+            if(user.getPhoneNumber().equals(users.getPhoneNumber())){
                 return users;
             }
         }
