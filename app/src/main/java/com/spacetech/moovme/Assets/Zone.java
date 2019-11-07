@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class Zone {
     private final String name;
 
-    private final Repository<AssetType> assetTypeRepository = new Repository<AssetType>();
+    private final Repository<AssetType> assetTypeRepository = new Repository<>();
     private final ArrayList<AssetBatch> totalAssetsBatchList =new ArrayList<>();
     private final Tarifario tarifario;
     private final PointTable pointTable;//create in construtor or leave it like that? implement after knowing persistance
@@ -36,7 +36,7 @@ public class Zone {
 
     public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
         for(AssetBatch batch : totalAssetsBatchList){
-            if(batch.getType() == assetType){
+            if(batch.getType().equals(assetType)){
                 for(Asset asset: batch.getAssetList()){
                     if(!asset.assetIsOcupied){
                         return asset;
@@ -62,6 +62,9 @@ public class Zone {
             totalAssets.addAll(assetBatch.getAssetList());
         }
         return totalAssets;
+    }
+    public void addAssetParking(){
+
     }
 
     public Integer actualizarPuntos(Travel actualTravel, Data data, Integer points) {

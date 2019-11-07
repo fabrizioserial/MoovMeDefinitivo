@@ -6,9 +6,10 @@ import java.util.HashMap;
 
 public class Tarifario {
 
-    HashMap<AssetType,Price> pricePerAsset=new HashMap<>();
+    HashMap<AssetType,Price> pricePerAsset;
 
     public Tarifario() {
+        pricePerAsset = new HashMap<>();
     }
 
     public void addAssetPricePerZone(AssetType assetType, Price price) throws PriceIsAlreadySetExeption {

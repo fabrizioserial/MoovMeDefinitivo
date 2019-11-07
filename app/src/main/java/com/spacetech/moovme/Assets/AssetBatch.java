@@ -28,4 +28,9 @@ public class AssetBatch {
     public AssetType getType() {
         return type;
     }
+
+    public boolean equals(Object o){
+        AssetBatch assetBatch = (AssetBatch) o;
+        return this.getType() == (assetBatch.getType());
+    }
 }

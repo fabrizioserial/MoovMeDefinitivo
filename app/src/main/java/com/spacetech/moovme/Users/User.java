@@ -5,6 +5,7 @@ import com.spacetech.moovme.Assets.Asset;
 import com.spacetech.moovme.Assets.AssetParking;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Travel;
+import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
 import com.spacetech.moovme.Exeptions.UserIsAlreadyLockedExeption;
 import com.spacetech.moovme.Exeptions.UserIsNotInATripException;
 import com.spacetech.moovme.Points.PointsStoredInUserForEachZone;
@@ -41,7 +42,7 @@ public class User extends Operators {
         return isLocked;
     }
 
-    public void rentAsset(AssetParking assetParking, AssetType assetType, long expectedTime){
+    public void rentAsset(AssetParking assetParking, AssetType assetType, long expectedTime)throws AssetTypeDoesNotExistInSpecifiedZone {
         Travel travel=new Travel(assetParking.rentAsset(assetType),new Timer(System.nanoTime()),expectedTime);
     }
 

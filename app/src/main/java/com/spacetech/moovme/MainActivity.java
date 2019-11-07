@@ -44,11 +44,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
         mooveme.addAssetRepository(assetRepository);
         mooveme.addAdminRepository(administratorRepository);
         mooveme.addUserRepository(usersRepository);
         mooveme.addZoneRepository(zoneRepository);
         mooveme.addAssetTypeRepository(assetTypeRepository);
+
+        if(Persistence.loadMoovme(getApplicationContext())!= null){
+            mooveme = Persistence.loadMoovme(getApplicationContext());
+        }
         Persistence.saveInformation(getApplicationContext(),mooveme);
 
         Handler handler = new Handler();
@@ -56,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                Toast.makeText(getApplicationContext(),"v5", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"v9", Toast.LENGTH_LONG).show();
                 Intent i = new Intent(getApplication(), Menu_activity.class);
                 startActivity(i);
             }

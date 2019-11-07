@@ -7,10 +7,10 @@ import com.spacetech.moovme.Exeptions.AdministratorDoesntFoundExeption;
 import com.spacetech.moovme.Exeptions.ElementExistExeption;
 import com.spacetech.moovme.Exeptions.UserAlreadyExistException;
 import com.spacetech.moovme.Exeptions.UserDoesntExistException;
+import com.spacetech.moovme.Repository.ListAssetBachCodes;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Administrator;
 import com.spacetech.moovme.Users.Data;
-import com.spacetech.moovme.Users.Operators;
 import com.spacetech.moovme.Users.User;
 
 import java.util.ArrayList;
@@ -23,10 +23,10 @@ public class Mooveme {
     private Repository<Zone> zoneRepository;
     private Repository<Asset> assetRepository;
     private Repository<AssetType> assetTypeRepository;
-
-    private Operators activeuser;
+    private ListAssetBachCodes listAssetBachCodes;
 
     public Mooveme(){
+        listAssetBachCodes = new ListAssetBachCodes();
     }
 
     public void addAdminRepository(Repository<Administrator> admin){
@@ -106,5 +106,9 @@ public class Mooveme {
             }
         }
         throw new AdministratorDoesntFoundExeption();
+    }
+
+    public int getListAssetBachCodes(){
+        return listAssetBachCodes.createNewCode();
     }
 }

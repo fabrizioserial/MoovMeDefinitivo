@@ -26,7 +26,6 @@ import com.spacetech.moovme.Exeptions.ZoneDoesNotExistException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
 import com.spacetech.moovme.R;
-import com.spacetech.moovme.Repository.ListAssetBachCodes;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Administrator;
 import com.spacetech.moovme.Users.Data;
@@ -170,10 +169,11 @@ public class menu_admin extends AppCompatActivity {
     private void addAssetBatch(String assetTypename, EditText et_aBatchcant, EditText et_aBatchprice, EditText et_aBatchcode, Administrator activeAdmin) throws PriceIsAlreadySetExeption {
         int cantidad = Integer.parseInt(et_aBatchcant.getText().toString());
         int price = Integer.parseInt(et_aBatchprice.getText().toString());
-        Integer codeint = Integer.parseInt(et_aBatchcode.getText().toString());
-        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,new ListAssetBachCodes(),new Price(price));
+        int code = mooveme.getListAssetBachCodes();
+        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,code,new Price(price));
         //TODO handle exeption with toast
         Toast.makeText(getApplicationContext(),"u've buyed " + cantidad + " " + assetTypeActive.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),String.valueOf(code),Toast.LENGTH_SHORT).show();
 
     }
     public void SpinnerAssetType(){
@@ -231,6 +231,9 @@ public class menu_admin extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+    public void saveInformation(){
+        Persistence.saveInformation(getApplicationContext(),mooveme);
     }
 
 
