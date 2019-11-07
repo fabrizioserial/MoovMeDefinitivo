@@ -13,6 +13,8 @@ import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.Operators;
 import com.spacetech.moovme.Users.User;
 
+import java.util.ArrayList;
+
 public class Mooveme {
 
 
@@ -47,7 +49,7 @@ public class Mooveme {
 
     public Administrator loginAdministrator(Administrator administrator) throws AdministratorDoesntFoundExeption {
         boolean Found= false;
-        for(Administrator adminis: adminRepository.getRepository()){
+        for(Administrator adminis:(ArrayList<Administrator>)adminRepository.getRepository()){
             if(administrator.getName().equals(adminis.getName())){
                 Found = true;
                 return adminis;

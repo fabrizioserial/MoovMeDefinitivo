@@ -13,7 +13,7 @@ public class PhoneNumber {
         return this.getNumber() == o.getNumber();
     }
 
-    private int getNumber() {
+    public int getNumber() {
         return number;
     }
 }

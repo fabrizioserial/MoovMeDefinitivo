@@ -47,16 +47,24 @@ public class User extends Operators {
 
     public double returnAsset(AssetParking assetParking)throws UserIsNotInATripException {
         if(actualTravel!=null){
-            //boolean returnredAtRightTime=tripTimer.compareTime(ExpectedTime);
+            //TODO parking add points to user and return fee also actualize in score table
+            //TODO ask to assetParking if you can apply discount and aplly if user wants
             double totalFee = assetParking.returnAsset(actualTravel,points.getPoints(assetParking.getZone()));
             points.add(assetParking.ganarPuntos(actualTravel,data,points.getPoints(assetParking.getZone())),assetParking.getZone());
-            //TODO add points when asset is returned
             actualTravel=null;
             return  totalFee;
         }
         else{
             throw new UserIsNotInATripException();
         }
+    }
+
+
+    public boolean equals(Object o1){
+        if(o1 instanceof User){
+            return ((User) o1).getPhoneNumber().getNumber()==data.getPhoneNumber().getNumber();
+        }
+        else return false;
     }
 
 }

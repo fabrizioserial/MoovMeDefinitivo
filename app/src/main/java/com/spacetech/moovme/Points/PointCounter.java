@@ -1,4 +1,6 @@
-package com.spacetech.moovme.Assets;
+package com.spacetech.moovme.Points;
+
+import com.spacetech.moovme.Assets.Travel;
 
 public class PointCounter {
 

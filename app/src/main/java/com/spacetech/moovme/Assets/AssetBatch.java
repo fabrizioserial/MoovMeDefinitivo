@@ -8,10 +8,10 @@ public class AssetBatch {
     private final AssetType type;
 
 
-    public AssetBatch(AssetType assetType, int cuantity, Integer newCode, int precioDeAlquilerDelLote){
+    public AssetBatch(AssetType assetType, int cuantity, Integer newCode){
         assetList = new ArrayList<Asset>();
         for (int i = 0; i <cuantity; i++) {
-            assetList.add(new Asset(assetType,precioDeAlquilerDelLote));
+            assetList.add(new Asset(assetType));
         }
         this.code=newCode;
         this.type=assetType;

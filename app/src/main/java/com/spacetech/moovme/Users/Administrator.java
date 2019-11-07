@@ -5,19 +5,19 @@ import android.widget.EditText;
 
 import com.spacetech.moovme.Assets.AssetBatch;
 import com.spacetech.moovme.Assets.AssetType;
+import com.spacetech.moovme.Assets.Price;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exeptions.ElementExistExeption;
 import com.spacetech.moovme.Exeptions.ItemDoesNotExistExeption;
+import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
 import com.spacetech.moovme.Exeptions.UserIsAlreadyLockedExeption;
 import com.spacetech.moovme.Exeptions.ZoneAlreadyExistsException;
 import com.spacetech.moovme.Exeptions.ZoneDoesNotExistException;
 import com.spacetech.moovme.Repository.ListAssetBachCodes;
 import com.spacetech.moovme.Repository.Repository;
 
-import java.io.Serializable;
 
-
-public class Administrator implements Serializable {
+public class Administrator extends Operators {
 
     private final Data data;
 
@@ -39,9 +39,9 @@ public class Administrator implements Serializable {
         repositoryAdmins.add(new Administrator(data));
     }
 
-    public void buyBatch(AssetType assetType, int cuantity, Zone zone, ListAssetBachCodes listBachCodes, int precioDeAlquilerDelLote){
-        AssetBatch assetBatch =new AssetBatch(assetType,cuantity,listBachCodes.createNewCode(),precioDeAlquilerDelLote);
-        zone.addNewBach(assetBatch);
+    public void buyBatch(AssetType assetType, int cuantity, Zone zone, ListAssetBachCodes listBachCodes, Price precioDeAlquilerDelLote) throws PriceIsAlreadySetExeption {
+        AssetBatch assetBatch =new AssetBatch(assetType,cuantity,listBachCodes.createNewCode());
+        zone.addNewBach(assetBatch,precioDeAlquilerDelLote);
     }
 
     public void createNewZone(Repository<Zone> zones, String name) throws ZoneAlreadyExistsException {
@@ -77,5 +77,10 @@ public class Administrator implements Serializable {
         }
     }
 
-
+    public boolean equals(Object object){
+        if(object instanceof Administrator){
+            return ((Administrator) object).getName().equals(data.getName());
+        }
+        else return false;
+    }
 }

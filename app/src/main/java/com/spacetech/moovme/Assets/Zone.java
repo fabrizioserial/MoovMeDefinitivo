@@ -2,6 +2,8 @@ package com.spacetech.moovme.Assets;
 
 import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
 import com.spacetech.moovme.Exeptions.ElementExistExeption;
+import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
+import com.spacetech.moovme.Points.PointCounter;
 import com.spacetech.moovme.Points.PointTable;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Data;
@@ -26,8 +28,8 @@ public class Zone {
         this.pointCounter=new PointCounter();
     }
 
-    public void addNewBach(AssetBatch assetBatch) {
-
+    public void addNewBach(AssetBatch assetBatch, Price precioDeAlquilerDelLote) throws PriceIsAlreadySetExeption {
+        tarifario.addAssetPricePerZone(assetBatch.getType(),precioDeAlquilerDelLote);
         totalAssetsBatchList.add(assetBatch);
     }
 
@@ -84,4 +86,16 @@ public class Zone {
     public String getName() {
         return name;
     }
+
+    public ArrayList<AssetBatch> getTotalAssetsBatchList() {
+        return totalAssetsBatchList;
+    }
+
+    public boolean equals(Object object){
+        if(object instanceof Zone){
+            return ((Zone) object).getName().equals(name);
+        }
+        else return false;
+    }
+
 }

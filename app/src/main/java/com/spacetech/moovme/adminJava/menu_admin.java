@@ -14,9 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.spacetech.moovme.Adapters.AssettypeAdapter;
 import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Assets.AssetType;
+import com.spacetech.moovme.Assets.Price;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exeptions.AdministratorDoesntFoundExeption;
 import com.spacetech.moovme.Exeptions.ElementExistExeption;
+import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
 import com.spacetech.moovme.Exeptions.UserDoesntExistException;
 import com.spacetech.moovme.Exeptions.UserIsAlreadyLockedExeption;
 import com.spacetech.moovme.Exeptions.ZoneAlreadyExistsException;
@@ -149,7 +151,11 @@ public class menu_admin extends AppCompatActivity {
         btn_assetbatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAssetBatch(assetTypename,et_aBatchcant,et_aBatchprice,et_aBatchcode, ActiveAdmin);
+                try {
+                    addAssetBatch(assetTypename,et_aBatchcant,et_aBatchprice,et_aBatchcode, ActiveAdmin);
+                } catch (PriceIsAlreadySetExeption priceIsAlreadySetExeption) {
+                    Toast.makeText(getApplicationContext(),"Ya esta registrado ese precio",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         SpinnerAssetType();
@@ -161,11 +167,12 @@ public class menu_admin extends AppCompatActivity {
         sp_zone.setAdapter(adapter);
         zoneactive = (Zone) sp_zone.getSelectedItem();
     }
-    private void addAssetBatch(String assetTypename, EditText et_aBatchcant, EditText et_aBatchprice, EditText et_aBatchcode, Administrator activeAdmin) {
+    private void addAssetBatch(String assetTypename, EditText et_aBatchcant, EditText et_aBatchprice, EditText et_aBatchcode, Administrator activeAdmin) throws PriceIsAlreadySetExeption {
         int cantidad = Integer.parseInt(et_aBatchcant.getText().toString());
         int price = Integer.parseInt(et_aBatchprice.getText().toString());
         Integer codeint = Integer.parseInt(et_aBatchcode.getText().toString());
-        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,new ListAssetBachCodes(),price);
+        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,new ListAssetBachCodes(),new Price(price));
+        //TODO handle exeption with toast
         Toast.makeText(getApplicationContext(),"u've buyed " + cantidad + " " + assetTypeActive.getName(), Toast.LENGTH_SHORT).show();
 
     }

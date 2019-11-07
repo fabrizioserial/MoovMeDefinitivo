@@ -11,11 +11,9 @@ public class Timer {
     public long actualTimePassSinceStartedTimer(final long actualTime){
         return actualTime-startTime;
     }
-    public int compareTime(long expectedTime) {
-         return 0;
+    public long compareTime(long actualTime) {
+         return actualTime-startTime;
     }
-
-    //TODO implement methods
 
 
 }

@@ -25,26 +25,29 @@ public class menu_user extends AppCompatActivity {
 
 
         ///metodos
-       // SpinnerAssets();
+        //SpinnerAssets();
         //SpinnerZone();
     }
 
-    /*private void SpinnerZone() {
-        HashMap zoneHashMap = Mooveme.getRepositoryZone().getCollection();
+    private void SpinnerZone() {
+        /*HashMap zoneHashMap = Mooveme.getRepositoryZone().getCollection();
         Collection values = zoneHashMap.values();
         ArrayList<Zone> zoneArrayList = new ArrayList<Zone>(values);
         ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zoneArrayList);
         sp_zone.setAdapter(adapter);
         zoneactive = (Zone) sp_zone.getSelectedItem();
+
+         */
     }
 
     private void SpinnerAssets() {
+        /*
         ArrayList assetTypes= Mooveme.getRepositoryAsset().getCollection();
         AssettypeAdapter adapter = new AssettypeAdapter(getApplicationContext(),assetTypes);
         sp_assetType.setAdapter(adapter);
         assetTypename = sp_assetType.getSelectedItem().toString();
         assetTypeActive = (AssetType) sp_assetType.getSelectedItem();
-    }
 
-     */
+         */
+    }
 }
