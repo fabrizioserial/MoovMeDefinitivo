@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.spacetech.moovme.Assets.Asset;
+import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exeptions.ElementExistExeption;
 import com.spacetech.moovme.Repository.Repository;
@@ -31,19 +32,23 @@ public class MainActivity extends AppCompatActivity {
         Repository<User> usersRepository  = new Repository<>();
         Repository<Zone> zoneRepository = new Repository<>();
         Repository<Asset> assetRepository = new Repository<>();
+        Repository<AssetType> assetTypeRepository = new Repository<>();
 
         Mooveme mooveme = new Mooveme();
 
         try {
             administratorRepository.add(new Administrator(new Data("admin")));
+            assetTypeRepository.add(new AssetType(15,"auto"));
         } catch (ElementExistExeption elementExistExeption) {
             elementExistExeption.printStackTrace();
         }
+
 
         mooveme.addAssetRepository(assetRepository);
         mooveme.addAdminRepository(administratorRepository);
         mooveme.addUserRepository(usersRepository);
         mooveme.addZoneRepository(zoneRepository);
+        mooveme.addAssetTypeRepository(assetTypeRepository);
         Persistence.saveInformation(getApplicationContext(),mooveme);
 
         Handler handler = new Handler();

@@ -15,6 +15,7 @@ import com.spacetech.moovme.Adapters.AssettypeAdapter;
 import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
+import com.spacetech.moovme.Exeptions.AdministratorDoesntFoundExeption;
 import com.spacetech.moovme.Exeptions.ElementExistExeption;
 import com.spacetech.moovme.Exeptions.UserDoesntExistException;
 import com.spacetech.moovme.Exeptions.UserIsAlreadyLockedExeption;
@@ -52,7 +53,16 @@ public class menu_admin extends AppCompatActivity {
         mooveme = Persistence.loadMoovme(getApplicationContext());
 
         Intent i = getIntent();
-        ActiveAdmin = (Administrator)i.getSerializableExtra("name");
+
+        try {
+            ActiveAdmin = mooveme.findAdmin((String)i.getStringExtra("name"));
+            Toast.makeText(this,"Hola " + ActiveAdmin.getName(),Toast.LENGTH_SHORT).show();
+        } catch (AdministratorDoesntFoundExeption administratorDoesntFoundExeption) {
+            administratorDoesntFoundExeption.printStackTrace();
+        }
+
+
+
         sp_assettype = (Spinner) findViewById(R.id.spn_assettype);
         sp_zone = (Spinner) findViewById(R.id.spn_zone);
 
@@ -146,7 +156,7 @@ public class menu_admin extends AppCompatActivity {
         SpinnerZoneType();
     }
     private void SpinnerZoneType() {
-        ArrayList zones = mooveme.getZoneRepository().getRepository();
+        ArrayList<Zone> zones = mooveme.getZoneRepository().getRepository();
         ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zones);
         sp_zone.setAdapter(adapter);
         zoneactive = (Zone) sp_zone.getSelectedItem();
@@ -160,7 +170,7 @@ public class menu_admin extends AppCompatActivity {
 
     }
     public void SpinnerAssetType(){
-        ArrayList assetTypes= mooveme.getAssetRepository().getRepository();
+        ArrayList<AssetType> assetTypes= mooveme.getAssetTypeRepository().getRepository();
         AssettypeAdapter adapter = new AssettypeAdapter(getApplicationContext(),assetTypes);
         sp_assettype.setAdapter(adapter);
         assetTypename = sp_assettype.getSelectedItem().toString();

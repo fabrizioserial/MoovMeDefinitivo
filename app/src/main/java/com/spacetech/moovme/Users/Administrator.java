@@ -17,7 +17,7 @@ import com.spacetech.moovme.Repository.Repository;
 import java.io.Serializable;
 
 
-public class Administrator extends Operators implements Serializable {
+public class Administrator implements Serializable {
 
     private final Data data;
 
@@ -76,4 +76,6 @@ public class Administrator extends Operators implements Serializable {
             elementExistExeption.printStackTrace();
         }
     }
+
+
 }

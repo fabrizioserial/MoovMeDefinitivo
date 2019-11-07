@@ -19,8 +19,8 @@ public class Mooveme {
     private Repository<Administrator> adminRepository;
     private Repository<User> userRepository;
     private Repository<Zone> zoneRepository;
-    private Repository assetRepository;
-    private Repository assetTypeRepository;
+    private Repository<Asset> assetRepository;
+    private Repository<AssetType> assetTypeRepository;
 
     private Operators activeuser;
 
@@ -94,6 +94,15 @@ public class Mooveme {
         return assetRepository;
     }
     public Repository<AssetType> getAssetTypeRepository(){
-        return assetRepository;
+        return assetTypeRepository;
+    }
+
+    public Administrator findAdmin(String name) throws AdministratorDoesntFoundExeption{
+        for(Administrator administrator: adminRepository.getRepository()){
+            if(administrator.getName().equals(name)){
+                return administrator;
+            }
+        }
+        throw new AdministratorDoesntFoundExeption();
     }
 }
