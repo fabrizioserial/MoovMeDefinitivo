@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.spacetech.moovme.Adapters.AssettypeAdapter;
 import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Assets.AssetType;
-import com.spacetech.moovme.Assets.Price;
+import com.spacetech.moovme.Assets.Fee;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exeptions.AdministratorDoesntFoundExeption;
 import com.spacetech.moovme.Exeptions.ElementExistExeption;
@@ -171,7 +171,7 @@ public class menu_admin extends AppCompatActivity {
         int cantidad = Integer.parseInt(et_aBatchcant.getText().toString());
         int price = Integer.parseInt(et_aBatchprice.getText().toString());
         Integer codeint = Integer.parseInt(et_aBatchcode.getText().toString());
-        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,new ListAssetBachCodes(),new Price(price));
+        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,new ListAssetBachCodes(),new Fee(price));
         //TODO handle exeption with toast
         Toast.makeText(getApplicationContext(),"u've buyed " + cantidad + " " + assetTypeActive.getName(), Toast.LENGTH_SHORT).show();
 

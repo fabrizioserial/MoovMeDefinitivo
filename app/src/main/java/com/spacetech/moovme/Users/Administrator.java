@@ -5,7 +5,7 @@ import android.widget.EditText;
 
 import com.spacetech.moovme.Assets.AssetBatch;
 import com.spacetech.moovme.Assets.AssetType;
-import com.spacetech.moovme.Assets.Price;
+import com.spacetech.moovme.Assets.Fee;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exeptions.ElementExistExeption;
 import com.spacetech.moovme.Exeptions.ItemDoesNotExistExeption;
@@ -39,7 +39,7 @@ public class Administrator extends Operators {
         repositoryAdmins.add(new Administrator(data));
     }
 
-    public void buyBatch(AssetType assetType, int cuantity, Zone zone, ListAssetBachCodes listBachCodes, Price precioDeAlquilerDelLote) throws PriceIsAlreadySetExeption {
+    public void buyBatch(AssetType assetType, int cuantity, Zone zone, ListAssetBachCodes listBachCodes, Fee precioDeAlquilerDelLote) throws PriceIsAlreadySetExeption {
         AssetBatch assetBatch =new AssetBatch(assetType,cuantity,listBachCodes.createNewCode());
         zone.addNewBach(assetBatch,precioDeAlquilerDelLote);
     }

@@ -5,10 +5,10 @@ import com.spacetech.moovme.Assets.Travel;
 public class PointCounter {
 
 
-    public int calculateAquiredPoints(Travel travel){
+    public Points calculateAquiredPoints(Travel travel){
         if(travel.checkTime(System.nanoTime())){
-            return (int) (travel.getAsset().getAssetType().getPoint()*1.2);
+            return new Points((int) (travel.getAsset().getAssetType().getPoint()*1.2));
         }
-        else return travel.getAsset().getAssetType().getPoint();
+        else return new Points(travel.getAsset().getAssetType().getPoint());
     }
 }

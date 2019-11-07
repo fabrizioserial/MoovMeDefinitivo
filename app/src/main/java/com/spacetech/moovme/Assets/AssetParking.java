@@ -2,7 +2,7 @@ package com.spacetech.moovme.Assets;
 
 
 import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
-import com.spacetech.moovme.Users.Data;
+import com.spacetech.moovme.Users.User;
 
 
 public class AssetParking {
@@ -13,23 +13,12 @@ public class AssetParking {
         this.zone=zone;
     }
 
-    public Asset rentAsset(AssetType assetType) {
-        Asset assetToOccupy=null;
-        try{
-            assetToOccupy=zone.getAssetwithDesignatedType(assetType);
-        } catch (AssetTypeDoesNotExistInSpecifiedZone assetTypeDoesNotExistInSpecifiedZone) {
-            assetTypeDoesNotExistInSpecifiedZone.printStackTrace();
-            //TODO throw toast to inform that asset does not exist
-        }
-        return assetToOccupy;
+    public Asset rentAsset(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
+        return zone.getAssetwithDesignatedType(assetType);
     }
 
-    public double returnAsset(Travel travel, int points) {
-        return zone.calculateFee(travel.getAsset(),points);
-    }
-
-    public Integer ganarPuntos(Travel actualTravel, Data data, Integer points) {
-        return zone.actualizarPuntos(actualTravel,data,points);
+    public Fee returnAsset(Travel travel, User user) {
+        return zone.returnAsset(travel,user);
     }
 
     public Zone getZone() {
