@@ -20,8 +20,6 @@ import com.spacetech.moovme.R;
 import com.spacetech.moovme.Users.Administrator;
 import com.spacetech.moovme.Users.Data;
 
-import java.io.Serializable;
-
 public class Login_admin extends Fragment {
 
     private Button btn_login;
@@ -45,7 +43,7 @@ public class Login_admin extends Fragment {
                 try {
                     Administrator administrator = mooveme.loginAdministrator(new Administrator(dataCheck));
                     Intent i = new Intent(getContext(), menu_admin.class);
-                    i.putExtra("name", (Serializable) administrator);
+                    i.putExtra("name", administrator);
                     startActivity(i);
                     Toast.makeText(getContext(),"Bienvenido",Toast.LENGTH_LONG).show();
 

@@ -14,8 +14,10 @@ import com.spacetech.moovme.Exeptions.ZoneDoesNotExistException;
 import com.spacetech.moovme.Repository.ListAssetBachCodes;
 import com.spacetech.moovme.Repository.Repository;
 
+import java.io.Serializable;
 
-public class Administrator extends Operators {
+
+public class Administrator extends Operators implements Serializable {
 
     private final Data data;
 

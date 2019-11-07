@@ -33,26 +33,18 @@ public class MainActivity extends AppCompatActivity {
         Repository<Asset> assetRepository = new Repository<>();
 
         Mooveme mooveme = new Mooveme();
+
+        try {
+            administratorRepository.add(new Administrator(new Data("admin")));
+        } catch (ElementExistExeption elementExistExeption) {
+            elementExistExeption.printStackTrace();
+        }
+
         mooveme.addAssetRepository(assetRepository);
         mooveme.addAdminRepository(administratorRepository);
         mooveme.addUserRepository(usersRepository);
         mooveme.addZoneRepository(zoneRepository);
         Persistence.saveInformation(getApplicationContext(),mooveme);
-
-        if(Persistence.loadMoovme(getApplicationContext())!= null) {
-            try {
-                mooveme = Persistence.loadMoovme(getApplicationContext());
-            }catch (NullPointerException e){
-            }
-
-        }else {
-            try {
-                administratorRepository.add(new Administrator(new Data("admin")));
-            } catch (ElementExistExeption elementExistExeption | NullPointerException exception) {
-                elementExistExeption.printStackTrace();
-            }
-        }
-
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

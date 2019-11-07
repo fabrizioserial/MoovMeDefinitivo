@@ -13,14 +13,12 @@ import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.Operators;
 import com.spacetech.moovme.Users.User;
 
-import java.util.ArrayList;
-
 public class Mooveme {
 
 
-    private Repository adminRepository;
-    private Repository userRepository;
-    private Repository zoneRepository;
+    private Repository<Administrator> adminRepository;
+    private Repository<User> userRepository;
+    private Repository<Zone> zoneRepository;
     private Repository assetRepository;
     private Repository assetTypeRepository;
 
@@ -29,13 +27,13 @@ public class Mooveme {
     public Mooveme(){
     }
 
-    public void addAdminRepository(Repository admin){
+    public void addAdminRepository(Repository<Administrator> admin){
         this.adminRepository = admin;
     }
-    public void addUserRepository(Repository user){
+    public void addUserRepository(Repository<User> user){
         this.userRepository = user;
     }
-    public void addZoneRepository(Repository zone){
+    public void addZoneRepository(Repository<Zone> zone){
         this.zoneRepository = zone;
     }
     public void addAssetRepository(Repository asset){
@@ -49,7 +47,7 @@ public class Mooveme {
 
     public Administrator loginAdministrator(Administrator administrator) throws AdministratorDoesntFoundExeption {
         boolean Found= false;
-        for(Administrator adminis:(ArrayList<Administrator>)adminRepository.getRepository()){
+        for(Administrator adminis: adminRepository.getRepository()){
             if(administrator.getName().equals(adminis.getName())){
                 Found = true;
                 return adminis;
@@ -59,7 +57,7 @@ public class Mooveme {
     }
 
     public User loginUser(User user) throws UserDoesntExistException{
-        for(User users:(ArrayList<User>)userRepository.getRepository()){
+        for(User users: userRepository.getRepository()){
             if(user.getPhoneNumber().equals(users.getPhoneNumber())){
                 return users;
             }
@@ -75,7 +73,7 @@ public class Mooveme {
         }
     }
     public User findUser(Data data) throws UserDoesntExistException {
-        for(User user:(ArrayList<User>) userRepository.getRepository()){
+        for(User user: userRepository.getRepository()){
             if(user.getPhoneNumber().equals(data.getPhoneNumber())){
                 return user;
             }

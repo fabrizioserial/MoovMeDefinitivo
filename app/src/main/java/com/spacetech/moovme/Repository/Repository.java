@@ -11,6 +11,7 @@ public class Repository<T> {
     private ArrayList<T> arrayListGeneric;
 
     public Repository(){
+        arrayListGeneric = new ArrayList<>();
     }
 
 
