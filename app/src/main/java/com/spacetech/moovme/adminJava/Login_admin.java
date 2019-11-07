@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.spacetech.moovme.DialogException;
 import com.spacetech.moovme.Exeptions.AdministratorDoesntFoundExeption;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
@@ -47,7 +48,7 @@ public class Login_admin extends Fragment {
 
 
                 } catch (AdministratorDoesntFoundExeption administratorDoesntFoundExeption) {
-                    administratorDoesntFoundExeption.printStackTrace();
+                    DialogException.CreateDialog("Login Error","Administrator doesnt exist",getContext());
                 }
                 /*
                 Intent i = new Intent(getContext(), menu_admin.class);

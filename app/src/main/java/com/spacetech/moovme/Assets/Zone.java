@@ -16,7 +16,7 @@ public class Zone {
 
     private final Repository<AssetType> assetTypeRepository = new Repository<AssetType>();
     private final ArrayList<AssetBatch> totalAssetsBatchList =new ArrayList<>();
-    private final Tarifario tarifario=new Tarifario();
+    private final Tarifario tarifario;
     private final PointTable pointTable;//create in construtor or leave it like that? implement after knowing persistance
     private HashMap<AssetType, Discount> discountOrganizedByAssetType= new HashMap<>();
     private PointCounter pointCounter;
@@ -24,6 +24,7 @@ public class Zone {
     public Zone(String name){
 
         this.name=name;
+        this.tarifario = new Tarifario();
         this.pointTable=new PointTable();
         this.pointCounter=new PointCounter();
     }

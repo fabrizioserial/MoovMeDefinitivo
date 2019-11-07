@@ -185,7 +185,7 @@ public class menu_admin extends AppCompatActivity {
 
     }
     public void adminBlockUser(EditText et_phonenumber, Administrator administrator) {
-        UserPhone = et_phonenumber.getText().toString();
+        UserPhone = et_phonenumber.getText().toString().trim();
         Data dataOfUser = new Data(null,new PhoneNumber(Integer.parseInt(UserPhone)));
         try {
             User userThatWannaBlock = mooveme.findUser(dataOfUser);
