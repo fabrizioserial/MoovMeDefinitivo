@@ -7,14 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.spacetech.moovme.Exeptions.UserAlreadyExistException;
-import com.spacetech.moovme.Exeptions.UserDoesntExistException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
 import com.spacetech.moovme.R;
@@ -49,17 +47,10 @@ public class RegisterUser extends Fragment {
             public void onClick(View v) {
                 name = et_name.getText().toString().trim();
                 phonenumber = et_phonenumber.getText().toString().trim();
-
-                Toast.makeText(getContext(),"Complete the fields", Toast.LENGTH_LONG).show();
-                PhoneNumber userPhoneNumber = new PhoneNumber(Integer.parseInt(phonenumber));
                 try {
-                    try {
-                        mooveme.findUser(new Data(name,userPhoneNumber));
-                    } catch (UserDoesntExistException e) {
-                        mooveme.registerUser(new User(new Data(name,userPhoneNumber)));
-                    }
+                    mooveme.registerUser(new User(new Data(name,new PhoneNumber(Integer.parseInt(phonenumber)))));
 
-                } catch (UserAlreadyExistException e) {
+                } catch (UserAlreadyExistException | NullPointerException e ) {
                     e.printStackTrace();
                 }
 

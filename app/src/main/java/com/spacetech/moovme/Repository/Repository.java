@@ -15,7 +15,12 @@ public class Repository<T> {
 
 
     public void add(T t) throws ElementExistExeption {
-        for
+        for(T element: arrayListGeneric){
+            if(t.equals(element)){
+                throw new ElementExistExeption();
+            }
+        }
+        arrayListGeneric.add(t);
     }
 
     public ArrayList<T> getRepository(){
@@ -23,7 +28,11 @@ public class Repository<T> {
     }
 
     public void remove(T t)throws ItemDoesNotExistExeption {
-        if(arrayListGeneric.contains(t)) arrayListGeneric.remove(t);
-        else throw new ItemDoesNotExistExeption();
+        for(T element: arrayListGeneric){
+            if(t.equals(element)){
+                arrayListGeneric.remove(t);
+            }
+        }
+        throw new ItemDoesNotExistExeption();
     }
 }

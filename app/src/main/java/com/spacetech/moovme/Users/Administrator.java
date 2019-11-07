@@ -50,9 +50,9 @@ public class Administrator extends Operators {
         }
     }
 
-    public void deleteZone(Repository<Zone> zones, Zone zoneToDelete) throws ZoneDoesNotExistException {
+    public void deleteZone(Repository<Zone> zones, String zoneToDelete) throws ZoneDoesNotExistException {
         try {
-            zones.remove(zoneToDelete);
+            zones.remove(new Zone(zoneToDelete));
         } catch (ItemDoesNotExistExeption itemDoesNotExistExeption) {
             throw new ZoneDoesNotExistException();
         }

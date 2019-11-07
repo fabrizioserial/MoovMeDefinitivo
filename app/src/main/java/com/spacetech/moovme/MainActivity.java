@@ -10,9 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.spacetech.moovme.Assets.Asset;
 import com.spacetech.moovme.Assets.Zone;
+import com.spacetech.moovme.Exeptions.ElementExistExeption;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.SlidePage.Menu_activity;
 import com.spacetech.moovme.Users.Administrator;
+import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.User;
 
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mooveme.addAdminRepository(administratorRepository);
         mooveme.addUserRepository(usersRepository);
         mooveme.addZoneRepository(zoneRepository);
+        Persistence.saveInformation(getApplicationContext(),mooveme);
 
         if(Persistence.loadMoovme(getApplicationContext())!= null) {
             try {
@@ -42,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
             }catch (NullPointerException e){
             }
 
+        }else {
+            try {
+                administratorRepository.add(new Administrator(new Data("admin")));
+            } catch (ElementExistExeption elementExistExeption | NullPointerException exception) {
+                elementExistExeption.printStackTrace();
+            }
         }
 
 

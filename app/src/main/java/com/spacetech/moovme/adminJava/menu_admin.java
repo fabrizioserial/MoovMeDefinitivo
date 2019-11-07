@@ -209,8 +209,7 @@ public class menu_admin extends AppCompatActivity {
     public void adminDeleteZone(EditText et_zonename, Administrator administrator) {
         try {
             String zonename = et_zonename.getText().toString();
-            Zone zone = administrator.getZone(mooveme.getZoneRepository(),et_zonename);
-            administrator.deleteZone(mooveme.getZoneRepository(),zone);
+            administrator.deleteZone(mooveme.getZoneRepository(),zonename);
         } catch (ZoneDoesNotExistException e) {
             e.printStackTrace();
         }
