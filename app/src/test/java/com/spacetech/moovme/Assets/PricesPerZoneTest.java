@@ -25,9 +25,9 @@ public class PricesPerZoneTest {
         AssetType bici=new AssetType(50,"Bici");
         Zone zone=new Zone("CABA");
         ListAssetBachCodes listAssetBachCodes=new ListAssetBachCodes();
-        Price price=new Price(40);
+        Fee fee =new Fee(40);
 
-        administrator.buyBatch(bici,6,zone,listAssetBachCodes,price);
+        administrator.buyBatch(bici,6,zone,listAssetBachCodes, fee);
         ArrayList<AssetBatch> arrayListOfBacthContainedInZone= zone.getTotalAssetsBatchList();
 
         ArrayList<AssetBatch> expectedBatchList=new ArrayList<>();
@@ -42,14 +42,14 @@ public class PricesPerZoneTest {
         AssetType bici=new AssetType(50,"Bici");
         Zone zone=new Zone("CABA");
         ListAssetBachCodes listAssetBachCodes=new ListAssetBachCodes();
-        Price price=new Price(40);
-        Price price1= new Price(50);
-        administrator.buyBatch(bici,3,zone,listAssetBachCodes,price);
+        Fee fee =new Fee(40);
+        Fee fee1 = new Fee(50);
+        administrator.buyBatch(bici,3,zone,listAssetBachCodes, fee);
 
         boolean exeptionThrown=false;
 
         try {
-            administrator.buyBatch(bici,6,zone,listAssetBachCodes,price);
+            administrator.buyBatch(bici,6,zone,listAssetBachCodes, fee);
         } catch (PriceIsAlreadySetExeption priceIsAlreadySetExeption) {
             exeptionThrown=true;
         }

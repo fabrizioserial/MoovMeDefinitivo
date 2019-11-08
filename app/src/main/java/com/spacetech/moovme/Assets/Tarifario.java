@@ -6,15 +6,14 @@ import java.util.HashMap;
 
 public class Tarifario {
 
-    HashMap<AssetType,Price> pricePerAsset;
+    HashMap<AssetType, Fee> pricePerAsset=new HashMap<>();
 
     public Tarifario() {
-        pricePerAsset = new HashMap<>();
     }
 
-    public void addAssetPricePerZone(AssetType assetType, Price price) throws PriceIsAlreadySetExeption {
+    public void addAssetPricePerZone(AssetType assetType, Fee fee) throws PriceIsAlreadySetExeption {
         if(!pricePerAsset.containsKey(assetType)){
-            pricePerAsset.put(assetType,price);
+            pricePerAsset.put(assetType, fee);
         }
         else throw new PriceIsAlreadySetExeption();
     }
@@ -29,5 +28,8 @@ public class Tarifario {
             //TODO fix get price, get price from price table
             return 4;
         }*/
+    }
+    public Fee calculatePrice(AssetType assetTypeUsed){
+        return pricePerAsset.get(assetTypeUsed);
     }
 }

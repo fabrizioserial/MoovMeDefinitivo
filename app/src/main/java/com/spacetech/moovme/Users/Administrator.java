@@ -13,6 +13,7 @@ import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
 import com.spacetech.moovme.Exeptions.UserIsAlreadyLockedExeption;
 import com.spacetech.moovme.Exeptions.ZoneAlreadyExistsException;
 import com.spacetech.moovme.Exeptions.ZoneDoesNotExistException;
+import com.spacetech.moovme.Repository.ListAssetBachCodes;
 import com.spacetech.moovme.Repository.Repository;
 
 
@@ -38,8 +39,8 @@ public class Administrator extends Operators {
         repositoryAdmins.add(new Administrator(data));
     }
 
-    public void buyBatch(AssetType assetType, int cuantity, Zone zone, int listBachCodes, Price precioDeAlquilerDelLote) throws PriceIsAlreadySetExeption {
-        AssetBatch assetBatch =new AssetBatch(assetType,cuantity,listBachCodes);
+    public void buyBatch(AssetType assetType, int cuantity, Zone zone, ListAssetBachCodes listBachCodes, Price precioDeAlquilerDelLote) throws PriceIsAlreadySetExeption {
+        AssetBatch assetBatch =new AssetBatch(assetType,cuantity,listBachCodes.createNewCode());
         zone.addNewBach(assetBatch,precioDeAlquilerDelLote);
     }
 

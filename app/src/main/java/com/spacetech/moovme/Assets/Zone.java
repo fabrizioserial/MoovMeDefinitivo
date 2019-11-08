@@ -6,7 +6,7 @@ import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
 import com.spacetech.moovme.Points.PointCounter;
 import com.spacetech.moovme.Points.PointTable;
 import com.spacetech.moovme.Repository.Repository;
-import com.spacetech.moovme.Users.Data;
+import com.spacetech.moovme.Users.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ public class Zone {
         this.pointCounter=new PointCounter();
     }
 
-    public void addNewBach(AssetBatch assetBatch, Price precioDeAlquilerDelLote) throws PriceIsAlreadySetExeption {
+    public void addNewBach(AssetBatch assetBatch, Fee precioDeAlquilerDelLote) throws PriceIsAlreadySetExeption {
         tarifario.addAssetPricePerZone(assetBatch.getType(),precioDeAlquilerDelLote);
         totalAssetsBatchList.add(assetBatch);
     }
@@ -47,9 +47,10 @@ public class Zone {
         throw new AssetTypeDoesNotExistInSpecifiedZone();
     }
 
-    public double calculateFee(Asset assetUsed, int points) {
-
-        return tarifario.calculatePrice(assetUsed,discountOrganizedByAssetType.get(assetUsed.getAssetType()),points);
+    public Fee returnAsset(Travel actalTravel, User user) {
+        pointTable.updateScore(pointCounter.calculateAquiredPoints(actalTravel),user.getData());
+        user.addPoints(pointCounter.calculateAquiredPoints(actalTravel));
+        return tarifario.calculatePrice(actalTravel.getAsset().getAssetType());
     }
 
     public void addDiscount(Discount discount, AssetType assetType) throws ElementExistExeption {
@@ -65,12 +66,6 @@ public class Zone {
     }
     public void addAssetParking(){
 
-    }
-
-    public Integer actualizarPuntos(Travel actualTravel, Data data, Integer points) {
-        Integer aquiredPoints=points+pointCounter.calculateAquiredPoints(actualTravel);
-        pointTable.updateScore(aquiredPoints,data);
-        return aquiredPoints;
     }
 
     /*

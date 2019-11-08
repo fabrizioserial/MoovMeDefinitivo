@@ -1,9 +1,9 @@
 package com.spacetech.moovme.Assets;
 
-public class Price {
+public class Fee {
     private final int price;
 
-    public Price(int price) {
+    public Fee(int price) {
         this.price=price;
     }
 }

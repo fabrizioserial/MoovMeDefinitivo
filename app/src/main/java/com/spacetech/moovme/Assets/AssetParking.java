@@ -13,12 +13,15 @@ public class AssetParking {
         this.zone=zone;
     }
 
-    public Asset rentAsset(AssetType assetType)throws AssetTypeDoesNotExistInSpecifiedZone {
-        Asset assetToOccupy=zone.getAssetwithDesignatedType(assetType);
-        if(assetToOccupy != null){
-            return assetToOccupy;
+    public Asset rentAsset(AssetType assetType) {
+        Asset assetToOccupy=null;
+        try{
+            assetToOccupy=zone.getAssetwithDesignatedType(assetType);
+        } catch (AssetTypeDoesNotExistInSpecifiedZone assetTypeDoesNotExistInSpecifiedZone) {
+            assetTypeDoesNotExistInSpecifiedZone.printStackTrace();
+            //TODO throw toast to inform that asset does not exist
         }
-        throw new AssetTypeDoesNotExistInSpecifiedZone();
+        return assetToOccupy;
     }
 
     public double returnAsset(Travel travel, int points) {
