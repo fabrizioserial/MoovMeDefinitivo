@@ -3,7 +3,7 @@ package com.spacetech.moovme.Users;
 
 import android.icu.util.Calendar;
 
-public class Timer {
+public class Timer {//el timer solo compara el tiempo desde que se creo y devuelve el tiempo total que existio
 
     private int startTime;
 

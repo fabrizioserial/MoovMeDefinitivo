@@ -58,7 +58,7 @@ public class User extends Operators {
                 actualTravel = new Travel(assetParking.rentAsset(assetType),expectedTimeInMinutes); //inicia un nuevo viaje pidiendo el asset al puesto de assets
             } catch (AssetTypeDoesNotExistInSpecifiedZoneException assetTypeDoesNotExistInSpecifiedZoneException) {
                 actualTravel = null;
-                throw new AssetTypeDoesNotExistInSpecifiedZoneException();
+                throw new AssetTypeDoesNotExistInSpecifiedZoneException();//explota si no hay assest de los que el quiere
             }
         }
     }
@@ -81,9 +81,9 @@ public class User extends Operators {
         }
     }
 
-    public void returnAssetTimeTest(AssetParking assetParking,int time)throws UserIsNotInATripException {
+    public void returnAssetTimeTest(AssetParking assetParking,int time)throws UserIsNotInATripException { //este es lo mismo que el anterior nomas que le pasamos un tiempo para no tener que esperar 10 minutos reales para q funque
         if(actualTravel!=null){
-            Fee fee = assetParking.returnAssetTimeTest(actualTravel,this,time); //points had already been added here
+            Fee fee = assetParking.returnAssetTimeTest(actualTravel,this,time);
             if(assetParking.canApplyDiscount(actualTravel,this)){
                 try {
                     fee = assetParking.applyDiscount(actualTravel,this,fee);
@@ -102,7 +102,7 @@ public class User extends Operators {
 
 
 
-    public boolean equals(Object o1){
+    public boolean equals(Object o1){ //este equals sobreescribe al equals de objct para compararlos a nuestra manera
         if(o1 instanceof User){
             return ((User) o1).getPhoneNumber().getNumber()==data.getPhoneNumber().getNumber();
         }

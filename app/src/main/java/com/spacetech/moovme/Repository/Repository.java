@@ -6,7 +6,7 @@ import com.spacetech.moovme.Exceptions.ItemDoesNotExistException;
 import java.util.ArrayList;
 
 
-public class Repository<T> {
+public class Repository<T> { //repositorio generico bastante claro
 
     private ArrayList<T> arrayListGeneric;
 
