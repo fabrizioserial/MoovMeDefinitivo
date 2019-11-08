@@ -16,6 +16,7 @@ import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Assets.AssetType;
 
 import com.spacetech.moovme.Assets.Fee;
+import com.spacetech.moovme.Assets.ParkingAlreadyExistException;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exceptions.AdministratorDoesntFoundException;
 import com.spacetech.moovme.Exceptions.ElementExistException;
@@ -164,7 +165,11 @@ public class menu_admin extends AppCompatActivity {
         btn_addAssetParking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateAssetParking();
+                try {
+                    CreateAssetParking();
+                } catch (ParkingAlreadyExistException e) {
+                    Toast.makeText(getApplicationContext(),"El asset parking que usted quiere registrar ya fue registrado",Toast.LENGTH_SHORT);
+                }
             }
         });
         SpinnerAssetType();
@@ -172,7 +177,7 @@ public class menu_admin extends AppCompatActivity {
         SpinnerZone_to_ParkingType();
     }
 
-    private void CreateAssetParking() {
+    private void CreateAssetParking() throws ParkingAlreadyExistException {
         String parkingName = et_parkingName.getText().toString().trim();
         ActiveAdmin.addNewAssetParking(zoneactiveParking,parkingName);
     }
@@ -193,8 +198,7 @@ public class menu_admin extends AppCompatActivity {
         int cantidad = Integer.parseInt(et_aBatchcant.getText().toString());
         int price = Integer.parseInt(et_aBatchprice.getText().toString());
         int code = mooveme.getListAssetBachCodes();
-        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,code,new Fee(price));
-        //TODO handle exeption with toast
+        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,mooveme.getListAssetBachCodes(),new Fee(price));
         Toast.makeText(getApplicationContext(),"u've buyed " + cantidad + " " + assetTypeActive.getName(), Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(),String.valueOf(code),Toast.LENGTH_SHORT).show();
 

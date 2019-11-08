@@ -31,6 +31,7 @@ public class Zone {
         tarifario =new Tarifario();
         totalAssetsBatchList =new ArrayList<>();
         assetParkings = new ArrayList<>();
+        usersWithWinnerDiscount=new ArrayList<>();
     }
 
     public void addNewBach(AssetBatch assetBatch, Fee precioDeAlquilerDelLote) throws PriceIsAlreadySetException {
@@ -40,8 +41,28 @@ public class Zone {
 
 
     public Fee returnAsset(Travel actalTravel, User user) {
+        ArrayList<Asset> posibleAssetsUsed=null;
+        for (AssetBatch assetBatch:this.totalAssetsBatchList) {
+            if(assetBatch.getType().equals(actalTravel.getAsset().getAssetType())){
+                posibleAssetsUsed=assetBatch.getAssetList();
+            }
+        }
+        posibleAssetsUsed.get(posibleAssetsUsed.indexOf(actalTravel.getAsset())).returnAsset();
         pointTable.updateScore(pointCounter.calculateAquiredPoints(actalTravel),user.getData());
         user.addPoints(pointCounter.calculateAquiredPoints(actalTravel));
+        return tarifario.calculatePrice(actalTravel.getAsset().getAssetType());
+    }
+
+    public Fee returnAssetTimeTest(Travel actalTravel, User user,int time) {
+        ArrayList<Asset> posibleAssetsUsed=null;
+        for (AssetBatch assetBatch:this.totalAssetsBatchList) {
+            if(assetBatch.getType().equals(actalTravel.getAsset().getAssetType())){
+                posibleAssetsUsed=assetBatch.getAssetList();
+            }
+        }
+        posibleAssetsUsed.get(posibleAssetsUsed.indexOf(actalTravel.getAsset())).returnAsset();
+        pointTable.updateScore(pointCounter.calculateAquiredPointsTimeTest(actalTravel,time),user.getData());
+        user.addPoints(pointCounter.calculateAquiredPointsTimeTest(actalTravel,time));
         return tarifario.calculatePrice(actalTravel.getAsset().getAssetType());
     }
 
@@ -51,14 +72,17 @@ public class Zone {
 
 
     public boolean canApplyDiscount(Travel actualTravel, User user) {
-        if(!usersWithWinnerDiscount.contains(user.getData())){
+        if(usersWithWinnerDiscount.contains(user.getData())){
+            return true;
+        }
+        else if(discountOrganizedByAssetType.containsKey(actualTravel.getAsset().getAssetType())){
             return discountOrganizedByAssetType.get(actualTravel.getAsset().getAssetType()).canApplyDiscount(user.getPoints());
         }
         else return false;
     }
 
     public Fee applyDiscount(Travel actualTravel, User user, Fee fee) throws CantApplyDiscountException {
-        if(!usersWithWinnerDiscount.contains(user.getData())){
+        if(usersWithWinnerDiscount.contains(user.getData())){
             return new Fee(fee.getPrice()*0.5);
         }
         else if(discountOrganizedByAssetType.containsKey(actualTravel.getAsset().getAssetType())){
@@ -71,19 +95,12 @@ public class Zone {
         return pointTable.getTopLeaders();
     }
 
-    /*
-    public ArrayList<NameAndScore> getTop10Leaders(){
-        //TODO return top 10Leaders
-        //this method can be called from user
-    }
-
     public void giveTopUsersMonthDiscount(){
-        //TODO this method is called from admin
-        //then it tells user to have a discount
-        //user.givemonthDiscount()
-        //this activates a boolean in user that determinates if he has a 50 discount in next purchase
+        ArrayList<RankingInPointTable> topLeaders=getTop10Leaders();
+        for (RankingInPointTable ranking:topLeaders) {
+            usersWithWinnerDiscount.add(ranking.getData());
+        }
     }
-    */
 
     public String getName() {
         return name;
@@ -113,6 +130,7 @@ public class Zone {
             if(batch.getType().equals(assetType)){
                 for(Asset asset: batch.getAssetList()){
                     if(!asset.assetIsOcupied){
+                        asset.occupy();
                         return asset;
                     }
                 }

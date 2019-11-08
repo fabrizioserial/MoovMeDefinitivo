@@ -26,6 +26,10 @@ public class AssetParking {
         return zone.returnAsset(travel,user);
     }
 
+    public Fee returnAssetTimeTest(Travel travel, User user,int time) {
+        return zone.returnAssetTimeTest(travel,user,time);
+    }
+
     public Zone getZone() {
         return zone;
     }

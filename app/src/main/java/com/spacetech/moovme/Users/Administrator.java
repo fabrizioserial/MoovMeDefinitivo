@@ -5,7 +5,9 @@ import android.widget.EditText;
 
 import com.spacetech.moovme.Assets.AssetBatch;
 import com.spacetech.moovme.Assets.AssetType;
+import com.spacetech.moovme.Assets.Discount;
 import com.spacetech.moovme.Assets.Fee;
+import com.spacetech.moovme.Assets.ParkingAlreadyExistException;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exceptions.ElementExistException;
 import com.spacetech.moovme.Exceptions.ItemDoesNotExistException;
@@ -14,6 +16,8 @@ import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedException;
 import com.spacetech.moovme.Exceptions.ZoneAlreadyExistsException;
 import com.spacetech.moovme.Exceptions.ZoneDoesNotExistException;
 import com.spacetech.moovme.Repository.Repository;
+
+import java.util.ArrayList;
 
 
 public class Administrator extends Operators {
@@ -38,8 +42,8 @@ public class Administrator extends Operators {
         repositoryAdmins.add(new Administrator(data));
     }
 
-    public void buyBatch(AssetType assetType, int cuantity, Zone zone, int listBachCodes, Fee precioDeAlquilerDelLote) throws PriceIsAlreadySetException {
-        AssetBatch assetBatch =new AssetBatch(assetType,cuantity,listBachCodes);
+    public void buyBatch(AssetType assetType, int cuantity, Zone zone, int listAssetBatchCode, Fee precioDeAlquilerDelLote) throws PriceIsAlreadySetException {
+        AssetBatch assetBatch =new AssetBatch(assetType,cuantity,listAssetBatchCode);
         zone.addNewBach(assetBatch,precioDeAlquilerDelLote);
     }
 
@@ -82,7 +86,17 @@ public class Administrator extends Operators {
         }
         else return false;
     }
-    public void addNewAssetParking(Zone zone,String name){
+    public void addNewAssetParking(Zone zone,String name) throws ParkingAlreadyExistException {
         zone.createAssetParking(name);
+    }
+
+    public void addDiscount(Zone zone,int minimumPoints,double percentageMultiplier,AssetType assetType) throws ElementExistException {
+        zone.addDiscount(new Discount(minimumPoints,percentageMultiplier),assetType);
+    }
+
+    public void giveMonthlyPrices(Repository<Zone> zones){
+        for (Zone zone:zones.getRepository()) {
+            zone.giveTopUsersMonthDiscount();
+        }
     }
 }

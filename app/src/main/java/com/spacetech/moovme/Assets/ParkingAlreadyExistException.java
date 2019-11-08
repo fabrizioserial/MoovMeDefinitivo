@@ -1,4 +1,4 @@
 package com.spacetech.moovme.Assets;
 
-class ParkingAlreadyExistException extends Exception {
+public class ParkingAlreadyExistException extends Exception {
 }

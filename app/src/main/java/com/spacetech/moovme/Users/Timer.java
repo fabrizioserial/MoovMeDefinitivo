@@ -1,18 +1,21 @@
 package com.spacetech.moovme.Users;
 
 
+import android.icu.util.Calendar;
+
 public class Timer {
 
-    private long startTime;
+    private int startTime;
 
-    public Timer(long startTime){
-        this.startTime=startTime;
+    public Timer(){
+        this.startTime=Calendar.MINUTE;
     }
-    public long actualTimePassSinceStartedTimer(final long actualTime){
+
+    public int actualTimePassSinceStartedTimer(int actualTime){
         return actualTime-startTime;
     }
-    public long compareTime(long actualTime) {
-         return actualTime-startTime;
+    public int compareTime(int actualTime) {
+        return actualTime-startTime;
     }
 
 
