@@ -8,7 +8,7 @@ public class Travel {
     private final Timer timer;
     private final long expectedTime;
 
-    public Travel(Asset asset, Timer timer, long expectedTime){
+    public Travel(Asset asset, long expectedTime){
         this.asset=asset;
         this.timer= new Timer(System.nanoTime()); //TODO pasarle el tiempo que se creo desde que se corre la aplicacion
         this.expectedTime=expectedTime;
