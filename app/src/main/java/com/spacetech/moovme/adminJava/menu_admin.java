@@ -152,7 +152,7 @@ public class menu_admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    addAssetBatch(,et_aBatchcant,et_aBatchprice, ActiveAdmin);
+                    addAssetBatch(et_aBatchcant,et_aBatchprice, ActiveAdmin);
                 } catch (PriceIsAlreadySetExeption priceIsAlreadySetExeption) {
                     Toast.makeText(getApplicationContext(),"Ya esta registrado ese precio",Toast.LENGTH_SHORT).show();
                 }
