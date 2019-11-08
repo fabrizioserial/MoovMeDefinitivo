@@ -17,9 +17,9 @@ import com.spacetech.moovme.Assets.AssetParking;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.DialogException;
-import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
-import com.spacetech.moovme.Exeptions.UserDoesntExistException;
-import com.spacetech.moovme.Exeptions.UserIsNotInATripException;
+import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
+import com.spacetech.moovme.Exceptions.UserDoesntExistException;
+import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
 import com.spacetech.moovme.R;
@@ -80,7 +80,7 @@ public class menu_user extends AppCompatActivity {
     public void RenAsset(){
         try {
             activeUser.rentAsset(AssetParkingRent,assetTypeActive,Integer.parseInt(et_time.getText().toString()));
-        } catch (AssetTypeDoesNotExistInSpecifiedZone assetTypeDoesNotExistInSpecifiedZone) {
+        } catch (AssetTypeDoesNotExistInSpecifiedZoneException assetTypeDoesNotExistInSpecifiedZoneException) {
             DialogException.CreateDialog("Error","Error to rent, asset type doesnt exis tin this zone",this);
         }
     }

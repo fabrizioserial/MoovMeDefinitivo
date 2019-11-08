@@ -16,13 +16,13 @@ import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Price;
 import com.spacetech.moovme.Assets.Zone;
-import com.spacetech.moovme.Exeptions.AdministratorDoesntFoundExeption;
-import com.spacetech.moovme.Exeptions.ElementExistExeption;
-import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
-import com.spacetech.moovme.Exeptions.UserDoesntExistException;
-import com.spacetech.moovme.Exeptions.UserIsAlreadyLockedExeption;
-import com.spacetech.moovme.Exeptions.ZoneAlreadyExistsException;
-import com.spacetech.moovme.Exeptions.ZoneDoesNotExistException;
+import com.spacetech.moovme.Exceptions.AdministratorDoesntFoundException;
+import com.spacetech.moovme.Exceptions.ElementExistException;
+import com.spacetech.moovme.Exceptions.PriceIsAlreadySetExeption;
+import com.spacetech.moovme.Exceptions.UserDoesntExistException;
+import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedExeption;
+import com.spacetech.moovme.Exceptions.ZoneAlreadyExistsException;
+import com.spacetech.moovme.Exceptions.ZoneDoesNotExistException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
 import com.spacetech.moovme.R;
@@ -58,8 +58,8 @@ public class menu_admin extends AppCompatActivity {
         try {
             ActiveAdmin = mooveme.findAdmin((String)i.getStringExtra("name"));
             Toast.makeText(this,"Hola " + ActiveAdmin.getName(),Toast.LENGTH_SHORT).show();
-        } catch (AdministratorDoesntFoundExeption administratorDoesntFoundExeption) {
-            administratorDoesntFoundExeption.printStackTrace();
+        } catch (AdministratorDoesntFoundException administratorDoesntFoundException) {
+            administratorDoesntFoundException.printStackTrace();
         }
 
 
@@ -201,8 +201,8 @@ public class menu_admin extends AppCompatActivity {
             name = et_name.getText().toString();
             Data adminData = new Data(name);
             administrator.registerAdmin(repositoryAdmin,adminData);
-        } catch (ElementExistExeption elementExistExeption) {
-            elementExistExeption.printStackTrace();
+        } catch (ElementExistException elementExistException) {
+            elementExistException.printStackTrace();
         }finally {
             Toast.makeText(getApplicationContext(), name + " had been added",Toast.LENGTH_SHORT).show();
 

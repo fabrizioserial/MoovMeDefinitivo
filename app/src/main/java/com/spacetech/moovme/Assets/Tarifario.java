@@ -1,6 +1,6 @@
 package com.spacetech.moovme.Assets;
 
-import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
+import com.spacetech.moovme.Exceptions.PriceIsAlreadySetExeption;
 
 import java.util.HashMap;
 

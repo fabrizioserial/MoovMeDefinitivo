@@ -1,9 +1,9 @@
 package com.spacetech.moovme.Assets;
 
-import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
-import com.spacetech.moovme.Exeptions.CantApplyDiscountExeption;
-import com.spacetech.moovme.Exeptions.ElementExistExeption;
-import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
+import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
+import com.spacetech.moovme.Exceptions.CantApplyDiscountExeption;
+import com.spacetech.moovme.Exceptions.ElementExistException;
+import com.spacetech.moovme.Exceptions.PriceIsAlreadySetExeption;
 import com.spacetech.moovme.Points.PointCounter;
 import com.spacetech.moovme.Points.PointTable;
 import com.spacetech.moovme.Users.Data;
@@ -43,7 +43,7 @@ public class Zone {
         return tarifario.calculatePrice(actalTravel.getAsset().getAssetType());
     }
 
-    public void addDiscount(Discount discount, AssetType assetType) throws ElementExistExeption {
+    public void addDiscount(Discount discount, AssetType assetType) throws ElementExistException {
         discountOrganizedByAssetType.put(assetType,discount);
     }
 
@@ -102,7 +102,7 @@ public class Zone {
         return totalAssets;
     }
 
-    public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
+    public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZoneException {
         for(AssetBatch batch : totalAssetsBatchList){
             if(batch.getType().equals(assetType)){
                 for(Asset asset: batch.getAssetList()){
@@ -112,7 +112,7 @@ public class Zone {
                 }
             }
         }
-        throw new AssetTypeDoesNotExistInSpecifiedZone();
+        throw new AssetTypeDoesNotExistInSpecifiedZoneException();
     }
 
     public void createAssetParking(String name){

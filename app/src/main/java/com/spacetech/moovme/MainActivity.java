@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.spacetech.moovme.Assets.Asset;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
-import com.spacetech.moovme.Exeptions.ElementExistExeption;
+import com.spacetech.moovme.Exceptions.ElementExistException;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.SlidePage.Menu_activity;
 import com.spacetech.moovme.Users.Administrator;
@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             administratorRepository.add(new Administrator(new Data("admin")));
             assetTypeRepository.add(new AssetType(15,"auto"));
-        } catch (ElementExistExeption elementExistExeption) {
-            elementExistExeption.printStackTrace();
+        } catch (ElementExistException elementExistException) {
+            elementExistException.printStackTrace();
         }
 
 

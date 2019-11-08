@@ -7,12 +7,12 @@ import com.spacetech.moovme.Assets.AssetBatch;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Fee;
 import com.spacetech.moovme.Assets.Zone;
-import com.spacetech.moovme.Exeptions.ElementExistExeption;
-import com.spacetech.moovme.Exeptions.ItemDoesNotExistExeption;
-import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
-import com.spacetech.moovme.Exeptions.UserIsAlreadyLockedExeption;
-import com.spacetech.moovme.Exeptions.ZoneAlreadyExistsException;
-import com.spacetech.moovme.Exeptions.ZoneDoesNotExistException;
+import com.spacetech.moovme.Exceptions.ElementExistException;
+import com.spacetech.moovme.Exceptions.ItemDoesNotExistExeption;
+import com.spacetech.moovme.Exceptions.PriceIsAlreadySetExeption;
+import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedExeption;
+import com.spacetech.moovme.Exceptions.ZoneAlreadyExistsException;
+import com.spacetech.moovme.Exceptions.ZoneDoesNotExistException;
 import com.spacetech.moovme.Repository.ListAssetBachCodes;
 import com.spacetech.moovme.Repository.Repository;
 
@@ -35,7 +35,7 @@ public class Administrator extends Operators {
         user.userLocking(true);
     }
 
-    public void registerAdmin(Repository<Administrator> repositoryAdmins, Data data) throws ElementExistExeption {
+    public void registerAdmin(Repository<Administrator> repositoryAdmins, Data data) throws ElementExistException {
         repositoryAdmins.add(new Administrator(data));
     }
 
@@ -47,7 +47,7 @@ public class Administrator extends Operators {
     public void createNewZone(Repository<Zone> zones, String name) throws ZoneAlreadyExistsException {
         try {
             zones.add(new Zone(name));
-        } catch (ElementExistExeption elementExistExeption) {
+        } catch (ElementExistException elementExistException) {
             throw new ZoneAlreadyExistsException();
         }
     }
@@ -72,8 +72,8 @@ public class Administrator extends Operators {
     public void createAssetType(String assetName, int points, Repository<AssetType> assetTypeRepository) {
         try {
             assetTypeRepository.add(new AssetType(points,assetName));
-        } catch (ElementExistExeption elementExistExeption) {
-            elementExistExeption.printStackTrace();
+        } catch (ElementExistException elementExistException) {
+            elementExistException.printStackTrace();
         }
     }
 

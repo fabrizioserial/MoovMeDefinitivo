@@ -1,6 +1,6 @@
 package com.spacetech.moovme.Assets;
 
-import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
+import com.spacetech.moovme.Exceptions.PriceIsAlreadySetExeption;
 import com.spacetech.moovme.Repository.ListAssetBachCodes;
 import com.spacetech.moovme.Users.Administrator;
 import com.spacetech.moovme.Users.Data;
