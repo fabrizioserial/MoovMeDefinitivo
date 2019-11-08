@@ -2,7 +2,7 @@ package com.spacetech.moovme.Points;
 
 import com.spacetech.moovme.Users.Data;
 
-class RankingInPointTable {
+public class RankingInPointTable {
 
     private final Data data;
     private final Points points;

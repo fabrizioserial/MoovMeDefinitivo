@@ -1,11 +1,14 @@
 package com.spacetech.moovme.Assets;
 
+import android.service.notification.NotificationListenerService;
+
 import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
 import com.spacetech.moovme.Exeptions.CantApplyDiscountExeption;
 import com.spacetech.moovme.Exeptions.ElementExistExeption;
 import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
 import com.spacetech.moovme.Points.PointCounter;
 import com.spacetech.moovme.Points.PointTable;
+import com.spacetech.moovme.Points.RankingInPointTable;
 import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.User;
 
@@ -59,6 +62,10 @@ public class Zone {
             return new Fee(discountOrganizedByAssetType.get(actualTravel.getAsset().getAssetType()).applyDiscount(user.getPoints(),fee));
         }
         else return fee;
+    }
+
+    public ArrayList<RankingInPointTable> getTop10Leaders(){
+        return pointTable.getTopLeaders();
     }
 
     /*

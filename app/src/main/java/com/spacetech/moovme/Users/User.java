@@ -70,6 +70,7 @@ public class User extends Operators {
                 }
             }
             money= money-fee.getPrice(); //TODO spend money from user
+            actualTravel=null;
         }
         else{
             throw new UserIsNotInATripException();
@@ -102,6 +103,10 @@ public class User extends Operators {
 
     public double getMoney() {
         return money;
+    }
+
+    public Travel getActualTravel() {
+        return actualTravel;
     }
 }
 

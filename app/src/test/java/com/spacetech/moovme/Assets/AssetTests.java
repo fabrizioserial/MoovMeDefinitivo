@@ -1,16 +1,19 @@
 package com.spacetech.moovme.Assets;
 
+import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
 import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
 import com.spacetech.moovme.Repository.ListAssetBachCodes;
 import com.spacetech.moovme.Users.Administrator;
 import com.spacetech.moovme.Users.Data;
+import com.spacetech.moovme.Users.PhoneNumber;
+import com.spacetech.moovme.Users.User;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-public class PricesPerZoneTest {
+public class AssetTests {
 
     @Test
     public void testingTest(){
@@ -57,5 +60,44 @@ public class PricesPerZoneTest {
         Assert.assertTrue(exeptionThrown);
 
     }
+
+    @Test
+    public void whenRentingANewAssetShouldsucced() throws PriceIsAlreadySetExeption, AssetTypeDoesNotExistInSpecifiedZone {
+        Data data=new Data("pepe");
+        Administrator administrator=new Administrator(data);
+        AssetType bici=new AssetType(50,"Bici");
+        Zone zone=new Zone("CABA");
+        ListAssetBachCodes listAssetBachCodes=new ListAssetBachCodes();
+        Fee fee =new Fee(40);
+        administrator.buyBatch(bici,6,zone,listAssetBachCodes, fee);
+        AssetParking assetParking=new AssetParking(zone);
+        User user1=new User(new Data("agustin",new PhoneNumber(420)));
+
+        user1.rentAsset(assetParking,bici,50);
+
+        Assert.assertNotEquals(user1.getActualTravel(),null);
+
+
+    }
+
+    @Test
+    public void whenRentingANonExistingAssetShouldFail(){
+        AssetType bici=new AssetType(50,"Bici");
+        Zone zone=new Zone("CABA");
+        AssetParking assetParking=new AssetParking(zone);
+        User user1=new User(new Data("agustin",new PhoneNumber(420)));
+
+        boolean exeptionwasThrown=false;
+
+        try {
+            user1.rentAsset(assetParking,bici,50);
+        } catch (AssetTypeDoesNotExistInSpecifiedZone assetTypeDoesNotExistInSpecifiedZone) {
+            exeptionwasThrown=true;
+        }
+
+        Assert.assertTrue(exeptionwasThrown);
+    }
+
+    //TODO point system testing
 
 }
