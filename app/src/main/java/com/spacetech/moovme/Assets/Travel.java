@@ -14,7 +14,7 @@ public class Travel {
         this.expectedTime=expectedTime;
     }
 
-    public Asset getAsset() {
+    public Asset getAsset(){
         return asset;
     }
 

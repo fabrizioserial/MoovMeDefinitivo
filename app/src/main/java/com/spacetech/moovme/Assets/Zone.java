@@ -1,14 +1,11 @@
 package com.spacetech.moovme.Assets;
 
-import android.service.notification.NotificationListenerService;
-
 import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
 import com.spacetech.moovme.Exeptions.CantApplyDiscountExeption;
 import com.spacetech.moovme.Exeptions.ElementExistExeption;
 import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
 import com.spacetech.moovme.Points.PointCounter;
 import com.spacetech.moovme.Points.PointTable;
-import com.spacetech.moovme.Points.RankingInPointTable;
 import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.User;
 
@@ -17,17 +14,22 @@ import java.util.HashMap;
 
 public class Zone {
     private final String name;
-    private final ArrayList<AssetBatch> totalAssetsBatchList =new ArrayList<>();
-    private final Tarifario tarifario=new Tarifario();
+    private final ArrayList<AssetBatch> totalAssetsBatchList;
+    private Tarifario tarifario;
     private final PointTable pointTable;//create in construtor or leave it like that? implement after knowing persistance
-    private HashMap<AssetType, Discount> discountOrganizedByAssetType= new HashMap<>();
+    private HashMap<AssetType, Discount> discountOrganizedByAssetType;
     private ArrayList<Data> usersWithWinnerDiscount;
     private PointCounter pointCounter;
+    private ArrayList<AssetParking> assetParkings;
 
     public Zone(String name){
+        discountOrganizedByAssetType = new HashMap<>();
         this.name=name;
         this.pointTable=new PointTable();
         this.pointCounter=new PointCounter();
+        tarifario =new Tarifario();
+        totalAssetsBatchList =new ArrayList<>();
+        assetParkings = new ArrayList<>();
     }
 
     public void addNewBach(AssetBatch assetBatch, Fee precioDeAlquilerDelLote) throws PriceIsAlreadySetExeption {
@@ -42,7 +44,7 @@ public class Zone {
         return tarifario.calculatePrice(actalTravel.getAsset().getAssetType());
     }
 
-    public void addDiscount(Discount discount, AssetType assetType) throws ElementExistExeption {
+    public void addDiscount(Discount discount, AssetType assetType) throws ElementExistException {
         discountOrganizedByAssetType.put(assetType,discount);
     }
 
@@ -96,6 +98,7 @@ public class Zone {
         }
         else return false;
     }
+
     public ArrayList<Asset> getTotalAssets() {
         ArrayList<Asset> totalAssets=new ArrayList<>();
         for (AssetBatch assetBatch:totalAssetsBatchList) {
@@ -103,7 +106,8 @@ public class Zone {
         }
         return totalAssets;
     }
-    public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
+
+    public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZoneException {
         for(AssetBatch batch : totalAssetsBatchList){
             if(batch.getType().equals(assetType)){
                 for(Asset asset: batch.getAssetList()){
@@ -113,7 +117,14 @@ public class Zone {
                 }
             }
         }
-        throw new AssetTypeDoesNotExistInSpecifiedZone();
+        throw new AssetTypeDoesNotExistInSpecifiedZoneException();
     }
+
+    public void createAssetParking(String name){
+        assetParkings.add(new AssetParking(this, name));
+    }
+
+    public ArrayList<AssetParking> getAssetParkings(){return assetParkings;}
+
 
 }

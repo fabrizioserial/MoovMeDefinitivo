@@ -1,7 +1,7 @@
 package com.spacetech.moovme.Repository;
 
-import com.spacetech.moovme.Exeptions.ElementExistExeption;
-import com.spacetech.moovme.Exeptions.ItemDoesNotExistExeption;
+import com.spacetech.moovme.Exceptions.ElementExistException;
+import com.spacetech.moovme.Exceptions.ItemDoesNotExistExeption;
 
 import java.util.ArrayList;
 
@@ -15,10 +15,10 @@ public class Repository<T> {
     }
 
 
-    public void add(T t) throws ElementExistExeption {
+    public void add(T t) throws ElementExistException {
         for(T element: arrayListGeneric){
             if(t.equals(element)){
-                throw new ElementExistExeption();
+                throw new ElementExistException();
             }
         }
         arrayListGeneric.add(t);

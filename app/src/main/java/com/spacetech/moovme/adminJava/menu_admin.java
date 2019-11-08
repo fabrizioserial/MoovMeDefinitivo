@@ -14,19 +14,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.spacetech.moovme.Adapters.AssettypeAdapter;
 import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Assets.AssetType;
-import com.spacetech.moovme.Assets.Fee;
+import com.spacetech.moovme.Assets.Price;
 import com.spacetech.moovme.Assets.Zone;
-import com.spacetech.moovme.Exeptions.AdministratorDoesntFoundExeption;
-import com.spacetech.moovme.Exeptions.ElementExistExeption;
-import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
-import com.spacetech.moovme.Exeptions.UserDoesntExistException;
-import com.spacetech.moovme.Exeptions.UserIsAlreadyLockedExeption;
-import com.spacetech.moovme.Exeptions.ZoneAlreadyExistsException;
-import com.spacetech.moovme.Exeptions.ZoneDoesNotExistException;
+import com.spacetech.moovme.Exceptions.AdministratorDoesntFoundException;
+import com.spacetech.moovme.Exceptions.ElementExistException;
+import com.spacetech.moovme.Exceptions.PriceIsAlreadySetExeption;
+import com.spacetech.moovme.Exceptions.UserDoesntExistException;
+import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedExeption;
+import com.spacetech.moovme.Exceptions.ZoneAlreadyExistsException;
+import com.spacetech.moovme.Exceptions.ZoneDoesNotExistException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
 import com.spacetech.moovme.R;
-import com.spacetech.moovme.Repository.ListAssetBachCodes;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Administrator;
 import com.spacetech.moovme.Users.Data;
@@ -59,8 +58,8 @@ public class menu_admin extends AppCompatActivity {
         try {
             ActiveAdmin = mooveme.findAdmin((String)i.getStringExtra("name"));
             Toast.makeText(this,"Hola " + ActiveAdmin.getName(),Toast.LENGTH_SHORT).show();
-        } catch (AdministratorDoesntFoundExeption administratorDoesntFoundExeption) {
-            administratorDoesntFoundExeption.printStackTrace();
+        } catch (AdministratorDoesntFoundException administratorDoesntFoundException) {
+            administratorDoesntFoundException.printStackTrace();
         }
 
 
@@ -170,10 +169,11 @@ public class menu_admin extends AppCompatActivity {
     private void addAssetBatch(String assetTypename, EditText et_aBatchcant, EditText et_aBatchprice, EditText et_aBatchcode, Administrator activeAdmin) throws PriceIsAlreadySetExeption {
         int cantidad = Integer.parseInt(et_aBatchcant.getText().toString());
         int price = Integer.parseInt(et_aBatchprice.getText().toString());
-        Integer codeint = Integer.parseInt(et_aBatchcode.getText().toString());
-        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,new ListAssetBachCodes(),new Fee(price));
+        int code = mooveme.getListAssetBachCodes();
+        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,code,new Price(price));
         //TODO handle exeption with toast
         Toast.makeText(getApplicationContext(),"u've buyed " + cantidad + " " + assetTypeActive.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),String.valueOf(code),Toast.LENGTH_SHORT).show();
 
     }
     public void SpinnerAssetType(){
@@ -185,7 +185,7 @@ public class menu_admin extends AppCompatActivity {
 
     }
     public void adminBlockUser(EditText et_phonenumber, Administrator administrator) {
-        UserPhone = et_phonenumber.getText().toString();
+        UserPhone = et_phonenumber.getText().toString().trim();
         Data dataOfUser = new Data(null,new PhoneNumber(Integer.parseInt(UserPhone)));
         try {
             User userThatWannaBlock = mooveme.findUser(dataOfUser);
@@ -201,8 +201,8 @@ public class menu_admin extends AppCompatActivity {
             name = et_name.getText().toString();
             Data adminData = new Data(name);
             administrator.registerAdmin(repositoryAdmin,adminData);
-        } catch (ElementExistExeption elementExistExeption) {
-            elementExistExeption.printStackTrace();
+        } catch (ElementExistException elementExistException) {
+            elementExistException.printStackTrace();
         }finally {
             Toast.makeText(getApplicationContext(), name + " had been added",Toast.LENGTH_SHORT).show();
 
@@ -231,6 +231,9 @@ public class menu_admin extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+    public void saveInformation(){
+        Persistence.saveInformation(getApplicationContext(),mooveme);
     }
 
 

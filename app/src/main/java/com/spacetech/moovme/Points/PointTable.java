@@ -1,6 +1,6 @@
 package com.spacetech.moovme.Points;
 
-import com.spacetech.moovme.Exeptions.UserDoesntHavaScoreExeption;
+import com.spacetech.moovme.Exceptions.UserDoesntHavaScoreExeption;
 import com.spacetech.moovme.Users.Data;
 
 import java.util.ArrayList;

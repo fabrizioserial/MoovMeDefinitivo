@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.spacetech.moovme.Assets.Asset;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
-import com.spacetech.moovme.Exeptions.ElementExistExeption;
+import com.spacetech.moovme.Exceptions.ElementExistException;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.SlidePage.Menu_activity;
 import com.spacetech.moovme.Users.Administrator;
@@ -39,9 +39,10 @@ public class MainActivity extends AppCompatActivity {
         try {
             administratorRepository.add(new Administrator(new Data("admin")));
             assetTypeRepository.add(new AssetType(15,"auto"));
-        } catch (ElementExistExeption elementExistExeption) {
-            elementExistExeption.printStackTrace();
+        } catch (ElementExistException elementExistException) {
+            elementExistException.printStackTrace();
         }
+
 
 
         mooveme.addAssetRepository(assetRepository);
@@ -49,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
         mooveme.addUserRepository(usersRepository);
         mooveme.addZoneRepository(zoneRepository);
         mooveme.addAssetTypeRepository(assetTypeRepository);
+
+        if(Persistence.loadMoovme(getApplicationContext())!= null){
+            mooveme = Persistence.loadMoovme(getApplicationContext());
+        }
         Persistence.saveInformation(getApplicationContext(),mooveme);
 
         Handler handler = new Handler();
@@ -56,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                Toast.makeText(getApplicationContext(),"v5", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"v9", Toast.LENGTH_LONG).show();
                 Intent i = new Intent(getApplication(), Menu_activity.class);
                 startActivity(i);
             }

@@ -1,4 +1,4 @@
-package com.spacetech.moovme.Exeptions;
+package com.spacetech.moovme.Exceptions;
 
 public class UserAlreadyExistException extends Exception {
 

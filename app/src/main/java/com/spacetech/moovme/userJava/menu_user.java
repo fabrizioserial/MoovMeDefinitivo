@@ -1,53 +1,131 @@
 package com.spacetech.moovme.userJava;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.spacetech.moovme.Adapters.AssetParkingAdapter;
+import com.spacetech.moovme.Adapters.AssettypeAdapter;
+import com.spacetech.moovme.Adapters.ZoneAdapter;
+import com.spacetech.moovme.Assets.AssetParking;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
+import com.spacetech.moovme.DialogException;
+import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
+import com.spacetech.moovme.Exceptions.UserDoesntExistException;
+import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
+import com.spacetech.moovme.Mooveme;
+import com.spacetech.moovme.Persistence;
 import com.spacetech.moovme.R;
+import com.spacetech.moovme.Users.Data;
+import com.spacetech.moovme.Users.PhoneNumber;
+import com.spacetech.moovme.Users.User;
+
+import java.util.ArrayList;
 
 public class menu_user extends AppCompatActivity {
 
-    Spinner sp_assetType,sp_zone;
     String assetTypename;
+    EditText et_time;
+    Button btn_rentAsset;
     //Actives
     AssetType assetTypeActive;
     Zone zoneactive;
+    Mooveme mooveme;
+    private User activeUser;
+    private Spinner sp_assetParking,sp_assetType,sp_zone;;
+    private AssetParking AssetParkingRent,AssetParkingReturn;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_menu);
         sp_assetType = (Spinner) findViewById(R.id.sp_user_assets);
+        sp_assetParking = (Spinner) findViewById(R.id.sp_user_parking);
+        sp_zone = (Spinner) findViewById(R.id.sp_user_zone);
+        mooveme = Persistence.loadMoovme(getApplicationContext());
 
+        Intent i= getIntent();
+        try {
+            activeUser = mooveme.getUser(new Data("user",new PhoneNumber(Integer.parseInt(i.getStringExtra("phonenumber")))));
+        } catch (UserDoesntExistException e) {
+            DialogException.CreateDialog("User Error","User doesnt exist", getApplicationContext());
+        }
+
+        et_time = (EditText) findViewById(R.id.et_user_time);
+        btn_rentAsset = (Button) findViewById(R.id.btn_user_rentAsset);
 
         ///metodos
-        //SpinnerAssets();
-        //SpinnerZone();
+        SpinnerAssets();
+        SpinnerZone();
+        SpinnerParkins();
+        SpinnerParkinsReturn();
+
+
+        btn_rentAsset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RenAsset();
+            }
+        });
     }
 
+    public void RenAsset(){
+        try {
+            activeUser.rentAsset(AssetParkingRent,assetTypeActive,Integer.parseInt(et_time.getText().toString()));
+        } catch (AssetTypeDoesNotExistInSpecifiedZoneException assetTypeDoesNotExistInSpecifiedZoneException) {
+            DialogException.CreateDialog("Error","Error to rent, asset type doesnt exis tin this zone",this);
+        }
+    }
+
+    public void returnAAsset(){
+        try {
+            activeUser.returnAsset(AssetParkingReturn);
+        } catch (UserIsNotInATripException e) {
+            DialogException.CreateDialog("Error","User is not in a trip",getApplicationContext());
+        }
+    }
+
+    ///SPINNERS
+
     private void SpinnerZone() {
-        /*HashMap zoneHashMap = Mooveme.getRepositoryZone().getCollection();
-        Collection values = zoneHashMap.values();
-        ArrayList<Zone> zoneArrayList = new ArrayList<Zone>(values);
+        ArrayList<Zone> zoneArrayList = mooveme.getZoneRepository().getRepository();
         ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zoneArrayList);
         sp_zone.setAdapter(adapter);
         zoneactive = (Zone) sp_zone.getSelectedItem();
 
-         */
+
     }
 
     private void SpinnerAssets() {
-        /*
-        ArrayList assetTypes= Mooveme.getRepositoryAsset().getCollection();
+
+        ArrayList<AssetType> assetTypes= mooveme.getAssetTypeRepository().getRepository();
         AssettypeAdapter adapter = new AssettypeAdapter(getApplicationContext(),assetTypes);
         sp_assetType.setAdapter(adapter);
         assetTypename = sp_assetType.getSelectedItem().toString();
         assetTypeActive = (AssetType) sp_assetType.getSelectedItem();
 
-         */
+    }
+
+    private void SpinnerParkins() {
+        ArrayList<AssetParking> assetTypes= zoneactive.getAssetParkings();
+        AssetParkingAdapter adapter = new AssetParkingAdapter(getApplicationContext(),assetTypes);
+        sp_assetParking.setAdapter(adapter);
+        AssetParkingRent = (AssetParking) sp_assetParking.getSelectedItem();
+
+    }
+    private void SpinnerParkinsReturn() {
+        ArrayList<AssetParking> assetTypes= zoneactive.getAssetParkings();
+        AssetParkingAdapter adapter = new AssetParkingAdapter(getApplicationContext(),assetTypes);
+        sp_assetParking.setAdapter(adapter);
+        AssetParkingReturn = (AssetParking) sp_assetParking.getSelectedItem();
+
     }
 }
