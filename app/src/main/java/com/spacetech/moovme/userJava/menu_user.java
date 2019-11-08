@@ -41,6 +41,7 @@ public class menu_user extends AppCompatActivity {
     private User activeUser;
     private Spinner sp_assetParking,sp_assetType,sp_zone;;
     private AssetParking AssetParkingRent,AssetParkingReturn;
+    private Button btn_returnAsset;
 
 
     @Override
@@ -51,10 +52,12 @@ public class menu_user extends AppCompatActivity {
         sp_assetParking = (Spinner) findViewById(R.id.sp_user_parking);
         sp_zone = (Spinner) findViewById(R.id.sp_user_zone);
         mooveme = Persistence.loadMoovme(getApplicationContext());
-
         Intent i= getIntent();
+
+        String numberofuser = i.getStringExtra("phonenumber");
+
         try {
-            activeUser = mooveme.getUser(new Data("user",new PhoneNumber(Integer.parseInt(i.getStringExtra("phonenumber")))));
+            activeUser = mooveme.getUser(new Data("user",new PhoneNumber(Integer.parseInt(numberofuser))));
         } catch (UserDoesntExistException e) {
             DialogException.CreateDialog("User Error","User doesnt exist", getApplicationContext());
         }
@@ -65,14 +68,21 @@ public class menu_user extends AppCompatActivity {
         ///metodos
         SpinnerAssets();
         SpinnerZone();
-        SpinnerParkins();
-        SpinnerParkinsReturn();
+        SpinnerParkings();
+        SpinnerParkingsReturn();
 
 
         btn_rentAsset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RenAsset();
+            }
+        });
+
+        btn_returnAsset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                returnAnAsset();
             }
         });
     }
@@ -85,7 +95,7 @@ public class menu_user extends AppCompatActivity {
         }
     }
 
-    public void returnAAsset(){
+    public void returnAnAsset(){
         try {
             activeUser.returnAsset(AssetParkingReturn);
         } catch (UserIsNotInATripException e) {
@@ -114,18 +124,17 @@ public class menu_user extends AppCompatActivity {
 
     }
 
-    private void SpinnerParkins() {
+    private void SpinnerParkings() {
         ArrayList<AssetParking> assetTypes= zoneactive.getAssetParkings();
         AssetParkingAdapter adapter = new AssetParkingAdapter(getApplicationContext(),assetTypes);
         sp_assetParking.setAdapter(adapter);
         AssetParkingRent = (AssetParking) sp_assetParking.getSelectedItem();
 
     }
-    private void SpinnerParkinsReturn() {
+    private void SpinnerParkingsReturn() {
         ArrayList<AssetParking> assetTypes= zoneactive.getAssetParkings();
         AssetParkingAdapter adapter = new AssetParkingAdapter(getApplicationContext(),assetTypes);
         sp_assetParking.setAdapter(adapter);
         AssetParkingReturn = (AssetParking) sp_assetParking.getSelectedItem();
-
     }
 }

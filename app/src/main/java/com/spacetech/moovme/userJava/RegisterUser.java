@@ -49,6 +49,7 @@ public class RegisterUser extends Fragment {
                 phonenumber = et_phonenumber.getText().toString().trim();
                 try {
                     mooveme.registerUser(new User(new Data(name,new PhoneNumber(Integer.parseInt(phonenumber)))));
+                    Persistence.saveInformation(getContext(),mooveme);
 
                 } catch (UserAlreadyExistException | NullPointerException e ) {
                     e.printStackTrace();

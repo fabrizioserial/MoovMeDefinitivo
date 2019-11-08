@@ -9,6 +9,7 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.spacetech.moovme.DialogException;
 import com.spacetech.moovme.Exeptions.UserDoesntExistException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
@@ -30,22 +31,24 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layouts);
         mooveme = Persistence.loadMoovme(getApplicationContext());
+
         btn_login=(Button)findViewById(R.id.btn_login_id);
         et_phone=(EditText)findViewById(R.id.et_phone_id);
 
-        phonenumber = et_phone.getText().toString();
+
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
+                    phonenumber = et_phone.getText().toString().trim();
                     User user = new User(new Data("user", new PhoneNumber(Integer.parseInt(phonenumber))));
                     mooveme.loginUser(user);
-                    Intent i = new Intent(getApplicationContext(),menu_user.class);
-                    i.putExtra("phonenumber",et_phone.getText());
+                    Intent i = new Intent(Login.this,menu_user.class);
+                    i.putExtra("phonenumber",phonenumber);
                     startActivity(i);
                 } catch (UserDoesntExistException e) {
-                    e.printStackTrace();
+                    DialogException.CreateDialog("Error user login","User doesnt exist",Login.this);
                 }
                 /*
                 Intent i = new Intent(getApplicationContext(),HomeMenu.class);

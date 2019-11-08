@@ -14,7 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.spacetech.moovme.Adapters.AssettypeAdapter;
 import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Assets.AssetType;
-import com.spacetech.moovme.Assets.Price;
+
+import com.spacetech.moovme.Assets.Fee;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exeptions.AdministratorDoesntFoundExeption;
 import com.spacetech.moovme.Exeptions.ElementExistExeption;
@@ -151,7 +152,7 @@ public class menu_admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    addAssetBatch(assetTypename,et_aBatchcant,et_aBatchprice,et_aBatchcode, ActiveAdmin);
+                    addAssetBatch(,et_aBatchcant,et_aBatchprice, ActiveAdmin);
                 } catch (PriceIsAlreadySetExeption priceIsAlreadySetExeption) {
                     Toast.makeText(getApplicationContext(),"Ya esta registrado ese precio",Toast.LENGTH_SHORT).show();
                 }
@@ -166,11 +167,11 @@ public class menu_admin extends AppCompatActivity {
         sp_zone.setAdapter(adapter);
         zoneactive = (Zone) sp_zone.getSelectedItem();
     }
-    private void addAssetBatch(String assetTypename, EditText et_aBatchcant, EditText et_aBatchprice, EditText et_aBatchcode, Administrator activeAdmin) throws PriceIsAlreadySetExeption {
+    private void addAssetBatch(EditText et_aBatchcant, EditText et_aBatchprice, Administrator activeAdmin) throws PriceIsAlreadySetExeption {
         int cantidad = Integer.parseInt(et_aBatchcant.getText().toString());
         int price = Integer.parseInt(et_aBatchprice.getText().toString());
         int code = mooveme.getListAssetBachCodes();
-        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,code,new Price(price));
+        activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,code,new Fee(price));
         //TODO handle exeption with toast
         Toast.makeText(getApplicationContext(),"u've buyed " + cantidad + " " + assetTypeActive.getName(), Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(),String.valueOf(code),Toast.LENGTH_SHORT).show();
@@ -189,7 +190,7 @@ public class menu_admin extends AppCompatActivity {
         Data dataOfUser = new Data(null,new PhoneNumber(Integer.parseInt(UserPhone)));
         try {
             User userThatWannaBlock = mooveme.findUser(dataOfUser);
-            administrator.setUserLock(userThatWannaBlock,true);
+            administrator.setUserLock(userThatWannaBlock);
 
         } catch (UserDoesntExistException | UserIsAlreadyLockedExeption e) {
             e.printStackTrace();
