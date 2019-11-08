@@ -1,7 +1,7 @@
 package com.spacetech.moovme.Assets;
 
 import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
-import com.spacetech.moovme.Exceptions.CantApplyDiscountExeption;
+import com.spacetech.moovme.Exceptions.CantApplyDiscountException;
 import com.spacetech.moovme.Users.User;
 
 
@@ -34,7 +34,7 @@ public class AssetParking {
         return zone.canApplyDiscount(actualTravel,user);
     }
 
-    public Fee applyDiscount(Travel actualTravel, User user, Fee fee) throws CantApplyDiscountExeption {
+    public Fee applyDiscount(Travel actualTravel, User user, Fee fee) throws CantApplyDiscountException {
         return zone.applyDiscount(actualTravel,user,fee);
     }
 }

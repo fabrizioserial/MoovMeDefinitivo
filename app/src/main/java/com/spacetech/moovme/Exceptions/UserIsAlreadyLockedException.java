@@ -1,8 +1,8 @@
 package com.spacetech.moovme.Exceptions;
 
-public class UserIsAlreadyLockedExeption extends Exception{
+public class UserIsAlreadyLockedException extends Exception{
 
-    UserIsAlreadyLockedExeption(){
+    UserIsAlreadyLockedException(){
 
         super("User was already in state");
 

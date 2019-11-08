@@ -19,9 +19,9 @@ import com.spacetech.moovme.Assets.Fee;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exceptions.AdministratorDoesntFoundException;
 import com.spacetech.moovme.Exceptions.ElementExistException;
-import com.spacetech.moovme.Exceptions.PriceIsAlreadySetExeption;
+import com.spacetech.moovme.Exceptions.PriceIsAlreadySetException;
 import com.spacetech.moovme.Exceptions.UserDoesntExistException;
-import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedExeption;
+import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedException;
 import com.spacetech.moovme.Exceptions.ZoneAlreadyExistsException;
 import com.spacetech.moovme.Exceptions.ZoneDoesNotExistException;
 import com.spacetech.moovme.Mooveme;
@@ -153,7 +153,7 @@ public class menu_admin extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     addAssetBatch(et_aBatchcant,et_aBatchprice, ActiveAdmin);
-                } catch (PriceIsAlreadySetExeption priceIsAlreadySetExeption) {
+                } catch (PriceIsAlreadySetException priceIsAlreadySetException) {
                     Toast.makeText(getApplicationContext(),"Ya esta registrado ese precio",Toast.LENGTH_SHORT).show();
                 }
             }
@@ -167,7 +167,7 @@ public class menu_admin extends AppCompatActivity {
         sp_zone.setAdapter(adapter);
         zoneactive = (Zone) sp_zone.getSelectedItem();
     }
-    private void addAssetBatch(EditText et_aBatchcant, EditText et_aBatchprice, Administrator activeAdmin) throws PriceIsAlreadySetExeption {
+    private void addAssetBatch(EditText et_aBatchcant, EditText et_aBatchprice, Administrator activeAdmin) throws PriceIsAlreadySetException {
         int cantidad = Integer.parseInt(et_aBatchcant.getText().toString());
         int price = Integer.parseInt(et_aBatchprice.getText().toString());
         int code = mooveme.getListAssetBachCodes();
@@ -192,7 +192,7 @@ public class menu_admin extends AppCompatActivity {
             User userThatWannaBlock = mooveme.findUser(dataOfUser);
             administrator.setUserLock(userThatWannaBlock);
 
-        } catch (UserDoesntExistException | UserIsAlreadyLockedExeption e) {
+        } catch (UserDoesntExistException | UserIsAlreadyLockedException e) {
             e.printStackTrace();
         }
     }

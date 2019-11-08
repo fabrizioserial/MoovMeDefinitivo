@@ -1,6 +1,6 @@
 package com.spacetech.moovme.Points;
 
-import com.spacetech.moovme.Exceptions.UserDoesntHavaScoreExeption;
+import com.spacetech.moovme.Exceptions.UserDoesntHavaScoreException;
 import com.spacetech.moovme.Users.Data;
 
 import java.util.ArrayList;
@@ -20,13 +20,13 @@ public class PointTable {
         rankings.sort(topPointUserComparator);
     }
 
-    public Points getPoints(Data data) throws UserDoesntHavaScoreExeption {
+    public Points getPoints(Data data) throws UserDoesntHavaScoreException {
         for (RankingInPointTable rankingInPointTable:rankings) {
             if(rankingInPointTable.getData().equals(data)){
                 return rankingInPointTable.getPoints();
             }
         }
-        throw new UserDoesntHavaScoreExeption();
+        throw new UserDoesntHavaScoreException();
     }
 
     public ArrayList<RankingInPointTable> getTopLeaders() {
