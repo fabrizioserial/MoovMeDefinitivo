@@ -1,7 +1,7 @@
 package com.spacetech.moovme.Assets;
 
-import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
-import com.spacetech.moovme.Exeptions.CantApplyDiscountExeption;
+import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
+import com.spacetech.moovme.Exceptions.CantApplyDiscountExeption;
 import com.spacetech.moovme.Users.User;
 
 
@@ -18,7 +18,7 @@ public class AssetParking {
     public String getName(){
         return name;
     }
-    public Asset rentAsset(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
+    public Asset rentAsset(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZoneException {
         return zone.getAssetwithDesignatedType(assetType);
     }
 

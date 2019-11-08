@@ -37,13 +37,14 @@ public class Zone {
         totalAssetsBatchList.add(assetBatch);
     }
 
+
     public Fee returnAsset(Travel actalTravel, User user) {
         pointTable.updateScore(pointCounter.calculateAquiredPoints(actalTravel),user.getData());
         user.addPoints(pointCounter.calculateAquiredPoints(actalTravel));
         return tarifario.calculatePrice(actalTravel.getAsset().getAssetType());
     }
 
-    public void addDiscount(Discount discount, AssetType assetType) throws ElementExistExeption {
+    public void addDiscount(Discount discount, AssetType assetType) throws ElementExistException {
         discountOrganizedByAssetType.put(assetType,discount);
     }
 
@@ -63,6 +64,10 @@ public class Zone {
             return new Fee(discountOrganizedByAssetType.get(actualTravel.getAsset().getAssetType()).applyDiscount(user.getPoints(),fee));
         }
         else return fee;
+    }
+
+    public ArrayList<RankingInPointTable> getTop10Leaders(){
+        return pointTable.getTopLeaders();
     }
 
     /*
@@ -102,7 +107,7 @@ public class Zone {
         return totalAssets;
     }
 
-    public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
+    public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZoneException {
         for(AssetBatch batch : totalAssetsBatchList){
             if(batch.getType().equals(assetType)){
                 for(Asset asset: batch.getAssetList()){
@@ -112,7 +117,7 @@ public class Zone {
                 }
             }
         }
-        throw new AssetTypeDoesNotExistInSpecifiedZone();
+        throw new AssetTypeDoesNotExistInSpecifiedZoneException();
     }
 
     public void createAssetParking(String name){

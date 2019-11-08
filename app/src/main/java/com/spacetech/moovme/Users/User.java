@@ -6,10 +6,11 @@ import com.spacetech.moovme.Assets.AssetParking;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Fee;
 import com.spacetech.moovme.Assets.Travel;
-import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
-import com.spacetech.moovme.Exeptions.CantApplyDiscountExeption;
-import com.spacetech.moovme.Exeptions.UserIsAlreadyLockedExeption;
-import com.spacetech.moovme.Exeptions.UserIsNotInATripException;
+import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
+import com.spacetech.moovme.Exceptions.CantApplyDiscountExeption;
+import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedExeption;
+import com.spacetech.moovme.Exceptions.UserIsAlreadyOnATripException;
+import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
 import com.spacetech.moovme.Points.Points;
 
 
@@ -46,12 +47,16 @@ public class User extends Operators {
         return isLocked;
     }
 
-    public void rentAsset(AssetParking assetParking, AssetType assetType, long expectedTime) throws AssetTypeDoesNotExistInSpecifiedZone {
-        try {
-            actualTravel=new Travel(assetParking.rentAsset(assetType),expectedTime);
-        } catch (AssetTypeDoesNotExistInSpecifiedZone assetTypeDoesNotExistInSpecifiedZone) {
-            actualTravel=null;
-            throw new AssetTypeDoesNotExistInSpecifiedZone();
+    public void rentAsset(AssetParking assetParking, AssetType assetType, long expectedTime) throws AssetTypeDoesNotExistInSpecifiedZoneException, UserIsAlreadyOnATripException {
+        if(actualTravel != null){
+            throw new UserIsAlreadyOnATripException();
+        } else {
+            try {
+                actualTravel = new Travel(assetParking.rentAsset(assetType), expectedTime);
+            } catch (AssetTypeDoesNotExistInSpecifiedZoneException assetTypeDoesNotExistInSpecifiedZoneException) {
+                actualTravel = null;
+                throw new AssetTypeDoesNotExistInSpecifiedZoneException();
+            }
         }
     }
 
@@ -70,6 +75,7 @@ public class User extends Operators {
                 }
             }
             money= money-fee.getPrice(); //TODO spend money from user
+            actualTravel=null;
         }
         else{
             throw new UserIsNotInATripException();
@@ -102,6 +108,10 @@ public class User extends Operators {
 
     public double getMoney() {
         return money;
+    }
+
+    public Travel getActualTravel() {
+        return actualTravel;
     }
 }
 

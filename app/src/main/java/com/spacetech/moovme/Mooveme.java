@@ -3,10 +3,10 @@ package com.spacetech.moovme;
 import com.spacetech.moovme.Assets.Asset;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
-import com.spacetech.moovme.Exeptions.AdministratorDoesntFoundExeption;
-import com.spacetech.moovme.Exeptions.ElementExistExeption;
-import com.spacetech.moovme.Exeptions.UserAlreadyExistException;
-import com.spacetech.moovme.Exeptions.UserDoesntExistException;
+import com.spacetech.moovme.Exceptions.AdministratorDoesntFoundException;
+import com.spacetech.moovme.Exceptions.ElementExistException;
+import com.spacetech.moovme.Exceptions.UserAlreadyExistException;
+import com.spacetech.moovme.Exceptions.UserDoesntExistException;
 import com.spacetech.moovme.Repository.ListAssetBachCodes;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Administrator;
@@ -47,7 +47,7 @@ public class Mooveme {
 
 
 
-    public Administrator loginAdministrator(Administrator administrator) throws AdministratorDoesntFoundExeption {
+    public Administrator loginAdministrator(Administrator administrator) throws AdministratorDoesntFoundException {
         boolean Found= false;
         for(Administrator adminis:(ArrayList<Administrator>)adminRepository.getRepository()){
             if(administrator.getName().equals(adminis.getName())){
@@ -55,7 +55,7 @@ public class Mooveme {
                 return adminis;
             }
         }
-        throw new AdministratorDoesntFoundExeption();
+        throw new AdministratorDoesntFoundException();
     }
 
     public User loginUser(User user) throws UserDoesntExistException{
@@ -70,7 +70,7 @@ public class Mooveme {
     public void registerUser(User user) throws UserAlreadyExistException {
         try {
             userRepository.add(user);
-        } catch (ElementExistExeption elementExistExeption) {
+        } catch (ElementExistException elementExistException) {
             throw new UserAlreadyExistException();
         }
     }
@@ -99,13 +99,13 @@ public class Mooveme {
         return assetTypeRepository;
     }
 
-    public Administrator findAdmin(String name) throws AdministratorDoesntFoundExeption{
+    public Administrator findAdmin(String name) throws AdministratorDoesntFoundException {
         for(Administrator administrator: adminRepository.getRepository()){
             if(administrator.getName().equals(name)){
                 return administrator;
             }
         }
-        throw new AdministratorDoesntFoundExeption();
+        throw new AdministratorDoesntFoundException();
     }
 
     public int getListAssetBachCodes(){
