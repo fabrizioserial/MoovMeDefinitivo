@@ -214,12 +214,14 @@ public class menu_admin extends AppCompatActivity {
         String assetName = et_assetname.getText().toString();
         int points = Integer.parseInt(et_assetpoint.getText().toString());
         administrator.createAssetType(assetName,points,mooveme.getAssetTypeRepository());
+        saveInformation();
         Toast.makeText(getApplicationContext(),"Se creo el asset con nombre " + assetName , Toast.LENGTH_SHORT).show();
     }
     public void adminAddZone(EditText et_zone,EditText et_point_zone,Administrator administrator) {
         try {
             String zonename = et_zone.getText().toString();
             administrator.createNewZone(mooveme.getZoneRepository(),zonename);
+            saveInformation();
         } catch (ZoneAlreadyExistsException e) {
             e.printStackTrace();
         }
@@ -228,6 +230,7 @@ public class menu_admin extends AppCompatActivity {
         try {
             String zonename = et_zonename.getText().toString();
             administrator.deleteZone(mooveme.getZoneRepository(),zonename);
+            saveInformation();
         } catch (ZoneDoesNotExistException e) {
             e.printStackTrace();
         }
