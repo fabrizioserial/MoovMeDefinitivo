@@ -19,6 +19,7 @@ import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.DialogException;
 import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
 import com.spacetech.moovme.Exeptions.UserDoesntExistException;
+import com.spacetech.moovme.Exeptions.UserIsNotInATripException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
 import com.spacetech.moovme.R;
@@ -39,8 +40,8 @@ public class menu_user extends AppCompatActivity {
     Mooveme mooveme;
     private User activeUser;
     private Spinner sp_assetParking,sp_assetType,sp_zone;;
-    private AssetParking AssetParkingRent;
-    private String AssetParkingRentName;
+    private AssetParking AssetParkingRent,AssetParkingReturn;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +66,8 @@ public class menu_user extends AppCompatActivity {
         SpinnerAssets();
         SpinnerZone();
         SpinnerParkins();
+        SpinnerParkinsReturn();
+
 
         btn_rentAsset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +86,11 @@ public class menu_user extends AppCompatActivity {
     }
 
     public void returnAAsset(){
-        activeUser.get
+        try {
+            activeUser.returnAsset(AssetParkingReturn);
+        } catch (UserIsNotInATripException e) {
+            DialogException.CreateDialog("Error","User is not in a trip",getApplicationContext());
+        }
     }
 
     ///SPINNERS
@@ -111,8 +118,14 @@ public class menu_user extends AppCompatActivity {
         ArrayList<AssetParking> assetTypes= zoneactive.getAssetParkings();
         AssetParkingAdapter adapter = new AssetParkingAdapter(getApplicationContext(),assetTypes);
         sp_assetParking.setAdapter(adapter);
-        AssetParkingRentName = sp_assetParking.getSelectedItem().toString();
         AssetParkingRent = (AssetParking) sp_assetParking.getSelectedItem();
+
+    }
+    private void SpinnerParkinsReturn() {
+        ArrayList<AssetParking> assetTypes= zoneactive.getAssetParkings();
+        AssetParkingAdapter adapter = new AssetParkingAdapter(getApplicationContext(),assetTypes);
+        sp_assetParking.setAdapter(adapter);
+        AssetParkingReturn = (AssetParking) sp_assetParking.getSelectedItem();
 
     }
 }
