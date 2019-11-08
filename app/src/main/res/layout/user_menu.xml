@@ -22,54 +22,101 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:background="@color/colorAccent">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="Use a Asset"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"
-                    />
                 <LinearLayout
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:background="@color/colorAccent">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15dp"
-                        android:text="Asset types"/>
-                    <Spinner
-                        android:id="@+id/sp_user_assets"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Use a Asset"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        />
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"/>
-                </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:text="Asset types"/>
+                        <Spinner
+                            android:id="@+id/sp_user_assets"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"/>
+                    </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:text="Zones"/>
+                        <Spinner
+                            android:id="@+id/sp_user_zone"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:text="Parkings"/>
+                        <Spinner
+                            android:id="@+id/sp_user_parking"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"/>
+                    </LinearLayout>
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:orientation="vertical">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15dp"
-                        android:text="Zones"/>
-                    <Spinner
-                        android:id="@+id/sp_user_zone"
+                        android:text="Time"
+                        android:textSize="20dp"/>
+                    <EditText
+                        android:id="@+id/et_user_time"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"/>
                 </LinearLayout>
+                <Button
+                    android:id="@+id/btn_user_rentAsset"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:text="Rent"
+                    android:textSize="15dp"
+                    />
             </LinearLayout>
+
 
         </ScrollView>
     </LinearLayout>

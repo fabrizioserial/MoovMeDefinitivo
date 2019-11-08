@@ -1,5 +1,6 @@
 package com.spacetech.moovme.userJava;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +41,9 @@ public class Login extends AppCompatActivity {
                 try {
                     User user = new User(new Data("user", new PhoneNumber(Integer.parseInt(phonenumber))));
                     mooveme.loginUser(user);
+                    Intent i = new Intent(getApplicationContext(),menu_user.class);
+                    i.putExtra("phonenumber",et_phone.getText());
+                    startActivity(i);
                 } catch (UserDoesntExistException e) {
                     e.printStackTrace();
                 }

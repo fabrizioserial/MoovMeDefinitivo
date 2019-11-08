@@ -59,7 +59,7 @@ public class User extends Operators {
         if(actualTravel!=null){
             Fee fee = assetParking.returnAsset(actualTravel,this); //points had already been added here
             boolean wantsToApplyDiscount=false;
-            if(assetParking.canApplyDiscount(actualTravel,this)){;
+            if(assetParking.canApplyDiscount(actualTravel,this)){
                 //TODO ask if you want to apply discount. change wantsToApplyDiscount boolean
             }
             if(wantsToApplyDiscount){

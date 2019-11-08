@@ -111,4 +111,13 @@ public class Mooveme {
     public int getListAssetBachCodes(){
         return listAssetBachCodes.createNewCode();
     }
+
+    public User getUser(Data data) throws UserDoesntExistException{
+        for(User user:userRepository.getRepository()){
+            if(user.getPhoneNumber().equals(data.getPhoneNumber())){
+                return user;
+            }
+        }
+        throw new UserDoesntExistException();
+    }
 }

@@ -14,24 +14,28 @@ import java.util.HashMap;
 
 public class Zone {
     private final String name;
-    private final ArrayList<AssetBatch> totalAssetsBatchList =new ArrayList<>();
-    private final Tarifario tarifario=new Tarifario();
+    private final ArrayList<AssetBatch> totalAssetsBatchList;
+    private Tarifario tarifario;
     private final PointTable pointTable;//create in construtor or leave it like that? implement after knowing persistance
-    private HashMap<AssetType, Discount> discountOrganizedByAssetType= new HashMap<>();
+    private HashMap<AssetType, Discount> discountOrganizedByAssetType;
     private ArrayList<Data> usersWithWinnerDiscount;
     private PointCounter pointCounter;
+    private ArrayList<AssetParking> assetParkings;
 
     public Zone(String name){
+        discountOrganizedByAssetType = new HashMap<>();
         this.name=name;
         this.pointTable=new PointTable();
         this.pointCounter=new PointCounter();
+        tarifario =new Tarifario();
+        totalAssetsBatchList =new ArrayList<>();
+        assetParkings = new ArrayList<>();
     }
 
     public void addNewBach(AssetBatch assetBatch, Fee precioDeAlquilerDelLote) throws PriceIsAlreadySetExeption {
         tarifario.addAssetPricePerZone(assetBatch.getType(),precioDeAlquilerDelLote);
         totalAssetsBatchList.add(assetBatch);
     }
-
 
     public Fee returnAsset(Travel actalTravel, User user) {
         pointTable.updateScore(pointCounter.calculateAquiredPoints(actalTravel),user.getData());
@@ -89,6 +93,7 @@ public class Zone {
         }
         else return false;
     }
+
     public ArrayList<Asset> getTotalAssets() {
         ArrayList<Asset> totalAssets=new ArrayList<>();
         for (AssetBatch assetBatch:totalAssetsBatchList) {
@@ -96,6 +101,7 @@ public class Zone {
         }
         return totalAssets;
     }
+
     public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
         for(AssetBatch batch : totalAssetsBatchList){
             if(batch.getType().equals(assetType)){
@@ -108,5 +114,12 @@ public class Zone {
         }
         throw new AssetTypeDoesNotExistInSpecifiedZone();
     }
+
+    public void createAssetParking(String name){
+        assetParkings.add(new AssetParking(this, name));
+    }
+
+    public ArrayList<AssetParking> getAssetParkings(){return assetParkings;}
+
 
 }

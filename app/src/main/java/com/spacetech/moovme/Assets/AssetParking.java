@@ -8,11 +8,16 @@ import com.spacetech.moovme.Users.User;
 public class AssetParking {
 
     private final Zone zone;
+    private  String name;
 
-    AssetParking(Zone zone){
+    AssetParking(Zone zone, String name){
         this.zone=zone;
+        this.name = name;
     }
 
+    public String getName(){
+        return name;
+    }
     public Asset rentAsset(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
         return zone.getAssetwithDesignatedType(assetType);
     }
