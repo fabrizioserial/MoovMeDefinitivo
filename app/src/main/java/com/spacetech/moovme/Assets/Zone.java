@@ -1,11 +1,12 @@
 package com.spacetech.moovme.Assets;
 
-import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
-import com.spacetech.moovme.Exeptions.CantApplyDiscountExeption;
-import com.spacetech.moovme.Exeptions.ElementExistExeption;
-import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
+import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
+import com.spacetech.moovme.Exceptions.CantApplyDiscountException;
+import com.spacetech.moovme.Exceptions.ElementExistException;
+import com.spacetech.moovme.Exceptions.PriceIsAlreadySetException;
 import com.spacetech.moovme.Points.PointCounter;
 import com.spacetech.moovme.Points.PointTable;
+import com.spacetech.moovme.Points.RankingInPointTable;
 import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.User;
 
@@ -32,7 +33,7 @@ public class Zone {
         assetParkings = new ArrayList<>();
     }
 
-    public void addNewBach(AssetBatch assetBatch, Fee precioDeAlquilerDelLote) throws PriceIsAlreadySetExeption {
+    public void addNewBach(AssetBatch assetBatch, Fee precioDeAlquilerDelLote) throws PriceIsAlreadySetException {
         tarifario.addAssetPricePerZone(assetBatch.getType(),precioDeAlquilerDelLote);
         totalAssetsBatchList.add(assetBatch);
     }
@@ -56,7 +57,7 @@ public class Zone {
         else return false;
     }
 
-    public Fee applyDiscount(Travel actualTravel, User user, Fee fee) throws CantApplyDiscountExeption {
+    public Fee applyDiscount(Travel actualTravel, User user, Fee fee) throws CantApplyDiscountException {
         if(!usersWithWinnerDiscount.contains(user.getData())){
             return new Fee(fee.getPrice()*0.5);
         }

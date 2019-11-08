@@ -7,8 +7,8 @@ import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Fee;
 import com.spacetech.moovme.Assets.Travel;
 import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
-import com.spacetech.moovme.Exceptions.CantApplyDiscountExeption;
-import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedExeption;
+import com.spacetech.moovme.Exceptions.CantApplyDiscountException;
+import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedException;
 import com.spacetech.moovme.Exceptions.UserIsAlreadyOnATripException;
 import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
 import com.spacetech.moovme.Points.Points;
@@ -31,7 +31,7 @@ public class User extends Operators {
         money=0;
     }
 
-    public void userLocking(boolean lockUser) throws UserIsAlreadyLockedExeption {
+    public void userLocking(boolean lockUser) throws UserIsAlreadyLockedException {
             isLocked=lockUser;
     }
 
@@ -70,7 +70,7 @@ public class User extends Operators {
             if(wantsToApplyDiscount){
                 try {
                     fee = assetParking.applyDiscount(actualTravel,this,fee);
-                } catch (CantApplyDiscountExeption cantApplyDiscountExeption) {
+                } catch (CantApplyDiscountException cantApplyDiscountException) {
                     throw new RuntimeException("Situacion imposible ya que se chequeo antes que esto sea posible");
                 }
             }

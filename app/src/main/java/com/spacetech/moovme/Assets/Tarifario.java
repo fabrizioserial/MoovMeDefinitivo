@@ -1,6 +1,6 @@
 package com.spacetech.moovme.Assets;
 
-import com.spacetech.moovme.Exceptions.PriceIsAlreadySetExeption;
+import com.spacetech.moovme.Exceptions.PriceIsAlreadySetException;
 
 import java.util.HashMap;
 
@@ -11,18 +11,18 @@ public class Tarifario {
     public Tarifario() {
     }
 
-    public void addAssetPricePerZone(AssetType assetType, Fee fee) throws PriceIsAlreadySetExeption {
+    public void addAssetPricePerZone(AssetType assetType, Fee fee) throws PriceIsAlreadySetException {
         if(!pricePerAsset.containsKey(assetType)){
             pricePerAsset.put(assetType, fee);
         }
-        else throw new PriceIsAlreadySetExeption();
+        else throw new PriceIsAlreadySetException();
     }
 
 
     public double calculatePrice(Asset assetUsed, Discount discount, int points) {
         //try {
             return 3;//discount.applyDiscount(assetUsed.getAssetType(), points, assetUsed.getPrice());
-        /*} catch (CantApplyDiscountExeption cantApplyDiscountExeption) {
+        /*} catch (CantApplyDiscountException cantApplyDiscountExeption) {
             //Avisar que no se pudo aplicar descuento
             //return assetUsed.getPrice();
             //TODO fix get price, get price from price table

@@ -1,7 +1,7 @@
 package com.spacetech.moovme.Assets;
 
 
-import com.spacetech.moovme.Exceptions.CantApplyDiscountExeption;
+import com.spacetech.moovme.Exceptions.CantApplyDiscountException;
 import com.spacetech.moovme.Points.Points;
 
 public class Discount {
@@ -16,12 +16,12 @@ public class Discount {
         this.assetType = assetType;
     }
 
-    public double applyDiscount(Points points, Fee fee)throws CantApplyDiscountExeption {
+    public double applyDiscount(Points points, Fee fee)throws CantApplyDiscountException {
         if(points.getPointsinIntValue()>=minimumPoints){
             return fee.getPrice()*percentageMultiplier;
         }
         else{
-            throw new CantApplyDiscountExeption();
+            throw new CantApplyDiscountException();
         }
     }
 
