@@ -213,6 +213,55 @@
                         </LinearLayout>
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginTop="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Create asset parking"
+                            android:textSize="20dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#DADADA"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <Spinner
+                                android:id="@+id/sp_zone_parking"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Name of the parking"
+                                android:textSize="15dp" />
+
+                            <EditText
+                                android:id="@+id/et_parking_name"
+                                android:layout_width="300dp"
+                                android:layout_height="50dp" />
+
+                            <Button
+                                android:id="@+id/btn_admin_addparking"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_width="250dp"
+                                android:layout_height="50dp"
+                                android:text="Create"
+                                android:textColor="@color/colorAccent"
+                                android:background="@color/colorPrimary"
+                                />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout

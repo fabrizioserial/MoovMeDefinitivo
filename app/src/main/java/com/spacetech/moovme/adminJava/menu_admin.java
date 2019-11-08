@@ -38,12 +38,12 @@ import java.util.ArrayList;
 public class menu_admin extends AppCompatActivity {
 
     Administrator ActiveAdmin;
-    EditText et_name,et_phoneuser,et_zonename,et_zonepoint, et_assettypename, et_assettypepoint,et_aBatchprice,et_aBatchcant,et_aBatchcode;
+    EditText et_name,et_phoneuser,et_zonename,et_zonepoint, et_assettypename, et_assettypepoint,et_aBatchprice,et_aBatchcant,et_aBatchcode,et_parkingName;
     String name,UserPhone,assetTypename;
-    Button btn_addadmin,btn_blockuser,btn_addzone,btn_deletezone, btn_addassettype,btn_assetbatch;
-    Spinner sp_assettype,sp_zone;
+    Button btn_addadmin,btn_blockuser,btn_addzone,btn_deletezone, btn_addassettype,btn_assetbatch,btn_addAssetParking;
+    Spinner sp_assettype,sp_zone,sp_zoneParking;
     AssetType assetTypeActive;
-    Zone zoneactive;
+    Zone zoneactive,zoneactiveParking;
     Mooveme mooveme;
     Repository<Administrator> repositoryAdmin;
 
@@ -67,6 +67,7 @@ public class menu_admin extends AppCompatActivity {
 
         sp_assettype = (Spinner) findViewById(R.id.spn_assettype);
         sp_zone = (Spinner) findViewById(R.id.spn_zone);
+        sp_zoneParking = (Spinner) findViewById(R.id.sp_zone_parking);
 
         et_phoneuser = (EditText)findViewById(R.id.et_phoneuser_id);
         et_name = (EditText) findViewById(R.id.et_name_id);
@@ -77,6 +78,7 @@ public class menu_admin extends AppCompatActivity {
         et_aBatchcant = (EditText)findViewById(R.id.et_assetbatch_cant);
         et_aBatchprice = (EditText)findViewById(R.id.et_assetbatch_price);
         et_aBatchcode = (EditText)findViewById(R.id.et_assetbatch_code);
+        et_parkingName = (EditText) findViewById(R.id.et_parking_name);
 
         btn_addadmin = (Button) findViewById(R.id.btn_addadmin_id);
         btn_blockuser = (Button) findViewById(R.id.btn_blocuser_id);
@@ -84,6 +86,7 @@ public class menu_admin extends AppCompatActivity {
         btn_deletezone = (Button) findViewById(R.id.btn_deletezone_id);
         btn_addassettype = (Button) findViewById(R.id.btn_addassettype_id);
         btn_assetbatch = (Button)findViewById(R.id.btn_addassetbatch_id);
+        btn_addAssetParking = (Button) findViewById(R.id.btn_admin_addparking);
 
         repositoryAdmin =mooveme.getAdministratorRepository();
         //Toast.makeText(getApplicationContext(), phoneActiveAdmin,Toast.LENGTH_LONG).show();
@@ -158,9 +161,28 @@ public class menu_admin extends AppCompatActivity {
                 }
             }
         });
+        btn_addAssetParking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateAssetParking();
+            }
+        });
         SpinnerAssetType();
         SpinnerZoneType();
+        SpinnerZone_to_ParkingType();
     }
+
+    private void CreateAssetParking() {
+        String parkingName = et_parkingName.getText().toString().trim();
+        ActiveAdmin.addNewAssetParking(zoneactiveParking,parkingName);
+    }
+    private void SpinnerZone_to_ParkingType() {
+        ArrayList<Zone> zones = mooveme.getZoneRepository().getRepository();
+        ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zones);
+        sp_zoneParking.setAdapter(adapter);
+        zoneactiveParking = (Zone) sp_zoneParking.getSelectedItem();
+    }
+
     private void SpinnerZoneType() {
         ArrayList<Zone> zones = mooveme.getZoneRepository().getRepository();
         ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zones);

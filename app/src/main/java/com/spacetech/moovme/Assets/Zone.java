@@ -121,8 +121,14 @@ public class Zone {
         throw new AssetTypeDoesNotExistInSpecifiedZoneException();
     }
 
-    public void createAssetParking(String name){
-        assetParkings.add(new AssetParking(this, name));
+    public void createAssetParking(String name) throws ParkingAlreadyExistException{
+        for(AssetParking assetParking:assetParkings){
+            if(assetParking.getName().equals(name)){
+                assetParkings.add(new AssetParking(this, name));
+            }
+        }
+        throw new ParkingAlreadyExistException();
+
     }
 
     public ArrayList<AssetParking> getAssetParkings(){return assetParkings;}
