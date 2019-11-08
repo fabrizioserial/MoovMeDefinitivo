@@ -10,9 +10,9 @@ public class PointTable {
     ArrayList<RankingInPointTable> rankings;
     TopPointUserComparator topPointUserComparator;
 
-    public PointTable(ArrayList<RankingInPointTable> rankings, TopPointUserComparator topPointUserComparator) {
-        this.rankings = rankings;
-        this.topPointUserComparator = topPointUserComparator;
+    public PointTable() {
+        this.rankings = new ArrayList<>();
+        this.topPointUserComparator = new TopPointUserComparator();
     }
 
     public void updateScore(Points aquiredPoints, Data data) {

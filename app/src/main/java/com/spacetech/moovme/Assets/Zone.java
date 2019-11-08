@@ -1,11 +1,12 @@
 package com.spacetech.moovme.Assets;
 
 import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
+import com.spacetech.moovme.Exeptions.CantApplyDiscountExeption;
 import com.spacetech.moovme.Exeptions.ElementExistExeption;
 import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
 import com.spacetech.moovme.Points.PointCounter;
 import com.spacetech.moovme.Points.PointTable;
-import com.spacetech.moovme.Repository.Repository;
+import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.User;
 
 import java.util.ArrayList;
@@ -13,18 +14,15 @@ import java.util.HashMap;
 
 public class Zone {
     private final String name;
-
-    private final Repository<AssetType> assetTypeRepository = new Repository<>();
     private final ArrayList<AssetBatch> totalAssetsBatchList =new ArrayList<>();
-    private final Tarifario tarifario;
+    private final Tarifario tarifario=new Tarifario();
     private final PointTable pointTable;//create in construtor or leave it like that? implement after knowing persistance
     private HashMap<AssetType, Discount> discountOrganizedByAssetType= new HashMap<>();
+    private ArrayList<Data> usersWithWinnerDiscount;
     private PointCounter pointCounter;
 
     public Zone(String name){
-
         this.name=name;
-        this.tarifario = new Tarifario();
         this.pointTable=new PointTable();
         this.pointCounter=new PointCounter();
     }
@@ -34,18 +32,6 @@ public class Zone {
         totalAssetsBatchList.add(assetBatch);
     }
 
-    public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
-        for(AssetBatch batch : totalAssetsBatchList){
-            if(batch.getType().equals(assetType)){
-                for(Asset asset: batch.getAssetList()){
-                    if(!asset.assetIsOcupied){
-                        return asset;
-                    }
-                }
-            }
-        }
-        throw new AssetTypeDoesNotExistInSpecifiedZone();
-    }
 
     public Fee returnAsset(Travel actalTravel, User user) {
         pointTable.updateScore(pointCounter.calculateAquiredPoints(actalTravel),user.getData());
@@ -57,15 +43,22 @@ public class Zone {
         discountOrganizedByAssetType.put(assetType,discount);
     }
 
-    public ArrayList<Asset> getTotalAssets() {
-        ArrayList<Asset> totalAssets=new ArrayList<>();
-        for (AssetBatch assetBatch:totalAssetsBatchList) {
-            totalAssets.addAll(assetBatch.getAssetList());
-        }
-        return totalAssets;
-    }
-    public void addAssetParking(){
 
+    public boolean canApplyDiscount(Travel actualTravel, User user) {
+        if(!usersWithWinnerDiscount.contains(user.getData())){
+            return discountOrganizedByAssetType.get(actualTravel.getAsset().getAssetType()).canApplyDiscount(user.getPoints());
+        }
+        else return false;
+    }
+
+    public Fee applyDiscount(Travel actualTravel, User user, Fee fee) throws CantApplyDiscountExeption {
+        if(!usersWithWinnerDiscount.contains(user.getData())){
+            return new Fee(fee.getPrice()*0.5);
+        }
+        else if(discountOrganizedByAssetType.containsKey(actualTravel.getAsset().getAssetType())){
+            return new Fee(discountOrganizedByAssetType.get(actualTravel.getAsset().getAssetType()).applyDiscount(user.getPoints(),fee));
+        }
+        else return fee;
     }
 
     /*
@@ -95,6 +88,25 @@ public class Zone {
             return ((Zone) object).getName().equals(name);
         }
         else return false;
+    }
+    public ArrayList<Asset> getTotalAssets() {
+        ArrayList<Asset> totalAssets=new ArrayList<>();
+        for (AssetBatch assetBatch:totalAssetsBatchList) {
+            totalAssets.addAll(assetBatch.getAssetList());
+        }
+        return totalAssets;
+    }
+    public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZone {
+        for(AssetBatch batch : totalAssetsBatchList){
+            if(batch.getType().equals(assetType)){
+                for(Asset asset: batch.getAssetList()){
+                    if(!asset.assetIsOcupied){
+                        return asset;
+                    }
+                }
+            }
+        }
+        throw new AssetTypeDoesNotExistInSpecifiedZone();
     }
 
 }
