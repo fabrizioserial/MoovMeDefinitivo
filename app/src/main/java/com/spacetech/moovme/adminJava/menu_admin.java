@@ -1,6 +1,8 @@
 package com.spacetech.moovme.adminJava;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,11 +13,12 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
 import com.spacetech.moovme.Adapters.AssettypeAdapter;
 import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Assets.AssetType;
-
 import com.spacetech.moovme.Assets.Fee;
+import com.spacetech.moovme.Assets.ParkingAlreadyExistException;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exceptions.AdministratorDoesntFoundException;
 import com.spacetech.moovme.Exceptions.ElementExistException;
@@ -127,6 +130,8 @@ public class menu_admin extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     adminAddZone(et_zonename,et_zonepoint,ActiveAdmin);
+                    Toast.makeText(getApplicationContext(), "Zone succesfully created", Toast.LENGTH_SHORT).show();
+
                     Persistence.saveInformation(getApplicationContext(),mooveme);
                 } catch (NumberFormatException e){
                     Toast.makeText(getApplicationContext(),"Error input points",Toast.LENGTH_LONG).show();
@@ -173,8 +178,21 @@ public class menu_admin extends AppCompatActivity {
     }
 
     private void CreateAssetParking() {
-        String parkingName = et_parkingName.getText().toString().trim();
-        ActiveAdmin.addNewAssetParking(zoneactiveParking,parkingName);
+
+        try {
+            SpinnerZone_to_ParkingType();
+            String parkingName = et_parkingName.getText().toString().trim();
+            ActiveAdmin.addNewAssetParking(zoneactiveParking,parkingName,getApplicationContext());
+            SharedPreferences mPrefs = getSharedPreferences("Mooveme", Context.MODE_PRIVATE);
+
+            SharedPreferences.Editor prefsEditor = mPrefs.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(mooveme);
+            prefsEditor.putString("moooveme", json);
+            prefsEditor.apply();
+        } catch (ParkingAlreadyExistException e) {
+            e.printStackTrace();
+        }
     }
     private void SpinnerZone_to_ParkingType() {
         ArrayList<Zone> zones = mooveme.getZoneRepository().getRepository();
@@ -261,6 +279,7 @@ public class menu_admin extends AppCompatActivity {
     public void saveInformation(){
         Persistence.saveInformation(getApplicationContext(),mooveme);
     }
+
 
 
 }

@@ -1,5 +1,8 @@
 package com.spacetech.moovme.Assets;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
 import com.spacetech.moovme.Exceptions.CantApplyDiscountException;
 import com.spacetech.moovme.Exceptions.ElementExistException;
@@ -121,13 +124,17 @@ public class Zone {
         throw new AssetTypeDoesNotExistInSpecifiedZoneException();
     }
 
-    public void createAssetParking(String name) throws ParkingAlreadyExistException{
-        for(AssetParking assetParking:assetParkings){
-            if(assetParking.getName().equals(name)){
-                assetParkings.add(new AssetParking(this, name));
+    public void createAssetParking(String name, Context context) throws ParkingAlreadyExistException{
+        if(assetParkings.size() > 0){
+            for(AssetParking assetParking:assetParkings){
+                if(!assetParking.getName().equals(name)){
+                    //assetParkings.add(new AssetParking(this, name));
+                    Toast.makeText(context, name,Toast.LENGTH_SHORT).show();
+                }
             }
+            throw new ParkingAlreadyExistException();
         }
-        throw new ParkingAlreadyExistException();
+        assetParkings.add(new AssetParking(this, name));
 
     }
 

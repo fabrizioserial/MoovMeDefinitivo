@@ -1,11 +1,13 @@
 package com.spacetech.moovme.Users;
 
 
+import android.content.Context;
 import android.widget.EditText;
 
 import com.spacetech.moovme.Assets.AssetBatch;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Fee;
+import com.spacetech.moovme.Assets.ParkingAlreadyExistException;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exceptions.ElementExistException;
 import com.spacetech.moovme.Exceptions.ItemDoesNotExistException;
@@ -82,7 +84,7 @@ public class Administrator extends Operators {
         }
         else return false;
     }
-    public void addNewAssetParking(Zone zone,String name){
-        zone.createAssetParking(name);
+    public void addNewAssetParking(Zone zone, String name, Context context) throws ParkingAlreadyExistException {
+        zone.createAssetParking(name,context);
     }
 }

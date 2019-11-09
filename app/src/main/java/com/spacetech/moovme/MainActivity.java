@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.spacetech.moovme.Assets.Asset;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
@@ -50,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
         mooveme.addUserRepository(usersRepository);
         mooveme.addZoneRepository(zoneRepository);
         mooveme.addAssetTypeRepository(assetTypeRepository);
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+        Gson gson = builder.create();
 
         if(Persistence.loadMoovme(getApplicationContext())!= null){
             mooveme = Persistence.loadMoovme(getApplicationContext());

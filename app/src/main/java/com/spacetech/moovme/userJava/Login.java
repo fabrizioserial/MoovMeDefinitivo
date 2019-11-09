@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.spacetech.moovme.DialogException;
-import com.spacetech.moovme.Exeptions.UserDoesntExistException;
+import com.spacetech.moovme.Exceptions.UserDoesntExistException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
 import com.spacetech.moovme.R;
