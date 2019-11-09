@@ -1,6 +1,7 @@
 package com.spacetech.moovme;
 
 import com.spacetech.moovme.Assets.Asset;
+import com.spacetech.moovme.Assets.AssetParking;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exceptions.AdministratorDoesntFoundException;
@@ -14,6 +15,7 @@ import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Mooveme {
 
@@ -24,9 +26,12 @@ public class Mooveme {
     private Repository<Asset> assetRepository;
     private Repository<AssetType> assetTypeRepository;
     private ListAssetBachCodes listAssetBachCodes;
+    private HashMap<AssetParking,Zone> assetParkingZoneHashMap;
+    private Repository<AssetParking> assetParkingRepository;
 
     public Mooveme(){
         listAssetBachCodes = new ListAssetBachCodes();
+        assetParkingZoneHashMap = new HashMap<>();
     }
 
     public void addAdminRepository(Repository<Administrator> admin){
@@ -44,14 +49,15 @@ public class Mooveme {
     public void addAssetTypeRepository(Repository assetType){
         this.assetTypeRepository = assetType;
     }
+    public void addAssetParkingRepository(Repository<AssetParking> assetParkingRepository) {
+        this.assetParkingRepository = assetParkingRepository;
+    }
 
 
 
     public Administrator loginAdministrator(Administrator administrator) throws AdministratorDoesntFoundException {
-        boolean Found= false;
         for(Administrator adminis:(ArrayList<Administrator>)adminRepository.getRepository()){
             if(administrator.getName().equals(adminis.getName())){
-                Found = true;
                 return adminis;
             }
         }
@@ -98,6 +104,7 @@ public class Mooveme {
     public Repository<AssetType> getAssetTypeRepository(){
         return assetTypeRepository;
     }
+    public Repository<AssetParking> getAssetParkingRepository(){return assetParkingRepository;}
 
     public Administrator findAdmin(String name) throws AdministratorDoesntFoundException {
         for(Administrator administrator: adminRepository.getRepository()){
@@ -120,4 +127,12 @@ public class Mooveme {
         }
         throw new UserDoesntExistException();
     }
+
+    public void addParking(AssetParking assetParking,Zone zone) throws ElementExistException {
+        assetParkingRepository.add(assetParking);
+
+        //assetParkingZoneHashMap.put(assetParking,zone);
+    }
+
+
 }

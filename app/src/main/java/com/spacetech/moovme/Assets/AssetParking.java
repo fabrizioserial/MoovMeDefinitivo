@@ -7,16 +7,19 @@ import com.spacetech.moovme.Users.User;
 
 public class AssetParking {
 
-    private final Zone zone;
+    private  Zone zone;
     private  String name;
+    String zonename;
 
-    AssetParking(Zone zone, String name){
-        this.zone=zone;
+    public AssetParking(String name,Zone zonename){
         this.name = name;
-    }
+        this.zone = zonename;}
+
 
     public String getName(){
         return name;
+    }
+    public void setZone(Zone zone){ this.zone = zone;
     }
     public Asset rentAsset(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZoneException {
         return zone.getAssetwithDesignatedType(assetType);
@@ -26,6 +29,12 @@ public class AssetParking {
         return zone.returnAsset(travel,user);
     }
 
+    public Fee returnAssetTimeTest(Travel travel, User user,int time) {
+        return zone.returnAssetTimeTest(travel,user,time);
+    }
+
+    public void lookforzone(){
+    }
     public Zone getZone() {
         return zone;
     }

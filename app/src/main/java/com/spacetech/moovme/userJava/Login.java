@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,9 +45,12 @@ public class Login extends AppCompatActivity {
                     phonenumber = et_phone.getText().toString().trim();
                     User user = new User(new Data("user", new PhoneNumber(Integer.parseInt(phonenumber))));
                     mooveme.loginUser(user);
+                    Toast.makeText(getApplicationContext(),"holis",Toast.LENGTH_SHORT).show();
+
                     Intent i = new Intent(Login.this,menu_user.class);
                     i.putExtra("phonenumber",phonenumber);
                     startActivity(i);
+
                 } catch (UserDoesntExistException e) {
                     DialogException.CreateDialog("Error user login","User doesnt exist",Login.this);
                 }

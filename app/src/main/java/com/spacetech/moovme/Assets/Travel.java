@@ -2,24 +2,35 @@ package com.spacetech.moovme.Assets;
 
 import com.spacetech.moovme.Users.Timer;
 
+import java.util.Calendar;
+
 public class Travel {
 
     private final Asset asset;
     private final Timer timer;
-    private final long expectedTime;
+    private final int expectedTime;
 
-    public Travel(Asset asset, long expectedTime){
+    public Travel(Asset asset, int expectedTimeInMinutes){
         this.asset=asset;
-        this.timer= new Timer(System.nanoTime()); //TODO pasarle el tiempo que se creo desde que se corre la aplicacion
-        this.expectedTime=expectedTime;
+        this.timer= new Timer();
+        this.expectedTime=expectedTimeInMinutes;
     }
 
     public Asset getAsset(){
         return asset;
     }
 
-    public boolean checkTime(long actualTime){
-        if(timer.actualTimePassSinceStartedTimer(actualTime)<=expectedTime) return true;
+    public boolean checkTime(){
+        if(timer.actualTimePassSinceStartedTimer(Calendar.MINUTE)<=expectedTime) return true;
         else return false;
+    }
+
+    public boolean checkTimeTest(int time) {
+        if(timer.actualTimePassSinceStartedTimer(time)<=expectedTime) return true;
+        else return false;
+    }
+
+    public int getTime(){
+        return timer.actualTimePassSinceStartedTimer(Calendar.MINUTE);
     }
 }

@@ -9,8 +9,11 @@ public class PhoneNumber {
     }
 
 
-    public boolean equals(PhoneNumber o){
-        return this.getNumber() == o.getNumber();
+    public boolean equals(Object o){
+        if(o instanceof PhoneNumber){
+            return ((PhoneNumber) o).getNumber()== this.getNumber();
+        }
+        else return false;
     }
 
     public int getNumber() {

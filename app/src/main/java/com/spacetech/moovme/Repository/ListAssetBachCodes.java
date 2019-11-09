@@ -6,7 +6,7 @@ public class ListAssetBachCodes {
 
     }
     public Integer createNewCode(){
-        lastCodeValue++;
+        lastCodeValue = lastCodeValue +1;
         return lastCodeValue;
     }
 }

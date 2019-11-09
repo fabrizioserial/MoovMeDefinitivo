@@ -6,7 +6,7 @@ import com.spacetech.moovme.Exceptions.ItemDoesNotExistException;
 import java.util.ArrayList;
 
 
-public class Repository<T> {
+public class Repository<T> { //repositorio generico bastante claro
 
     private ArrayList<T> arrayListGeneric;
 
@@ -29,11 +29,18 @@ public class Repository<T> {
     }
 
     public void remove(T t)throws ItemDoesNotExistException {
+        T elementToDelete = null;
         for(T element: arrayListGeneric){
             if(t.equals(element)){
-                arrayListGeneric.remove(t);
+                elementToDelete = t;
             }
         }
-        throw new ItemDoesNotExistException();
+        arrayListGeneric.remove(t);
+        if(elementToDelete == null){
+            throw new ItemDoesNotExistException();
+        }else{
+            arrayListGeneric.remove(elementToDelete);
+        }
+
     }
 }

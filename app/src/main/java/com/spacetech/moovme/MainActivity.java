@@ -8,9 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.spacetech.moovme.Assets.Asset;
+import com.spacetech.moovme.Assets.AssetParking;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exceptions.ElementExistException;
@@ -35,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         Repository<Zone> zoneRepository = new Repository<>();
         Repository<Asset> assetRepository = new Repository<>();
         Repository<AssetType> assetTypeRepository = new Repository<>();
+        Repository<AssetParking> assetParkingRepository = new Repository<>();
 
         Mooveme mooveme = new Mooveme();
 
@@ -46,16 +46,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
+        mooveme.addAssetParkingRepository(assetParkingRepository);
         mooveme.addAssetRepository(assetRepository);
         mooveme.addAdminRepository(administratorRepository);
         mooveme.addUserRepository(usersRepository);
         mooveme.addZoneRepository(zoneRepository);
         mooveme.addAssetTypeRepository(assetTypeRepository);
 
-        GsonBuilder builder = new GsonBuilder();
-        builder.setPrettyPrinting();
-        Gson gson = builder.create();
+
 
         if(Persistence.loadMoovme(getApplicationContext())!= null){
             mooveme = Persistence.loadMoovme(getApplicationContext());

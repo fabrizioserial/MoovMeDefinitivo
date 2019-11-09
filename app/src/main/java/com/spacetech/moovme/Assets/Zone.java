@@ -15,36 +15,66 @@ import com.spacetech.moovme.Users.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Zone {
-    private final String name;
-    private final ArrayList<AssetBatch> totalAssetsBatchList;
-    private Tarifario tarifario;
-    private final PointTable pointTable;//create in construtor or leave it like that? implement after knowing persistance
-    private HashMap<AssetType, Discount> discountOrganizedByAssetType;
-    private ArrayList<Data> usersWithWinnerDiscount;
-    private PointCounter pointCounter;
-    private ArrayList<AssetParking> assetParkings;
+    private final String name; //nombre de zona
+    private final ArrayList<AssetBatch> totalAssetsBatchList; //guarda los paquetes de assets que tiene
+    private Tarifario tarifario;//guarda el tarifario que lleva cuenta de los precios
+    private final PointTable pointTable;//tabla de puntajes
+    private HashMap<AssetType, Discount> discountOrganizedByAssetType;//hashmap que guarda descuentos por tipos de asset
+    private HashSet<Data> usersWithWinnerDiscount;//lista de usuarios que tienen el descuento por haber salido primeros en la tabla de puntos en el mes
+    private PointCounter pointCounter;//contador de puntos que saca la cuenta de cuantos puntos ganaste en el viaje
+    private ArrayList<AssetParking> assetParkings;//lista de parkings que tiene la zona
+    private ArrayList<String> strings;
 
     public Zone(String name){
-        discountOrganizedByAssetType = new HashMap<>();
+        discountOrganizedByAssetType = new HashMap<>(); //constructor inicializa variables de arriba
         this.name=name;
         this.pointTable=new PointTable();
         this.pointCounter=new PointCounter();
         tarifario =new Tarifario();
         totalAssetsBatchList =new ArrayList<>();
         assetParkings = new ArrayList<>();
+        usersWithWinnerDiscount=new HashSet<>();
+        strings = new ArrayList<>();
     }
 
     public void addNewBach(AssetBatch assetBatch, Fee precioDeAlquilerDelLote) throws PriceIsAlreadySetException {
-        tarifario.addAssetPricePerZone(assetBatch.getType(),precioDeAlquilerDelLote);
-        totalAssetsBatchList.add(assetBatch);
+        //metodo para agregar un nuevo paquete de assets
+        tarifario.addAssetPricePerZone(assetBatch.getType(),precioDeAlquilerDelLote);//agrega los precios del asset a la zona y explota si ya tenia otro
+        totalAssetsBatchList.add(assetBatch);//an;ade el asset a la lista
     }
 
 
-    public Fee returnAsset(Travel actalTravel, User user) {
+    public Fee returnAsset(Travel actalTravel, User user) { //metodo para devolver el asset a la zona
+
+
+        //esta parte es para identificar cual es el asset que estaba ocupado y desocuparlo
+        ArrayList<Asset> posibleAssetsUsed=null;
+        for (AssetBatch assetBatch:this.totalAssetsBatchList) {
+            if(assetBatch.getType().equals(actalTravel.getAsset().getAssetType())){
+                posibleAssetsUsed=assetBatch.getAssetList();
+            }
+        }
+        posibleAssetsUsed.get(posibleAssetsUsed.indexOf(actalTravel.getAsset())).returnAsset();
+
+        //actualizar puntos en tabla y a;adir puntos al usuario
         pointTable.updateScore(pointCounter.calculateAquiredPoints(actalTravel),user.getData());
         user.addPoints(pointCounter.calculateAquiredPoints(actalTravel));
+        return tarifario.calculatePrice(actalTravel.getAsset().getAssetType()); //devuelve la tarifa de cuanto le salio sin ningun descuento aplicado
+    }
+
+    public Fee returnAssetTimeTest(Travel actalTravel, User user,int time) { //mismo que el anterior pero con tiempo ajustable
+        ArrayList<Asset> posibleAssetsUsed=null;
+        for (AssetBatch assetBatch:this.totalAssetsBatchList) {
+            if(assetBatch.getType().equals(actalTravel.getAsset().getAssetType())){
+                posibleAssetsUsed=assetBatch.getAssetList();
+            }
+        }
+        posibleAssetsUsed.get(posibleAssetsUsed.indexOf(actalTravel.getAsset())).returnAsset();
+        pointTable.updateScore(pointCounter.calculateAquiredPointsTimeTest(actalTravel,time),user.getData());
+        user.addPoints(pointCounter.calculateAquiredPointsTimeTest(actalTravel,time));
         return tarifario.calculatePrice(actalTravel.getAsset().getAssetType());
     }
 
@@ -54,18 +84,22 @@ public class Zone {
 
 
     public boolean canApplyDiscount(Travel actualTravel, User user) {
-        if(!usersWithWinnerDiscount.contains(user.getData())){
+        if(usersWithWinnerDiscount.contains(user.getData())){//se fija si el usuario esta en la tabla de ganadores
+            return true;
+        }
+        else if(discountOrganizedByAssetType.containsKey(actualTravel.getAsset().getAssetType())){//se fija si hay un descuento para el tipo de asset de su viaje
             return discountOrganizedByAssetType.get(actualTravel.getAsset().getAssetType()).canApplyDiscount(user.getPoints());
         }
         else return false;
     }
 
     public Fee applyDiscount(Travel actualTravel, User user, Fee fee) throws CantApplyDiscountException {
-        if(!usersWithWinnerDiscount.contains(user.getData())){
-            return new Fee(fee.getPrice()*0.5);
+        if(usersWithWinnerDiscount.contains(user.getData())){
+            usersWithWinnerDiscount.remove(user.getData()); //saca al usuario de la tabla de ganadores porque ya uso su descuento
+            return new Fee(fee.getPrice()*0.5);//devuelve una tarifa de cuanto le sale si se aplica el descuento
         }
         else if(discountOrganizedByAssetType.containsKey(actualTravel.getAsset().getAssetType())){
-            return new Fee(discountOrganizedByAssetType.get(actualTravel.getAsset().getAssetType()).applyDiscount(user.getPoints(),fee));
+            return new Fee(discountOrganizedByAssetType.get(actualTravel.getAsset().getAssetType()).applyDiscount(user.getPoints(),fee));//devuelve una tarifa de cuanto le sale si se aplica el descuento por asset
         }
         else return fee;
     }
@@ -74,19 +108,12 @@ public class Zone {
         return pointTable.getTopLeaders();
     }
 
-    /*
-    public ArrayList<NameAndScore> getTop10Leaders(){
-        //TODO return top 10Leaders
-        //this method can be called from user
+    public void giveTopUsersMonthDiscount(){ //guarda a los ganadores mensuales en su lista de ganadores
+        ArrayList<RankingInPointTable> topLeaders=getTop10Leaders();
+        for (RankingInPointTable ranking:topLeaders) {
+            usersWithWinnerDiscount.add(ranking.getData());
+        }
     }
-
-    public void giveTopUsersMonthDiscount(){
-        //TODO this method is called from admin
-        //then it tells user to have a discount
-        //user.givemonthDiscount()
-        //this activates a boolean in user that determinates if he has a 50 discount in next purchase
-    }
-    */
 
     public String getName() {
         return name;
@@ -111,11 +138,12 @@ public class Zone {
         return totalAssets;
     }
 
-    public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZoneException {
+    public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZoneException {//metodo usado para alquilar un asset
         for(AssetBatch batch : totalAssetsBatchList){
             if(batch.getType().equals(assetType)){
                 for(Asset asset: batch.getAssetList()){
                     if(!asset.assetIsOcupied){
+                        asset.occupy();
                         return asset;
                     }
                 }
@@ -124,18 +152,26 @@ public class Zone {
         throw new AssetTypeDoesNotExistInSpecifiedZoneException();
     }
 
-    public void createAssetParking(String name, Context context) throws ParkingAlreadyExistException{
+    public void createAssetParking(AssetParking assetParkingss, Context context) throws ParkingAlreadyExistException{
         if(assetParkings.size() > 0){
             for(AssetParking assetParking:assetParkings){
-                if(!assetParking.getName().equals(name)){
-                    //assetParkings.add(new AssetParking(this, name));
-                    Toast.makeText(context, name,Toast.LENGTH_SHORT).show();
+                if(assetParking.getName().equals(assetParkingss.getName())){
+                    Toast.makeText(context,"crea2",Toast.LENGTH_SHORT).show();
+                    throw new ParkingAlreadyExistException();
+
                 }
             }
-            throw new ParkingAlreadyExistException();
-        }
-        assetParkings.add(new AssetParking(this, name));
+            //assetParkings.add(new AssetParking(name,zone));
+            strings.add(name);
+            assetParkings.add(assetParkingss);
+            Toast.makeText(context,"crea",Toast.LENGTH_SHORT).show();
 
+        }else{
+            //assetParkings.add(new AssetParking(name,zone));
+            strings.add(name);
+            assetParkings.add(assetParkingss);
+            Toast.makeText(context,"crea3", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public ArrayList<AssetParking> getAssetParkings(){return assetParkings;}

@@ -1,8 +1,6 @@
 package com.spacetech.moovme.adminJava;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,13 +11,14 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
 import com.spacetech.moovme.Adapters.AssettypeAdapter;
 import com.spacetech.moovme.Adapters.ZoneAdapter;
+import com.spacetech.moovme.Adapters.ZoneAdapterParking;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Fee;
 import com.spacetech.moovme.Assets.ParkingAlreadyExistException;
 import com.spacetech.moovme.Assets.Zone;
+import com.spacetech.moovme.DialogException;
 import com.spacetech.moovme.Exceptions.AdministratorDoesntFoundException;
 import com.spacetech.moovme.Exceptions.ElementExistException;
 import com.spacetech.moovme.Exceptions.PriceIsAlreadySetException;
@@ -129,7 +128,7 @@ public class menu_admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    adminAddZone(et_zonename,et_zonepoint,ActiveAdmin);
+                    adminAddZone(et_zonename,ActiveAdmin);
                     Toast.makeText(getApplicationContext(), "Zone succesfully created", Toast.LENGTH_SHORT).show();
 
                     Persistence.saveInformation(getApplicationContext(),mooveme);
@@ -137,6 +136,7 @@ public class menu_admin extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Error input points",Toast.LENGTH_LONG).show();
                 }
                 SpinnerZoneType();
+                SpinnerZone_to_ParkingType();
             }
         });
 
@@ -146,6 +146,7 @@ public class menu_admin extends AppCompatActivity {
                 adminDeleteZone(et_zonename,ActiveAdmin);
                 Persistence.saveInformation(getApplicationContext(),mooveme);
                 SpinnerZoneType();
+                SpinnerZone_to_ParkingType();
             }
         });
 
@@ -180,41 +181,38 @@ public class menu_admin extends AppCompatActivity {
     private void CreateAssetParking() {
 
         try {
-            SpinnerZone_to_ParkingType();
             String parkingName = et_parkingName.getText().toString().trim();
-            ActiveAdmin.addNewAssetParking(zoneactiveParking,parkingName,getApplicationContext());
-            SharedPreferences mPrefs = getSharedPreferences("Mooveme", Context.MODE_PRIVATE);
-
-            SharedPreferences.Editor prefsEditor = mPrefs.edit();
-            Gson gson = new Gson();
-            String json = gson.toJson(mooveme);
-            prefsEditor.putString("moooveme", json);
-            prefsEditor.apply();
-        } catch (ParkingAlreadyExistException e) {
-            e.printStackTrace();
+            zoneactiveParking = (Zone) sp_zoneParking.getSelectedItem();
+            ActiveAdmin.addNewAssetParking(zoneactiveParking,parkingName,this,mooveme);
+           saveInformation();
+           mooveme = Persistence.loadMoovme(getApplicationContext());
+        } catch (ElementExistException | ParkingAlreadyExistException e) {
+            DialogException.CreateDialog("Error","Error to create a asset parking",this);
         }
     }
     private void SpinnerZone_to_ParkingType() {
         ArrayList<Zone> zones = mooveme.getZoneRepository().getRepository();
-        ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zones);
+        ZoneAdapterParking adapter = new ZoneAdapterParking(getApplicationContext(),zones);
         sp_zoneParking.setAdapter(adapter);
-        zoneactiveParking = (Zone) sp_zoneParking.getSelectedItem();
+
     }
 
     private void SpinnerZoneType() {
         ArrayList<Zone> zones = mooveme.getZoneRepository().getRepository();
         ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zones);
         sp_zone.setAdapter(adapter);
-        zoneactive = (Zone) sp_zone.getSelectedItem();
+
     }
     private void addAssetBatch(EditText et_aBatchcant, EditText et_aBatchprice, Administrator activeAdmin) throws PriceIsAlreadySetException {
         int cantidad = Integer.parseInt(et_aBatchcant.getText().toString());
         int price = Integer.parseInt(et_aBatchprice.getText().toString());
         int code = mooveme.getListAssetBachCodes();
+        zoneactive = (Zone) sp_zone.getSelectedItem();
+        assetTypeActive = (AssetType) sp_assettype.getSelectedItem();
         activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,code,new Fee(price));
         //TODO handle exeption with toast
-        Toast.makeText(getApplicationContext(),"u've buyed " + cantidad + " " + assetTypeActive.getName(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(),String.valueOf(code),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),zoneactive.getName(),Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(),"u've buyed " + cantidad + " " + assetTypeActive.getName(), Toast.LENGTH_SHORT).show();
 
     }
     public void SpinnerAssetType(){
@@ -222,7 +220,7 @@ public class menu_admin extends AppCompatActivity {
         AssettypeAdapter adapter = new AssettypeAdapter(getApplicationContext(),assetTypes);
         sp_assettype.setAdapter(adapter);
         assetTypename = sp_assettype.getSelectedItem().toString();
-        assetTypeActive = (AssetType) sp_assettype.getSelectedItem();
+
 
     }
     public void adminBlockUser(EditText et_phonenumber, Administrator administrator) {
@@ -255,13 +253,15 @@ public class menu_admin extends AppCompatActivity {
         int points = Integer.parseInt(et_assetpoint.getText().toString());
         administrator.createAssetType(assetName,points,mooveme.getAssetTypeRepository());
         saveInformation();
+        SpinnerAssetType();
         Toast.makeText(getApplicationContext(),"Se creo el asset con nombre " + assetName , Toast.LENGTH_SHORT).show();
     }
-    public void adminAddZone(EditText et_zone,EditText et_point_zone,Administrator administrator) {
+    public void adminAddZone(EditText et_zone,Administrator administrator) {
         try {
             String zonename = et_zone.getText().toString();
             administrator.createNewZone(mooveme.getZoneRepository(),zonename);
             saveInformation();
+            mooveme = Persistence.loadMoovme(getApplicationContext());
         } catch (ZoneAlreadyExistsException e) {
             e.printStackTrace();
         }
@@ -280,6 +280,16 @@ public class menu_admin extends AppCompatActivity {
         Persistence.saveInformation(getApplicationContext(),mooveme);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveInformation();
 
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mooveme = Persistence.loadMoovme(getApplicationContext());
+    }
 }

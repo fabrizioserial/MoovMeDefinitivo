@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,8 +19,8 @@ import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.DialogException;
 import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
+import com.spacetech.moovme.Exceptions.UserCantStartNewTrip;
 import com.spacetech.moovme.Exceptions.UserDoesntExistException;
-import com.spacetech.moovme.Exceptions.UserIsAlreadyOnATripException;
 import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
@@ -55,6 +56,12 @@ public class menu_user extends AppCompatActivity {
         mooveme = Persistence.loadMoovme(getApplicationContext());
         Intent i= getIntent();
 
+        try {
+            activeUser = mooveme.findUser(new Data((String)i.getStringExtra("phonenumber")));
+            Toast.makeText(this,"Hola " + activeUser.getName(),Toast.LENGTH_SHORT).show();
+        } catch (UserDoesntExistException e) {
+            e.printStackTrace();
+        }
         String numberofuser = i.getStringExtra("phonenumber");
 
         try {
@@ -65,6 +72,7 @@ public class menu_user extends AppCompatActivity {
 
         et_time = (EditText) findViewById(R.id.et_user_time);
         btn_rentAsset = (Button) findViewById(R.id.btn_user_rentAsset);
+        btn_returnAsset = (Button) findViewById(R.id.btn_user_returnAsset);
 
         ///metodos
         SpinnerAssets();
@@ -93,7 +101,7 @@ public class menu_user extends AppCompatActivity {
             activeUser.rentAsset(AssetParkingRent,assetTypeActive,Integer.parseInt(et_time.getText().toString()));
         } catch (AssetTypeDoesNotExistInSpecifiedZoneException assetTypeDoesNotExistInSpecifiedZoneException) {
             DialogException.CreateDialog("Error","Error to rent, asset type doesnt exis tin this zone",this);
-        } catch (UserIsAlreadyOnATripException e) {
+        } catch (UserCantStartNewTrip e) {
             DialogException.CreateDialog("User Error", "User is already on a trip", getApplicationContext());
         }
     }
@@ -112,7 +120,11 @@ public class menu_user extends AppCompatActivity {
         ArrayList<Zone> zoneArrayList = mooveme.getZoneRepository().getRepository();
         ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zoneArrayList);
         sp_zone.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+
         zoneactive = (Zone) sp_zone.getSelectedItem();
+
     }
 
     private void SpinnerAssets() {
@@ -120,15 +132,23 @@ public class menu_user extends AppCompatActivity {
         ArrayList<AssetType> assetTypes= mooveme.getAssetTypeRepository().getRepository();
         AssettypeAdapter adapter = new AssettypeAdapter(getApplicationContext(),assetTypes);
         sp_assetType.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
+
+
         assetTypename = sp_assetType.getSelectedItem().toString();
         assetTypeActive = (AssetType) sp_assetType.getSelectedItem();
 
     }
 
     private void SpinnerParkings() {
-        ArrayList<AssetParking> assetTypes= zoneactive.getAssetParkings();
+        ArrayList<AssetParking> assetTypes= mooveme.getAssetParkingRepository().getRepository();
         AssetParkingAdapter adapter = new AssetParkingAdapter(getApplicationContext(),assetTypes);
         sp_assetParking.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
+
+
         AssetParkingRent = (AssetParking) sp_assetParking.getSelectedItem();
 
     }

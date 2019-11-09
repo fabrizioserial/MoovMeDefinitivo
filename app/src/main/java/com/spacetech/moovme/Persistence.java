@@ -17,8 +17,7 @@ public class  Persistence {
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Mooveme", null);
         Type type = new TypeToken<Mooveme>() {}.getType();
-        Mooveme mooveme = gson.fromJson(json, type);
-        return mooveme;
+        return gson.fromJson(json, type);
     }
 
     public static void saveInformation(Context ctx,Mooveme mooveme){

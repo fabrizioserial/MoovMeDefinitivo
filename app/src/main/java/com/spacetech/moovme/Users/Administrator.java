@@ -5,6 +5,7 @@ import android.content.Context;
 import android.widget.EditText;
 
 import com.spacetech.moovme.Assets.AssetBatch;
+import com.spacetech.moovme.Assets.AssetParking;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Fee;
 import com.spacetech.moovme.Assets.ParkingAlreadyExistException;
@@ -15,6 +16,7 @@ import com.spacetech.moovme.Exceptions.PriceIsAlreadySetException;
 import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedException;
 import com.spacetech.moovme.Exceptions.ZoneAlreadyExistsException;
 import com.spacetech.moovme.Exceptions.ZoneDoesNotExistException;
+import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Repository.Repository;
 
 
@@ -84,7 +86,7 @@ public class Administrator extends Operators {
         }
         else return false;
     }
-    public void addNewAssetParking(Zone zone, String name, Context context) throws ParkingAlreadyExistException {
-        zone.createAssetParking(name,context);
+    public void addNewAssetParking(Zone zone, String name, Context context, Mooveme mooveme) throws ParkingAlreadyExistException, ElementExistException {
+        mooveme.addParking(new AssetParking(name,zone),zone);
     }
 }

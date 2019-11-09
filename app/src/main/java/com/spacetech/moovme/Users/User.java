@@ -1,7 +1,6 @@
 package com.spacetech.moovme.Users;
 
 
-import com.spacetech.moovme.Assets.Asset;
 import com.spacetech.moovme.Assets.AssetParking;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Fee;
@@ -9,7 +8,7 @@ import com.spacetech.moovme.Assets.Travel;
 import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
 import com.spacetech.moovme.Exceptions.CantApplyDiscountException;
 import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedException;
-import com.spacetech.moovme.Exceptions.UserIsAlreadyOnATripException;
+import com.spacetech.moovme.Exceptions.UserCantStartNewTrip;
 import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
 import com.spacetech.moovme.Points.Points;
 
@@ -23,16 +22,20 @@ public class User extends Operators {
     Points points;
 
     Travel actualTravel=null;
-    Asset assetUsed=null; //crear clase de viaje o sesion
 
-    public User(Data data) {
+    public User(Data data) {  //user se crea con datos que contienen su nombre y su numero de telefono
         this.data =data;
         this.points=new Points(0);
         money=0;
     }
 
-    public void userLocking(boolean lockUser) throws UserIsAlreadyLockedException {
+    public void userLocking(boolean lockUser) throws UserIsAlreadyLockedException { //este metodo bloquea el usuario
+        if(this.isLocked=lockUser){
+            throw new UserIsAlreadyLockedException(); //explota si bloqueas algo bloqueado
+        }
+        else{
             isLocked=lockUser;
+        }
     }
 
     public PhoneNumber getPhoneNumber(){
@@ -47,27 +50,41 @@ public class User extends Operators {
         return isLocked;
     }
 
-    public void rentAsset(AssetParking assetParking, AssetType assetType, long expectedTime) throws AssetTypeDoesNotExistInSpecifiedZoneException, UserIsAlreadyOnATripException {
-        if(actualTravel != null){
-            throw new UserIsAlreadyOnATripException();
+    public void rentAsset(AssetParking assetParking, AssetType assetType, int expectedTimeInMinutes) throws AssetTypeDoesNotExistInSpecifiedZoneException, UserCantStartNewTrip {
+        if(actualTravel != null&&getLock()){ //pregunta si esta bloqueado o esta en un viaje
+            throw new UserCantStartNewTrip();
         } else {
             try {
-                actualTravel = new Travel(assetParking.rentAsset(assetType), expectedTime);
+                actualTravel = new Travel(assetParking.rentAsset(assetType),expectedTimeInMinutes); //inicia un nuevo viaje pidiendo el asset al puesto de assets
             } catch (AssetTypeDoesNotExistInSpecifiedZoneException assetTypeDoesNotExistInSpecifiedZoneException) {
                 actualTravel = null;
-                throw new AssetTypeDoesNotExistInSpecifiedZoneException();
+                throw new AssetTypeDoesNotExistInSpecifiedZoneException();//explota si no hay assest de los que el quiere
             }
         }
     }
 
-    public void returnAsset(AssetParking assetParking)throws UserIsNotInATripException {
+    public void returnAsset(AssetParking assetParking)throws UserIsNotInATripException { //devuelve el asset al estacionamiento
         if(actualTravel!=null){
-            Fee fee = assetParking.returnAsset(actualTravel,this); //points had already been added here
-            boolean wantsToApplyDiscount=false;
-            if(assetParking.canApplyDiscount(actualTravel,this)){
-                //TODO ask if you want to apply discount. change wantsToApplyDiscount boolean
+            Fee fee = assetParking.returnAsset(actualTravel,this); //aca le dicen cuanto tiene q pagar (entren en los metodos de asset parking para ver q pasa)
+            if(assetParking.canApplyDiscount(actualTravel,this)){//pregunta si puede aplicar descuento
+                try {
+                    fee = assetParking.applyDiscount(actualTravel,this,fee); //le devuelve lo q tiene q pagar pero con descuento
+                } catch (CantApplyDiscountException cantApplyDiscountException) {
+                    throw new RuntimeException("Situacion imposible ya que se chequeo antes que esto sea posible");//explota por razones obias
+                }
             }
-            if(wantsToApplyDiscount){
+            money= money-fee.getPrice(); //le gasta su plata
+            actualTravel=null; //deja vacio el viaje para poder hacer otro
+        }
+        else{
+            throw new UserIsNotInATripException();
+        }
+    }
+
+    public void returnAssetTimeTest(AssetParking assetParking,int time)throws UserIsNotInATripException { //este es lo mismo que el anterior nomas que le pasamos un tiempo para no tener que esperar 10 minutos reales para q funque
+        if(actualTravel!=null){
+            Fee fee = assetParking.returnAssetTimeTest(actualTravel,this,time);
+            if(assetParking.canApplyDiscount(actualTravel,this)){
                 try {
                     fee = assetParking.applyDiscount(actualTravel,this,fee);
                 } catch (CantApplyDiscountException cantApplyDiscountException) {
@@ -83,7 +100,9 @@ public class User extends Operators {
     }
 
 
-    public boolean equals(Object o1){
+
+
+    public boolean equals(Object o1){ //este equals sobreescribe al equals de objct para compararlos a nuestra manera
         if(o1 instanceof User){
             return ((User) o1).getPhoneNumber().getNumber()==data.getPhoneNumber().getNumber();
         }

@@ -1,7 +1,10 @@
 package com.spacetech.moovme.Assets;
 
-import com.spacetech.moovme.Exeptions.AssetTypeDoesNotExistInSpecifiedZone;
-import com.spacetech.moovme.Exeptions.PriceIsAlreadySetExeption;
+import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
+import com.spacetech.moovme.Exceptions.ElementExistException;
+import com.spacetech.moovme.Exceptions.PriceIsAlreadySetException;
+import com.spacetech.moovme.Exceptions.UserCantStartNewTrip;
+import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
 import com.spacetech.moovme.Repository.ListAssetBachCodes;
 import com.spacetech.moovme.Users.Administrator;
 import com.spacetech.moovme.Users.Data;
@@ -22,7 +25,7 @@ public class AssetTests {
     }
 
     @Test
-    public void whenBuyingNewAssetBatchShouldSucced() throws PriceIsAlreadySetExeption {
+    public void whenBuyingNewAssetBatchShouldSucced() throws PriceIsAlreadySetException {
         Data data=new Data("pepe");
         Administrator administrator=new Administrator(data);
         AssetType bici=new AssetType(50,"Bici");
@@ -30,7 +33,7 @@ public class AssetTests {
         ListAssetBachCodes listAssetBachCodes=new ListAssetBachCodes();
         Fee fee =new Fee(40);
 
-        administrator.buyBatch(bici,6,zone,listAssetBachCodes, fee);
+        administrator.buyBatch(bici,6,zone,listAssetBachCodes.createNewCode(), fee);
         ArrayList<AssetBatch> arrayListOfBacthContainedInZone= zone.getTotalAssetsBatchList();
 
         ArrayList<AssetBatch> expectedBatchList=new ArrayList<>();
@@ -39,7 +42,7 @@ public class AssetTests {
     }
 
     @Test
-    public void whenTryingToBuyNewBatchShouldFail() throws PriceIsAlreadySetExeption {
+    public void whenTryingToBuyNewBatchShouldFail() throws PriceIsAlreadySetException {
         Data data=new Data("pepe");
         Administrator administrator=new Administrator(data);
         AssetType bici=new AssetType(50,"Bici");
@@ -47,13 +50,13 @@ public class AssetTests {
         ListAssetBachCodes listAssetBachCodes=new ListAssetBachCodes();
         Fee fee =new Fee(40);
         Fee fee1 = new Fee(50);
-        administrator.buyBatch(bici,3,zone,listAssetBachCodes, fee);
+        administrator.buyBatch(bici,3,zone,listAssetBachCodes.createNewCode(), fee);
 
         boolean exeptionThrown=false;
 
         try {
-            administrator.buyBatch(bici,6,zone,listAssetBachCodes, fee);
-        } catch (PriceIsAlreadySetExeption priceIsAlreadySetExeption) {
+            administrator.buyBatch(bici,6,zone,listAssetBachCodes.createNewCode(), fee);
+        } catch (PriceIsAlreadySetException e) {
             exeptionThrown=true;
         }
 
@@ -62,15 +65,15 @@ public class AssetTests {
     }
 
     @Test
-    public void whenRentingANewAssetShouldsucced() throws PriceIsAlreadySetExeption, AssetTypeDoesNotExistInSpecifiedZone {
+    public void whenRentingANewAssetShouldsucced() throws UserCantStartNewTrip, AssetTypeDoesNotExistInSpecifiedZoneException, PriceIsAlreadySetException {
         Data data=new Data("pepe");
         Administrator administrator=new Administrator(data);
         AssetType bici=new AssetType(50,"Bici");
         Zone zone=new Zone("CABA");
         ListAssetBachCodes listAssetBachCodes=new ListAssetBachCodes();
         Fee fee =new Fee(40);
-        administrator.buyBatch(bici,6,zone,listAssetBachCodes, fee);
-        AssetParking assetParking=new AssetParking(zone);
+        administrator.buyBatch(bici,6,zone,listAssetBachCodes.createNewCode(), fee);
+        AssetParking assetParking=new AssetParking(zone,"puesto1");
         User user1=new User(new Data("agustin",new PhoneNumber(420)));
 
         user1.rentAsset(assetParking,bici,50);
@@ -84,20 +87,42 @@ public class AssetTests {
     public void whenRentingANonExistingAssetShouldFail(){
         AssetType bici=new AssetType(50,"Bici");
         Zone zone=new Zone("CABA");
-        AssetParking assetParking=new AssetParking(zone);
+        AssetParking assetParking=new AssetParking(zone,"puesto1");
         User user1=new User(new Data("agustin",new PhoneNumber(420)));
 
         boolean exeptionwasThrown=false;
 
         try {
             user1.rentAsset(assetParking,bici,50);
-        } catch (AssetTypeDoesNotExistInSpecifiedZone assetTypeDoesNotExistInSpecifiedZone) {
+        } catch (AssetTypeDoesNotExistInSpecifiedZoneException assetTypeDoesNotExistInSpecifiedZone) {
             exeptionwasThrown=true;
+        } catch (UserCantStartNewTrip e) {
+            e.printStackTrace();
         }
 
         Assert.assertTrue(exeptionwasThrown);
     }
 
-    //TODO point system testing
+    @Test
+    public void whenReturningAssetShouldAddPintsInPointTable() throws PriceIsAlreadySetException, ElementExistException, UserCantStartNewTrip, AssetTypeDoesNotExistInSpecifiedZoneException, UserIsNotInATripException {
+        Data data=new Data("pepe");
+        Administrator administrator=new Administrator(data);
+        AssetType bici=new AssetType(2,"Bici");
+        Zone zone=new Zone("CABA");
+        ListAssetBachCodes listAssetBachCodes=new ListAssetBachCodes();
+        Fee fee =new Fee(40);
+        administrator.buyBatch(bici,6,zone,listAssetBachCodes.createNewCode(), fee);
+        AssetParking assetParking=new AssetParking(zone,"puesto1");
+        User user1=new User(new Data("agustin",new PhoneNumber(420)));
+        user1.setMoney(200);
+        user1.rentAsset(assetParking,bici,30);
+        user1.returnAssetTimeTest(assetParking,30);
+
+        Integer int1=72;
+        Integer int2=user1.getPoints().getPointsinIntValue();
+        Assert.assertEquals(int1,int2);
+
+
+    }
 
 }
