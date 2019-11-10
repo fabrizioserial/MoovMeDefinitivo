@@ -7,8 +7,8 @@ import com.spacetech.moovme.Assets.Fee;
 import com.spacetech.moovme.Assets.Travel;
 import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
 import com.spacetech.moovme.Exceptions.CantApplyDiscountException;
-import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedException;
 import com.spacetech.moovme.Exceptions.UserCantStartNewTrip;
+import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedException;
 import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
 import com.spacetech.moovme.Points.Points;
 

@@ -14,4 +14,12 @@ public class AssetType {
         return point;
     }
     public String getName(){return name;}
+
+    public boolean equals(Object o){
+        if( o instanceof AssetType){
+            return this.getName().equals(((AssetType) o).getName());
+        }else {
+            return false;
+        }
+    }
 }

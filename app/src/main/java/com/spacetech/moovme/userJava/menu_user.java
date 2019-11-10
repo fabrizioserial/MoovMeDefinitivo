@@ -84,13 +84,13 @@ public class menu_user extends AppCompatActivity {
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(),String.valueOf(mooveme.getAssetParkingRepository().getRepository().size()),Toast.LENGTH_SHORT).show();
 
-                assetTypename = sp_assetType.getSelectedItem().toString();
+                assetTypeActive = (AssetType) sp_assetType.getSelectedItem();
                 AssetParkingRent = (AssetParking) sp_assetParking.getSelectedItem();
                 zoneRent = (Zone) sp_zone.getSelectedItem();
                 SpinnerParkingsReturn();
                 //zoneactive = (Zone) sp_zone.getSelectedItem();
                 RenAsset();
-                Toast.makeText(getApplicationContext(), zoneactive.getName() + " " + assetTypeActive.getName() + " " + AssetParkingRent.getName() + " " + et_time.getText().toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), zoneactive.getName() + " " + assetTypeActive.getName() + " " + AssetParkingRent.getName() + " " + et_time.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -118,6 +118,7 @@ public class menu_user extends AppCompatActivity {
     public void RenAsset(){
         try {
             activeUser.rentAsset(AssetParkingRent,assetTypeActive,Integer.parseInt(et_time.getText().toString()));
+            Toast.makeText(getApplicationContext(),activeUser.getActualTravel().getAsset().getAssetType().getName().toString(),Toast.LENGTH_SHORT).show();
         } catch (AssetTypeDoesNotExistInSpecifiedZoneException assetTypeDoesNotExistInSpecifiedZoneException) {
             DialogException.CreateDialog("Error","Error to rent, asset type doesnt exist in this zone",this);
         } catch (UserCantStartNewTrip e) {
@@ -127,7 +128,8 @@ public class menu_user extends AppCompatActivity {
 
     public void returnAnAsset(){
         try {
-            activeUser.returnAsset(AssetParkingReturn);
+            AssetParking assetParking = (AssetParking)sp_assetparkingReturn.getSelectedItem();
+            activeUser.returnAsset(assetParking);
         } catch (UserIsNotInATripException e) {
             DialogException.CreateDialog("Error","User is not in a trip",this);
         }
