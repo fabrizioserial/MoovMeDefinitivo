@@ -40,7 +40,10 @@ public class RegisterUser extends Fragment {
         btn_register = (Button) v.findViewById(R.id.btn_register_id);
         btn_login = (Button) v.findViewById(R.id.btn_login_id);
 
-        mooveme = Persistence.loadMoovme(this.getContext());
+        if(this.getContext() != null){
+            mooveme = Persistence.loadMoovme(this.getContext());
+        }
+
 
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override

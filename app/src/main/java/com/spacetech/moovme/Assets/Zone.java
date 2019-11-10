@@ -33,7 +33,7 @@ public class Zone {
         this.name=name;
         this.pointTable=new PointTable();
         this.pointCounter=new PointCounter();
-        tarifario =new Tarifario();
+        tarifario = new Tarifario();
         totalAssetsBatchList =new ArrayList<>();
         assetParkings = new ArrayList<>();
         usersWithWinnerDiscount=new HashSet<>();

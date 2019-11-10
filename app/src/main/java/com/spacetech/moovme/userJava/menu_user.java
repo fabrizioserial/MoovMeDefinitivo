@@ -59,16 +59,11 @@ public class menu_user extends AppCompatActivity {
         mooveme = Persistence.loadMoovme(getApplicationContext());
         Intent i= getIntent();
 
-        try {
-            activeUser = mooveme.findUser(new Data((String)i.getStringExtra("phonenumber")));
-            Toast.makeText(this,"Hola " + activeUser.getName(),Toast.LENGTH_SHORT).show();
-        } catch (UserDoesntExistException e) {
-            e.printStackTrace();
-        }
         String numberofuser = i.getStringExtra("phonenumber");
 
         try {
             activeUser = mooveme.getUser(new Data("user",new PhoneNumber(Integer.parseInt(numberofuser))));
+            Toast.makeText(getApplicationContext(),"Hola " + activeUser.getName(),Toast.LENGTH_SHORT).show();
         } catch (UserDoesntExistException e) {
             DialogException.CreateDialog("User Error","User doesnt exist", getApplicationContext());
         }
@@ -88,12 +83,13 @@ public class menu_user extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(),String.valueOf(mooveme.getAssetParkingRepository().getRepository().size()),Toast.LENGTH_SHORT).show();
-                //RenAsset();
+
                 assetTypename = sp_assetType.getSelectedItem().toString();
                 AssetParkingRent = (AssetParking) sp_assetParking.getSelectedItem();
                 zoneRent = (Zone) sp_zone.getSelectedItem();
                 SpinnerParkingsReturn();
                 //zoneactive = (Zone) sp_zone.getSelectedItem();
+                RenAsset();
                 Toast.makeText(getApplicationContext(), zoneactive.getName() + " " + assetTypeActive.getName() + " " + AssetParkingRent.getName() + " " + et_time.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -103,7 +99,6 @@ public class menu_user extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 zoneactive = (Zone) parent.getSelectedItem();
                 SpinnerParkings();
-                Toast.makeText(getApplicationContext(),"Hola" + zoneactive.getName(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -134,7 +129,7 @@ public class menu_user extends AppCompatActivity {
         try {
             activeUser.returnAsset(AssetParkingReturn);
         } catch (UserIsNotInATripException e) {
-            DialogException.CreateDialog("Error","User is not in a trip",getApplicationContext());
+            DialogException.CreateDialog("Error","User is not in a trip",this);
         }
     }
 

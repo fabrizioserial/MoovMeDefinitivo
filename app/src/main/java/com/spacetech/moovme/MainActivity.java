@@ -55,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        if(Persistence.loadMoovme(getApplicationContext())!= null){
-            mooveme = Persistence.loadMoovme(getApplicationContext());
+        if(Persistence.loadMoovme(this)!= null){
+            mooveme = Persistence.loadMoovme(this);
         }
-        Persistence.saveInformation(getApplicationContext(),mooveme);
+        Persistence.saveInformation(this,mooveme);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

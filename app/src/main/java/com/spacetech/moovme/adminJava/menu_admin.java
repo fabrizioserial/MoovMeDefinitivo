@@ -208,9 +208,11 @@ public class menu_admin extends AppCompatActivity {
         zoneactive = (Zone) sp_zone.getSelectedItem();
         assetTypeActive = (AssetType) sp_assettype.getSelectedItem();
         activeAdmin.buyBatch(assetTypeActive,cantidad,zoneactive,code,new Fee(price));
+
         //TODO handle exeption with toast
         Toast.makeText(getApplicationContext(),zoneactive.getName(),Toast.LENGTH_SHORT).show();
        // Toast.makeText(getApplicationContext(),"u've buyed " + cantidad + " " + assetTypeActive.getName(), Toast.LENGTH_SHORT).show();
+        saveInformation();
 
     }
     public void SpinnerAssetType(){
@@ -277,6 +279,7 @@ public class menu_admin extends AppCompatActivity {
     public void saveInformation(){
         Persistence.saveInformation(getApplicationContext(),mooveme);
     }
+
 
 
 }

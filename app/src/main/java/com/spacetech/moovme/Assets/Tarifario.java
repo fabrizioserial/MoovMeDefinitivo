@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class Tarifario {
 
-    HashMap<AssetType, Fee> pricePerAsset=new HashMap<>();
+    private HashMap<AssetType, Fee> pricePerAsset=new HashMap<>();
 
     public Tarifario() {
     }
