@@ -11,9 +11,10 @@ public class AssetParking {
     private  String name;
 
     public AssetParking(String name,Zone zone){
-
         this.zone = zone;
-        this.name = name; }
+        this.name = name;
+        zone.registerAssetParking(this);
+    }
 
 
     public String getName(){

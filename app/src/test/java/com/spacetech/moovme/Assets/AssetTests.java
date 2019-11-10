@@ -149,8 +149,6 @@ public class AssetTests {
         mooveme.addAssetParkingRepository(assetParkingRepository);
         mooveme.addZoneRepository(zoneRepository);
         mooveme.addZone(zone1);
-        mooveme.addParking(assetParking1);
-        mooveme.addParking(assetParking2);
 
     }
 
