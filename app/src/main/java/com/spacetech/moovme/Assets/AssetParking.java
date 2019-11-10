@@ -9,11 +9,11 @@ public class AssetParking {
 
     private  Zone zone;
     private  String name;
-    String zonename;
 
-    public AssetParking(String name,Zone zonename){
-        this.name = name;
-        this.zone = zonename;}
+    public AssetParking(String name,Zone zone){
+
+        this.zone = zone;
+        this.name = name; }
 
 
     public String getName(){
@@ -33,8 +33,6 @@ public class AssetParking {
         return zone.returnAssetTimeTest(travel,user,time);
     }
 
-    public void lookforzone(){
-    }
     public Zone getZone() {
         return zone;
     }

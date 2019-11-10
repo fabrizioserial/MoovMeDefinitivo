@@ -8,7 +8,6 @@ import com.spacetech.moovme.Assets.AssetBatch;
 import com.spacetech.moovme.Assets.AssetParking;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Fee;
-import com.spacetech.moovme.Assets.ParkingAlreadyExistException;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exceptions.ElementExistException;
 import com.spacetech.moovme.Exceptions.ItemDoesNotExistException;
@@ -86,7 +85,7 @@ public class Administrator extends Operators {
         }
         else return false;
     }
-    public void addNewAssetParking(Zone zone, String name, Context context, Mooveme mooveme) throws ParkingAlreadyExistException, ElementExistException {
-        mooveme.addParking(new AssetParking(name,zone),zone);
+    public void addNewAssetParking(Zone zone, String name, Mooveme mooveme, Context context) throws  ElementExistException {
+        mooveme.addParking(new AssetParking(name,zone),context);
     }
 }

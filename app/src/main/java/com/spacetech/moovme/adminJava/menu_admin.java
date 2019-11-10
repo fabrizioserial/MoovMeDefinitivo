@@ -16,7 +16,6 @@ import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Adapters.ZoneAdapterParking;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Fee;
-import com.spacetech.moovme.Assets.ParkingAlreadyExistException;
 import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.DialogException;
 import com.spacetech.moovme.Exceptions.AdministratorDoesntFoundException;
@@ -183,10 +182,9 @@ public class menu_admin extends AppCompatActivity {
         try {
             String parkingName = et_parkingName.getText().toString().trim();
             zoneactiveParking = (Zone) sp_zoneParking.getSelectedItem();
-            ActiveAdmin.addNewAssetParking(zoneactiveParking,parkingName,this,mooveme);
-           saveInformation();
-           mooveme = Persistence.loadMoovme(getApplicationContext());
-        } catch (ElementExistException | ParkingAlreadyExistException e) {
+            ActiveAdmin.addNewAssetParking(zoneactiveParking,parkingName,mooveme,getApplicationContext());
+            Persistence.saveInformation(getApplicationContext(),mooveme);
+        } catch (ElementExistException e) {
             DialogException.CreateDialog("Error","Error to create a asset parking",this);
         }
     }
@@ -280,16 +278,5 @@ public class menu_admin extends AppCompatActivity {
         Persistence.saveInformation(getApplicationContext(),mooveme);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        saveInformation();
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mooveme = Persistence.loadMoovme(getApplicationContext());
-    }
 }

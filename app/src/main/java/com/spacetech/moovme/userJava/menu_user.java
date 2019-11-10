@@ -3,6 +3,7 @@ package com.spacetech.moovme.userJava;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -38,10 +39,10 @@ public class menu_user extends AppCompatActivity {
     Button btn_rentAsset;
     //Actives
     AssetType assetTypeActive;
-    Zone zoneactive;
+    Zone zoneactive,zoneRent;
     Mooveme mooveme;
     private User activeUser;
-    private Spinner sp_assetParking,sp_assetType,sp_zone;;
+    private Spinner sp_assetParking,sp_assetType,sp_zone,sp_assetparkingReturn;
     private AssetParking AssetParkingRent,AssetParkingReturn;
     private Button btn_returnAsset;
 
@@ -53,6 +54,8 @@ public class menu_user extends AppCompatActivity {
         sp_assetType = (Spinner) findViewById(R.id.sp_user_assets);
         sp_assetParking = (Spinner) findViewById(R.id.sp_user_parking);
         sp_zone = (Spinner) findViewById(R.id.sp_user_zone);
+        sp_assetparkingReturn = (Spinner) findViewById(R.id.spn_user_return_parking);
+
         mooveme = Persistence.loadMoovme(getApplicationContext());
         Intent i= getIntent();
 
@@ -84,7 +87,28 @@ public class menu_user extends AppCompatActivity {
         btn_rentAsset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RenAsset();
+                //Toast.makeText(getApplicationContext(),String.valueOf(mooveme.getAssetParkingRepository().getRepository().size()),Toast.LENGTH_SHORT).show();
+                //RenAsset();
+                assetTypename = sp_assetType.getSelectedItem().toString();
+                AssetParkingRent = (AssetParking) sp_assetParking.getSelectedItem();
+                zoneRent = (Zone) sp_zone.getSelectedItem();
+                SpinnerParkingsReturn();
+                //zoneactive = (Zone) sp_zone.getSelectedItem();
+                Toast.makeText(getApplicationContext(), zoneactive.getName() + " " + assetTypeActive.getName() + " " + AssetParkingRent.getName() + " " + et_time.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        sp_zone.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                zoneactive = (Zone) parent.getSelectedItem();
+                SpinnerParkings();
+                Toast.makeText(getApplicationContext(),"Hola" + zoneactive.getName(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -100,7 +124,7 @@ public class menu_user extends AppCompatActivity {
         try {
             activeUser.rentAsset(AssetParkingRent,assetTypeActive,Integer.parseInt(et_time.getText().toString()));
         } catch (AssetTypeDoesNotExistInSpecifiedZoneException assetTypeDoesNotExistInSpecifiedZoneException) {
-            DialogException.CreateDialog("Error","Error to rent, asset type doesnt exis tin this zone",this);
+            DialogException.CreateDialog("Error","Error to rent, asset type doesnt exist in this zone",this);
         } catch (UserCantStartNewTrip e) {
             DialogException.CreateDialog("User Error", "User is already on a trip", getApplicationContext());
         }
@@ -121,9 +145,8 @@ public class menu_user extends AppCompatActivity {
         ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zoneArrayList);
         sp_zone.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        zoneactive = (Zone)sp_zone.getSelectedItem();
 
-
-        zoneactive = (Zone) sp_zone.getSelectedItem();
 
     }
 
@@ -133,29 +156,47 @@ public class menu_user extends AppCompatActivity {
         AssettypeAdapter adapter = new AssettypeAdapter(getApplicationContext(),assetTypes);
         sp_assetType.setAdapter(adapter);
 
-        adapter.notifyDataSetChanged();
-
-
-        assetTypename = sp_assetType.getSelectedItem().toString();
         assetTypeActive = (AssetType) sp_assetType.getSelectedItem();
 
     }
 
     private void SpinnerParkings() {
-        ArrayList<AssetParking> assetTypes= mooveme.getAssetParkingRepository().getRepository();
-        AssetParkingAdapter adapter = new AssetParkingAdapter(getApplicationContext(),assetTypes);
-        sp_assetParking.setAdapter(adapter);
+        //get the asset parkings of the zone that you selected
+        ArrayList<AssetParking> assetParkings = new ArrayList<>();
+        for(AssetParking assetParking: mooveme.getAssetParkingRepository().getRepository()){
+            if(assetParking.getZone().getName().equals(zoneactive.getName())){
+                assetParkings.add(assetParking);
+            }
+        }
+        if(assetParkings.size() > 0){
+            AssetParkingAdapter adapter = new AssetParkingAdapter(getApplicationContext(),assetParkings);
+            sp_assetParking.setAdapter(adapter);
 
-        adapter.notifyDataSetChanged();
+        }else{
+            ArrayList<AssetParking> assetTypes= mooveme.getAssetParkingRepository().getRepository();
+            AssetParkingAdapter adapter = new AssetParkingAdapter(getApplicationContext(),assetTypes);
+            sp_assetParking.setAdapter(adapter);
+        }
 
 
-        AssetParkingRent = (AssetParking) sp_assetParking.getSelectedItem();
 
     }
     private void SpinnerParkingsReturn() {
-        ArrayList<AssetParking> assetTypes= zoneactive.getAssetParkings();
-        AssetParkingAdapter adapter = new AssetParkingAdapter(getApplicationContext(),assetTypes);
-        sp_assetParking.setAdapter(adapter);
-        AssetParkingReturn = (AssetParking) sp_assetParking.getSelectedItem();
+        if(zoneRent != null){
+            ArrayList<AssetParking> assetParkings = new ArrayList<>();
+            for(AssetParking assetParking:mooveme.getAssetParkingRepository().getRepository()){
+                if(assetParking.getZone().getName().equals(zoneRent.getName())){
+                    assetParkings.add(assetParking);
+                }
+            }
+
+            AssetParkingAdapter adapter = new AssetParkingAdapter(getApplicationContext(),assetParkings);
+            sp_assetparkingReturn.setAdapter(adapter);
+        }
+
+
+
+       // AssetParkingReturn = (AssetParking) sp_assetparkingReturn.getSelectedItem();
+
     }
 }

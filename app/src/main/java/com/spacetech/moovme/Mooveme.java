@@ -1,5 +1,8 @@
 package com.spacetech.moovme;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.spacetech.moovme.Assets.Asset;
 import com.spacetech.moovme.Assets.AssetParking;
 import com.spacetech.moovme.Assets.AssetType;
@@ -128,8 +131,9 @@ public class Mooveme {
         throw new UserDoesntExistException();
     }
 
-    public void addParking(AssetParking assetParking,Zone zone) throws ElementExistException {
+    public void addParking(AssetParking assetParking, Context context) throws ElementExistException {
         assetParkingRepository.add(assetParking);
+        Toast.makeText(context,"se creo " + assetParking.getName(),Toast.LENGTH_SHORT).show();
 
         //assetParkingZoneHashMap.put(assetParking,zone);
     }
