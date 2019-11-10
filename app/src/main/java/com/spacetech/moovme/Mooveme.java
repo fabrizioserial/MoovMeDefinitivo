@@ -59,7 +59,7 @@ public class Mooveme {
 
 
     public Administrator loginAdministrator(Administrator administrator) throws AdministratorDoesntFoundException {
-        for(Administrator adminis:(ArrayList<Administrator>)adminRepository.getRepository()){
+        for(Administrator adminis:adminRepository.getRepository()){
             if(administrator.getName().equals(adminis.getName())){
                 return adminis;
             }
@@ -136,6 +136,10 @@ public class Mooveme {
         Toast.makeText(context,"se creo " + assetParking.getName(),Toast.LENGTH_SHORT).show();
 
         //assetParkingZoneHashMap.put(assetParking,zone);
+    }
+
+    public void addZone(Zone zone) throws ElementExistException {
+        zoneRepository.add(zone);
     }
 
 

@@ -5,12 +5,16 @@ import com.spacetech.moovme.Assets.AssetParking;
 import com.spacetech.moovme.Assets.AssetType;
 import com.spacetech.moovme.Assets.Fee;
 import com.spacetech.moovme.Assets.Travel;
+import com.spacetech.moovme.Assets.Zone;
 import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
 import com.spacetech.moovme.Exceptions.CantApplyDiscountException;
 import com.spacetech.moovme.Exceptions.UserCantStartNewTrip;
 import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedException;
 import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
 import com.spacetech.moovme.Points.Points;
+import com.spacetech.moovme.Points.RankingInPointTable;
+
+import java.util.ArrayList;
 
 
 public class User extends Operators {
@@ -131,6 +135,14 @@ public class User extends Operators {
 
     public Travel getActualTravel() {
         return actualTravel;
+    }
+
+    public void removePoints(int minimumPoints) {
+        this.points.remove(new Points(minimumPoints));
+    }
+
+    public ArrayList<RankingInPointTable> getRankings(Zone zone){
+        return zone.getRankings();
     }
 }
 

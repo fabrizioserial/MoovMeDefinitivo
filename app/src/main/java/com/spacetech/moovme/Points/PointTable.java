@@ -50,4 +50,8 @@ public class PointTable {
             return new ArrayList<>(rankings);
         }
     }
+
+    public ArrayList<RankingInPointTable> getRankings() {
+        return rankings;
+    }
 }

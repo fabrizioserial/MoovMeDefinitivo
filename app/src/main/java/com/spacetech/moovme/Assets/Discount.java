@@ -3,6 +3,7 @@ package com.spacetech.moovme.Assets;
 
 import com.spacetech.moovme.Exceptions.CantApplyDiscountException;
 import com.spacetech.moovme.Points.Points;
+import com.spacetech.moovme.Users.User;
 
 public class Discount {
 
@@ -14,8 +15,9 @@ public class Discount {
         this.percentageMultiplier = percentageMultiplier;
     }
 
-    public double applyDiscount(Points points, Fee fee)throws CantApplyDiscountException {
-        if(points.getPointsinIntValue()>=minimumPoints){
+    public double applyDiscount(User user, Fee fee)throws CantApplyDiscountException {
+        if(user.getPoints().getPointsinIntValue()>=minimumPoints){
+            user.removePoints(minimumPoints);
             return fee.getPrice()*percentageMultiplier;
         }
         else{

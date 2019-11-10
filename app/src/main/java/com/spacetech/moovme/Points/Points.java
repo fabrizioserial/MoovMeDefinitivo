@@ -11,6 +11,10 @@ public class Points {
         this.points=this.points+calculateAquiredPoints.getPointsinIntValue();
     }
 
+    public void remove(Points pointsToRemove){
+        this.points=this.points-pointsToRemove.getPointsinIntValue();
+    }
+
     public int getPointsinIntValue() {
         return points;
     }

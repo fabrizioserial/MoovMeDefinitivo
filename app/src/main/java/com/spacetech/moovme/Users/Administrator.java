@@ -16,7 +16,10 @@ import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedException;
 import com.spacetech.moovme.Exceptions.ZoneAlreadyExistsException;
 import com.spacetech.moovme.Exceptions.ZoneDoesNotExistException;
 import com.spacetech.moovme.Mooveme;
+import com.spacetech.moovme.Points.RankingInPointTable;
 import com.spacetech.moovme.Repository.Repository;
+
+import java.util.ArrayList;
 
 
 public class Administrator extends Operators {
@@ -87,5 +90,9 @@ public class Administrator extends Operators {
     }
     public void addNewAssetParking(Zone zone, String name, Mooveme mooveme, Context context) throws  ElementExistException {
         mooveme.addParking(new AssetParking(name,zone),context);
+    }
+
+    public ArrayList<RankingInPointTable> getRankings(Zone zone){
+        return zone.getRankings();
     }
 }

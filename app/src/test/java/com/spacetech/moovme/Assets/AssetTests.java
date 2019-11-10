@@ -5,7 +5,9 @@ import com.spacetech.moovme.Exceptions.ElementExistException;
 import com.spacetech.moovme.Exceptions.PriceIsAlreadySetException;
 import com.spacetech.moovme.Exceptions.UserCantStartNewTrip;
 import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
+import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Repository.ListAssetBachCodes;
+import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Administrator;
 import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.PhoneNumber;
@@ -73,7 +75,7 @@ public class AssetTests {
         ListAssetBachCodes listAssetBachCodes=new ListAssetBachCodes();
         Fee fee =new Fee(40);
         administrator.buyBatch(bici,6,zone,listAssetBachCodes.createNewCode(), fee);
-        AssetParking assetParking=new AssetParking(zone,"puesto1");
+        AssetParking assetParking=new AssetParking("puesto1",zone);
         User user1=new User(new Data("agustin",new PhoneNumber(420)));
 
         user1.rentAsset(assetParking,bici,50);
@@ -87,7 +89,7 @@ public class AssetTests {
     public void whenRentingANonExistingAssetShouldFail(){
         AssetType bici=new AssetType(50,"Bici");
         Zone zone=new Zone("CABA");
-        AssetParking assetParking=new AssetParking(zone,"puesto1");
+        AssetParking assetParking=new AssetParking("puesto1",zone);
         User user1=new User(new Data("agustin",new PhoneNumber(420)));
 
         boolean exeptionwasThrown=false;
@@ -112,7 +114,7 @@ public class AssetTests {
         ListAssetBachCodes listAssetBachCodes=new ListAssetBachCodes();
         Fee fee =new Fee(40);
         administrator.buyBatch(bici,6,zone,listAssetBachCodes.createNewCode(), fee);
-        AssetParking assetParking=new AssetParking(zone,"puesto1");
+        AssetParking assetParking=new AssetParking("puseto1",zone);
         User user1=new User(new Data("agustin",new PhoneNumber(420)));
         user1.setMoney(200);
         user1.rentAsset(assetParking,bici,30);
@@ -122,6 +124,33 @@ public class AssetTests {
         Integer int2=user1.getPoints().getPointsinIntValue();
         Assert.assertEquals(int1,int2);
 
+
+    }
+
+    @Test
+    public void whenCreating2AssetParkingsShouldSucced(){
+        Zone zone1=new Zone("SanFernando");
+        AssetParking assetParking1=new AssetParking("puesto1",zone1);
+        AssetParking assetParking2=new AssetParking("puesto2",zone1);
+
+        Assert.assertEquals(2,zone1.getAssetParkings().size());
+    }
+
+
+    @Test
+    public void moovMe() throws ElementExistException {
+        Mooveme mooveme=new Mooveme();
+        Zone zone1=new Zone("SanFernando");
+        AssetParking assetParking1=new AssetParking("puesto1",zone1);
+        AssetParking assetParking2=new AssetParking("puesto2",zone1);
+        Repository<Zone> zoneRepository=new Repository<>();
+        Repository<AssetParking>assetParkingRepository=new Repository<>();
+
+        mooveme.addAssetParkingRepository(assetParkingRepository);
+        mooveme.addZoneRepository(zoneRepository);
+        mooveme.addZone(zone1);
+        mooveme.addParking(assetParking1);
+        mooveme.addParking(assetParking2);
 
     }
 

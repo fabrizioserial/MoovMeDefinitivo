@@ -1,6 +1,7 @@
 package com.spacetech.moovme.Assets;
 
 import android.content.Context;
+import android.service.notification.NotificationListenerService;
 import android.widget.Toast;
 
 import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
@@ -99,7 +100,7 @@ public class Zone {
             return new Fee(fee.getPrice()*0.5);//devuelve una tarifa de cuanto le sale si se aplica el descuento
         }
         else if(discountOrganizedByAssetType.containsKey(actualTravel.getAsset().getAssetType())){
-            return new Fee(discountOrganizedByAssetType.get(actualTravel.getAsset().getAssetType()).applyDiscount(user.getPoints(),fee));//devuelve una tarifa de cuanto le sale si se aplica el descuento por asset
+            return new Fee(discountOrganizedByAssetType.get(actualTravel.getAsset().getAssetType()).applyDiscount(user,fee));//devuelve una tarifa de cuanto le sale si se aplica el descuento por asset
         }
         else return fee;
     }
@@ -177,4 +178,11 @@ public class Zone {
     public ArrayList<AssetParking> getAssetParkings(){return assetParkings;}
 
 
+    public void registerAssetParking(AssetParking assetParking) {
+        this.assetParkings.add(assetParking);
+    }
+
+    public ArrayList<RankingInPointTable> getRankings(){
+        return pointTable.getRankings();
+    }
 }
