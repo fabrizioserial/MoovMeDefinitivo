@@ -12,11 +12,18 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Moove Me1"
+        android:text="MOOVEME"
         android:textStyle="bold"
         android:textSize="50dp"
         android:layout_gravity="center"
-        android:textColor="#9C00FF"
+        android:textColor="@color/colorPrimary"
         />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Powered by Team 4"
+        android:textSize="15dp"
+        android:textColor="@color/colorPrimary"
+        />
 </LinearLayout>
