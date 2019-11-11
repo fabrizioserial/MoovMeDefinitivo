@@ -43,22 +43,24 @@ public class Zone {
 
     public Fee returnAsset(Travel actalTravel, User user) { //metodo para devolver el asset a la zona
 
-
+        int i = 0;
         //esta parte es para identificar cual es el asset que estaba ocupado y desocuparlo
         ArrayList<Asset> posibleAssetsUsed=new ArrayList<>();
         for (AssetBatch assetBatch:totalAssetsBatchList) {
             if(assetBatch.getType().equals(actalTravel.getAsset().getAssetType())){
+
                 posibleAssetsUsed=assetBatch.getAssetList();
             }
         }
         boolean wasReturned=false;
         for (Asset asset:posibleAssetsUsed) {
-            if(asset.assetIsOcupied&&!wasReturned){
+            if(!asset.assetIsOcupied){
                 asset.returnAsset();
+                i++;
                 wasReturned=true;
             }
         }
-        if(!wasReturned) throw new RuntimeException("Algo malo paso");
+        if(!wasReturned) throw new RuntimeException("Algo malo paso" + String.valueOf(i) );
 
         //actualizar puntos en tabla y a;adir puntos al usuario
         pointTable.updateScore(pointCounter.calculateAquiredPoints(actalTravel),user.getData());
