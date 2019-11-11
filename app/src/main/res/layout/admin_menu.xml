@@ -488,6 +488,62 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text= "Ranking"
+                        android:textSize="20dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="#DADADA"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Zones"
+                            android:textSize="15dp"
+                            android:paddingTop="20dp"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <Spinner
+                                android:id="@+id/sp_user_ranking_zone"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp" />
+
+                            <Button
+                                android:background="@color/colorPrimary"
+                                android:textColor="@color/colorAccent"
+                                android:id="@+id/btn_updateranking"
+                                android:text="Show"
+                                android:layout_width="200dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginBottom="20dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/ranking"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+                    </LinearLayout>
+
             </LinearLayout>
             </LinearLayout>
 

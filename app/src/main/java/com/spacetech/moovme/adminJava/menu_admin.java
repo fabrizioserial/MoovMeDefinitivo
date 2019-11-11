@@ -3,6 +3,7 @@ package com.spacetech.moovme.adminJava;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -10,8 +11,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.spacetech.moovme.Adapters.AssettypeAdapter;
+import com.spacetech.moovme.Adapters.RankingAdapter;
 import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Adapters.ZoneAdapterParking;
 import com.spacetech.moovme.Assets.AssetType;
@@ -27,6 +31,7 @@ import com.spacetech.moovme.Exceptions.ZoneAlreadyExistsException;
 import com.spacetech.moovme.Exceptions.ZoneDoesNotExistException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
+import com.spacetech.moovme.Points.RankingInPointTable;
 import com.spacetech.moovme.R;
 import com.spacetech.moovme.Repository.Repository;
 import com.spacetech.moovme.Users.Administrator;
@@ -41,12 +46,13 @@ public class menu_admin extends AppCompatActivity {
     Administrator ActiveAdmin;
     EditText et_name,et_phoneuser,et_zonename,et_zonepoint, et_assettypename, et_assettypepoint,et_aBatchprice,et_aBatchcant,et_aBatchcode,et_parkingName;
     String name,UserPhone,assetTypename;
-    Button btn_addadmin,btn_blockuser,btn_addzone,btn_deletezone, btn_addassettype,btn_assetbatch,btn_addAssetParking;
-    Spinner sp_assettype,sp_zone,sp_zoneParking;
+    Button btn_addadmin,btn_blockuser,btn_addzone,btn_deletezone, btn_addassettype,btn_assetbatch,btn_addAssetParking, btn_updateRanking;
+    Spinner sp_assettype,sp_zone,sp_zoneParking, sp_rankingZone;
     AssetType assetTypeActive;
-    Zone zoneactive,zoneactiveParking;
+    Zone zoneactive,zoneactiveParking, rankingZone;
     Mooveme mooveme;
     Repository<Administrator> repositoryAdmin;
+    private RecyclerView ranking;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -175,6 +181,20 @@ public class menu_admin extends AppCompatActivity {
         SpinnerAssetType();
         SpinnerZoneType();
         SpinnerZone_to_ParkingType();
+
+        //Ranking
+        ranking = (RecyclerView) findViewById(R.id.ranking);
+        sp_rankingZone = (Spinner) findViewById(R.id.sp_user_ranking_zone);
+        btn_updateRanking = (Button) findViewById(R.id.btn_updateranking) ;
+
+        SpinnerRanking();
+
+        btn_updateRanking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Ranking();
+            }
+        });
     }
 
     private void CreateAssetParking() {
@@ -281,5 +301,23 @@ public class menu_admin extends AppCompatActivity {
     }
 
 
+    //Ranking
+
+
+    private void SpinnerRanking(){
+        ArrayList<Zone> zoneArrayList = mooveme.getZoneRepository().getRepository();
+        ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zoneArrayList);
+        sp_rankingZone.setAdapter(adapter);
+
+    }
+
+    private  void Ranking(){
+        rankingZone = (Zone)sp_rankingZone.getSelectedItem();
+
+        ArrayList<RankingInPointTable> rankingTable = rankingZone.getTop10Leaders();
+        ranking.setLayoutManager(new LinearLayoutManager(this));
+        RankingAdapter rankingAdapter = new RankingAdapter(this, rankingTable);
+        ranking.setAdapter(rankingAdapter);
+    }
 
 }

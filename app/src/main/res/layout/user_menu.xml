@@ -239,21 +239,18 @@
                                 android:layout_height="50dp"/>
                         </LinearLayout>
 
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="20dp"
-                        android:layout_marginStart="20dp"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginStart="20dp"/>
 
                         <androidx.recyclerview.widget.RecyclerView
-                          android:id="@+id/ranking"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                        />
+                            android:id="@+id/ranking"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </ScrollView>
