@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -74,6 +75,8 @@ public class menu_user extends AppCompatActivity {
             DialogException.CreateDialog("User Error","User doesnt exist", getApplicationContext());
         }
 
+        TextView t = findViewById(R.id.points);
+        t.setText(String.valueOf(20) + "pts");
         et_time = (EditText) findViewById(R.id.et_user_time);
         ranking = (RecyclerView) findViewById(R.id.ranking);
         btn_rentAsset = (Button) findViewById(R.id.btn_user_rentAsset);
@@ -223,8 +226,30 @@ public class menu_user extends AppCompatActivity {
         rankingZone = (Zone)sp_rankingZone.getSelectedItem();
 
         ArrayList<RankingInPointTable> rankingTable = rankingZone.getTop10Leaders();
+        if(rankingZone.getName().equals("moreno")){
+            rankingTable.add(new RankingInPointTable(new Data("fabro", new PhoneNumber(123)), new Points(20)));
+            rankingTable.add(new RankingInPointTable(new Data("von", new PhoneNumber(123)), new Points(10)));
+            rankingTable.add(new RankingInPointTable(new Data("agus", new PhoneNumber(123)), new Points(5)));
+        } else {
+            rankingTable.add(new RankingInPointTable(new Data("delfi", new PhoneNumber(123)), new Points(100)));
+            rankingTable.add(new RankingInPointTable(new Data("mauro", new PhoneNumber(123)), new Points(20)));
+        }
         ranking.setLayoutManager(new LinearLayoutManager(this));
         RankingAdapter rankingAdapter = new RankingAdapter(this, rankingTable);
         ranking.setAdapter(rankingAdapter);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
     }
 }

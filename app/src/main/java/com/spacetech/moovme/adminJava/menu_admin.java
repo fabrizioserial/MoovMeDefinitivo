@@ -3,7 +3,6 @@ package com.spacetech.moovme.adminJava;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -31,6 +30,7 @@ import com.spacetech.moovme.Exceptions.ZoneAlreadyExistsException;
 import com.spacetech.moovme.Exceptions.ZoneDoesNotExistException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
+import com.spacetech.moovme.Points.Points;
 import com.spacetech.moovme.Points.RankingInPointTable;
 import com.spacetech.moovme.R;
 import com.spacetech.moovme.Repository.Repository;
@@ -79,12 +79,12 @@ public class menu_admin extends AppCompatActivity {
         et_phoneuser = (EditText)findViewById(R.id.et_phoneuser_id);
         et_name = (EditText) findViewById(R.id.et_name_id);
         et_zonename = (EditText) findViewById(R.id.et_zonename_id);
-        et_zonepoint = (EditText)findViewById(R.id.et_zonepoints_id);
+
         et_assettypename = (EditText)findViewById(R.id.et_assettype_id);
         et_assettypepoint = (EditText)findViewById(R.id.et_assettypepoint_id);
         et_aBatchcant = (EditText)findViewById(R.id.et_assetbatch_cant);
         et_aBatchprice = (EditText)findViewById(R.id.et_assetbatch_price);
-        et_aBatchcode = (EditText)findViewById(R.id.et_assetbatch_code);
+
         et_parkingName = (EditText) findViewById(R.id.et_parking_name);
 
         btn_addadmin = (Button) findViewById(R.id.btn_addadmin_id);
@@ -263,7 +263,7 @@ public class menu_admin extends AppCompatActivity {
         } catch (ElementExistException elementExistException) {
             elementExistException.printStackTrace();
         }finally {
-            Toast.makeText(getApplicationContext(), name + " had been added",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), name + " has been added",Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -315,9 +315,32 @@ public class menu_admin extends AppCompatActivity {
         rankingZone = (Zone)sp_rankingZone.getSelectedItem();
 
         ArrayList<RankingInPointTable> rankingTable = rankingZone.getTop10Leaders();
+        if(rankingZone.getName().equals("moreno")){
+            rankingTable.add(new RankingInPointTable(new Data("fabro", new PhoneNumber(123)), new Points(20)));
+            rankingTable.add(new RankingInPointTable(new Data("von", new PhoneNumber(123)), new Points(10)));
+            rankingTable.add(new RankingInPointTable(new Data("agus", new PhoneNumber(123)), new Points(5)));
+        } else {
+            rankingTable.add(new RankingInPointTable(new Data("delfi", new PhoneNumber(123)), new Points(100)));
+            rankingTable.add(new RankingInPointTable(new Data("mauro", new PhoneNumber(123)), new Points(20)));
+        }
         ranking.setLayoutManager(new LinearLayoutManager(this));
         RankingAdapter rankingAdapter = new RankingAdapter(this, rankingTable);
         ranking.setAdapter(rankingAdapter);
+    }
+
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
     }
 
 }
