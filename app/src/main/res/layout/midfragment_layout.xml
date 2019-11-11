@@ -1,117 +1,28 @@
-package com.spacetech.moovme.Users;
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:layout_gravity="right"
+        android:background="#DDDDDD"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical"/>
+    <LinearLayout
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary"
+        android:layout_gravity="left"/>
 
-
-import com.spacetech.moovme.Assets.Asset;
-import com.spacetech.moovme.Assets.AssetParking;
-import com.spacetech.moovme.Assets.AssetType;
-import com.spacetech.moovme.Assets.Fee;
-import com.spacetech.moovme.Assets.Travel;
-import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
-import com.spacetech.moovme.Exceptions.CantApplyDiscountExeption;
-import com.spacetech.moovme.Exceptions.UserIsAlreadyLockedExeption;
-import com.spacetech.moovme.Exceptions.UserIsAlreadyOnATripException;
-import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
-import com.spacetech.moovme.Points.Points;
-
-
-public class User extends Operators {
-
-
-    private final Data data;
-    private boolean isLocked=false;
-    double money;
-    Points points;
-
-    Travel actualTravel=null;
-    Asset assetUsed=null; //crear clase de viaje o sesion
-
-    public User(Data data) {
-        this.data =data;
-        this.points=new Points(0);
-        money=0;
-    }
-
-    public void userLocking(boolean lockUser) throws UserIsAlreadyLockedExeption {
-            isLocked=lockUser;
-    }
-
-    public PhoneNumber getPhoneNumber(){
-        return data.getPhoneNumber();
-    }
-
-    public String getName() {
-        return data.getName();
-    }
-
-    public boolean getLock(){ //for testing
-        return isLocked;
-    }
-
-    public void rentAsset(AssetParking assetParking, AssetType assetType, long expectedTime) throws AssetTypeDoesNotExistInSpecifiedZoneException, UserIsAlreadyOnATripException {
-        if(actualTravel != null){
-            throw new UserIsAlreadyOnATripException();
-        } else {
-            try {
-                actualTravel = new Travel(assetParking.rentAsset(assetType), expectedTime);
-            } catch (AssetTypeDoesNotExistInSpecifiedZoneException assetTypeDoesNotExistInSpecifiedZoneException) {
-                actualTravel = null;
-                throw new AssetTypeDoesNotExistInSpecifiedZoneException();
-            }
-        }
-    }
-
-    public void returnAsset(AssetParking assetParking)throws UserIsNotInATripException {
-        if(actualTravel!=null){
-            Fee fee = assetParking.returnAsset(actualTravel,this); //points had already been added here
-            boolean wantsToApplyDiscount=false;
-            if(assetParking.canApplyDiscount(actualTravel,this)){
-                //TODO ask if you want to apply discount. change wantsToApplyDiscount boolean
-            }
-            if(wantsToApplyDiscount){
-                try {
-                    fee = assetParking.applyDiscount(actualTravel,this,fee);
-                } catch (CantApplyDiscountExeption cantApplyDiscountExeption) {
-                    throw new RuntimeException("Situacion imposible ya que se chequeo antes que esto sea posible");
-                }
-            }
-            money= money-fee.getPrice(); //TODO spend money from user
-            actualTravel=null;
-        }
-        else{
-            throw new UserIsNotInATripException();
-        }
-    }
-
-
-    public boolean equals(Object o1){
-        if(o1 instanceof User){
-            return ((User) o1).getPhoneNumber().getNumber()==data.getPhoneNumber().getNumber();
-        }
-        else return false;
-    }
-
-    public Data getData() {
-        return data;
-    }
-
-    public void addPoints(Points calculateAquiredPoints) {
-        points.add(calculateAquiredPoints);
-    }
-
-    public Points getPoints() {
-        return points;
-    }
-
-    public void setMoney(double money) {
-        this.money = money;
-    }
-
-    public double getMoney() {
-        return money;
-    }
-
-    public Travel getActualTravel() {
-        return actualTravel;
-    }
-}
-
+</LinearLayout>

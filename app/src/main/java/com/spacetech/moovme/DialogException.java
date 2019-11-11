@@ -3,7 +3,6 @@ package com.spacetech.moovme;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.widget.Toast;
 
 public class DialogException {
 
@@ -15,8 +14,6 @@ public class DialogException {
         dialogo1.setCancelable(false);
         dialogo1.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo1, int id) {
-                Toast t=Toast.makeText(ctx,"xd", Toast.LENGTH_SHORT);
-                t.show();
             }
         });
 

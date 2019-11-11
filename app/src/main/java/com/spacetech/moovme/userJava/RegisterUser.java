@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.spacetech.moovme.DialogException;
 import com.spacetech.moovme.Exceptions.UserAlreadyExistException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
@@ -48,14 +49,19 @@ public class RegisterUser extends Fragment {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 name = et_name.getText().toString().trim();
                 phonenumber = et_phonenumber.getText().toString().trim();
-                try {
-                    mooveme.registerUser(new User(new Data(name,new PhoneNumber(Integer.parseInt(phonenumber)))));
-                    Persistence.saveInformation(getContext(),mooveme);
+                if(!name.isEmpty() && !phonenumber.isEmpty()){
+                    try {
+                        mooveme.registerUser(new User(new Data(name,new PhoneNumber(Integer.parseInt(phonenumber)))));
+                        Persistence.saveInformation(getContext(),mooveme);
 
-                } catch (UserAlreadyExistException | NullPointerException e ) {
-                    e.printStackTrace();
+                    } catch (UserAlreadyExistException | NullPointerException e ) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    DialogException.CreateDialog("Error field","Complete the fields",getContext());
                 }
 
 
