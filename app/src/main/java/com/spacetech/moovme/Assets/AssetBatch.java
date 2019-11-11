@@ -31,6 +31,6 @@ public class AssetBatch {
 
     public boolean equals(Object o){
         AssetBatch assetBatch = (AssetBatch) o;
-        return this.getType() == (assetBatch.getType());
+        return this.getType().getName().equals(assetBatch.getType().getName());
     }
 }

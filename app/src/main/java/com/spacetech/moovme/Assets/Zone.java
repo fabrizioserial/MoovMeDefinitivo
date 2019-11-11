@@ -71,14 +71,16 @@ public class Zone {
     public Fee returnAssetTimeTest(Travel actalTravel, User user,int time) { //mismo que el anterior pero con tiempo ajustable
         ArrayList<Asset> posibleAssetsUsed=null;
         for (AssetBatch assetBatch:this.totalAssetsBatchList) {
-            if(assetBatch.getType().equals(actalTravel.getAsset().getAssetType())){
+            if(actalTravel.getAsset().getAssetType().getName().equals(assetBatch.getType().getName())){
                 posibleAssetsUsed=assetBatch.getAssetList();
             }
         }
         boolean wasReturned=false;
         for (Asset asset:posibleAssetsUsed) {
             if(asset.assetIsOcupied&&!wasReturned){
+                asset.setUser(null);
                 asset.returnAsset();
+
                 wasReturned=true;
             }
         }
