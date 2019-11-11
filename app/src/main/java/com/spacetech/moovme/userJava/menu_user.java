@@ -28,6 +28,7 @@ import com.spacetech.moovme.Exceptions.UserDoesntExistException;
 import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
+import com.spacetech.moovme.Points.Points;
 import com.spacetech.moovme.Points.RankingInPointTable;
 import com.spacetech.moovme.R;
 import com.spacetech.moovme.Users.Data;
@@ -121,21 +122,6 @@ public class menu_user extends AppCompatActivity {
                 Ranking();
             }
         });
-        /*
-        sp_rankingZone.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                rankingZone = (Zone) parent.getSelectedItem();
-                Ranking();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-         */
 
         btn_returnAsset.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -32,9 +32,9 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingH
     @Override
     public void onBindViewHolder(@NonNull RankingHolder holder, int position) {
         String name = ranking.get(position).getData().getName();
-        int points = ranking.get(position).getPoints().getPointsinIntValue() + 1;
+        int points = ranking.get(position).getPoints().getPointsinIntValue();
 
-        String rank = position + ". " + name + "                                    " + points + "pts.";
+        String rank = (position+1)  + ". " + name + "                                    " + points + "pts.";
         holder.nameView.setText(rank);
     }
 
