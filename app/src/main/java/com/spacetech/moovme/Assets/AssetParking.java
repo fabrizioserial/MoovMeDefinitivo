@@ -13,7 +13,6 @@ public class AssetParking {
     public AssetParking(String name,Zone zone){
         this.zone = zone;
         this.name = name;
-        zone.registerAssetParking(this);
     }
 
 

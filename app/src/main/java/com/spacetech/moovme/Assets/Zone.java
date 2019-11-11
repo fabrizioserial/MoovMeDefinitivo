@@ -1,9 +1,5 @@
 package com.spacetech.moovme.Assets;
 
-import android.content.Context;
-import android.service.notification.NotificationListenerService;
-import android.widget.Toast;
-
 import com.spacetech.moovme.Exceptions.AssetTypeDoesNotExistInSpecifiedZoneException;
 import com.spacetech.moovme.Exceptions.CantApplyDiscountException;
 import com.spacetech.moovme.Exceptions.ElementExistException;
@@ -26,8 +22,7 @@ public class Zone {
     private HashMap<AssetType, Discount> discountOrganizedByAssetType;//hashmap que guarda descuentos por tipos de asset
     private HashSet<Data> usersWithWinnerDiscount;//lista de usuarios que tienen el descuento por haber salido primeros en la tabla de puntos en el mes
     private PointCounter pointCounter;//contador de puntos que saca la cuenta de cuantos puntos ganaste en el viaje
-    private ArrayList<AssetParking> assetParkings;//lista de parkings que tiene la zona
-    private ArrayList<String> strings;
+
 
     public Zone(String name){
         discountOrganizedByAssetType = new HashMap<>(); //constructor inicializa variables de arriba
@@ -36,9 +31,7 @@ public class Zone {
         this.pointCounter=new PointCounter();
         tarifario = new Tarifario();
         totalAssetsBatchList =new ArrayList<>();
-        assetParkings = new ArrayList<>();
         usersWithWinnerDiscount=new HashSet<>();
-        strings = new ArrayList<>();
     }
 
     public void addNewBach(AssetBatch assetBatch, Fee precioDeAlquilerDelLote) throws PriceIsAlreadySetException {
@@ -151,35 +144,6 @@ public class Zone {
             }
         }
         throw new AssetTypeDoesNotExistInSpecifiedZoneException();
-    }
-
-    public void createAssetParking(AssetParking assetParkingss, Context context) throws ParkingAlreadyExistException{
-        if(assetParkings.size() > 0){
-            for(AssetParking assetParking:assetParkings){
-                if(assetParking.getName().equals(assetParkingss.getName())){
-                    Toast.makeText(context,"crea2",Toast.LENGTH_SHORT).show();
-                    throw new ParkingAlreadyExistException();
-
-                }
-            }
-            //assetParkings.add(new AssetParking(name,zone));
-            strings.add(name);
-            assetParkings.add(assetParkingss);
-            Toast.makeText(context,"crea",Toast.LENGTH_SHORT).show();
-
-        }else{
-            //assetParkings.add(new AssetParking(name,zone));
-            strings.add(name);
-            assetParkings.add(assetParkingss);
-            Toast.makeText(context,"crea3", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public ArrayList<AssetParking> getAssetParkings(){return assetParkings;}
-
-
-    public void registerAssetParking(AssetParking assetParking) {
-        this.assetParkings.add(assetParking);
     }
 
     public ArrayList<RankingInPointTable> getRankings(){
