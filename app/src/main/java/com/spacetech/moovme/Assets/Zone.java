@@ -11,7 +11,6 @@ import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.User;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -46,8 +45,8 @@ public class Zone {
 
 
         //esta parte es para identificar cual es el asset que estaba ocupado y desocuparlo
-        ArrayList<Asset> posibleAssetsUsed=null;
-        for (AssetBatch assetBatch:this.totalAssetsBatchList) {
+        ArrayList<Asset> posibleAssetsUsed=new ArrayList<>();
+        for (AssetBatch assetBatch:totalAssetsBatchList) {
             if(assetBatch.getType().equals(actalTravel.getAsset().getAssetType())){
                 posibleAssetsUsed=assetBatch.getAssetList();
             }
