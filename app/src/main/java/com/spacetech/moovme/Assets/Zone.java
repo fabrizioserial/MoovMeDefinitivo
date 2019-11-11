@@ -51,7 +51,14 @@ public class Zone {
                 posibleAssetsUsed=assetBatch.getAssetList();
             }
         }
-        posibleAssetsUsed.get(posibleAssetsUsed.indexOf(actalTravel.getAsset())).returnAsset();
+        boolean wasReturned=false;
+        for (Asset asset:posibleAssetsUsed) {
+            if(asset.assetIsOcupied&&!wasReturned){
+                asset.returnAsset();
+                wasReturned=true;
+            }
+        }
+        if(!wasReturned) throw new RuntimeException("Algo malo paso");
 
         //actualizar puntos en tabla y a;adir puntos al usuario
         pointTable.updateScore(pointCounter.calculateAquiredPoints(actalTravel),user.getData());
