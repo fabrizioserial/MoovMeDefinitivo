@@ -9,7 +9,7 @@ public class RankingInPointTable {
 
     //clase que vendria a ser el puesto de la tabla de puntos(ordena puntos por datos de usuarios)
 
-    RankingInPointTable(Data data, Points points){
+    public RankingInPointTable(Data data, Points points){
         this.data=data;
         this.points=points;
     }

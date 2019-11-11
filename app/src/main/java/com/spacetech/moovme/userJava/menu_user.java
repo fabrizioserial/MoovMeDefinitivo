@@ -11,9 +11,12 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.spacetech.moovme.Adapters.AssetParkingAdapter;
 import com.spacetech.moovme.Adapters.AssettypeAdapter;
+import com.spacetech.moovme.Adapters.RankingAdapter;
 import com.spacetech.moovme.Adapters.ZoneAdapter;
 import com.spacetech.moovme.Assets.AssetParking;
 import com.spacetech.moovme.Assets.AssetType;
@@ -25,6 +28,8 @@ import com.spacetech.moovme.Exceptions.UserDoesntExistException;
 import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
+import com.spacetech.moovme.Points.Points;
+import com.spacetech.moovme.Points.RankingInPointTable;
 import com.spacetech.moovme.R;
 import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.PhoneNumber;
@@ -39,13 +44,13 @@ public class menu_user extends AppCompatActivity {
     Button btn_rentAsset;
     //Actives
     AssetType assetTypeActive;
-    Zone zoneactive,zoneRent;
+    Zone zoneactive,zoneRent,rankingZone;
     Mooveme mooveme;
     private User activeUser;
-    private Spinner sp_assetParking,sp_assetType,sp_zone,sp_assetparkingReturn;
+    private Spinner sp_assetParking,sp_assetType,sp_zone,sp_assetparkingReturn, sp_rankingZone;
     private AssetParking AssetParkingRent,AssetParkingReturn;
     private Button btn_returnAsset;
-
+    private RecyclerView ranking;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +60,7 @@ public class menu_user extends AppCompatActivity {
         sp_assetParking = (Spinner) findViewById(R.id.sp_user_parking);
         sp_zone = (Spinner) findViewById(R.id.sp_user_zone);
         sp_assetparkingReturn = (Spinner) findViewById(R.id.spn_user_return_parking);
+        sp_rankingZone = (Spinner) findViewById(R.id.sp_user_ranking_zone);
 
         mooveme = Persistence.loadMoovme(getApplicationContext());
         Intent i= getIntent();
@@ -69,6 +75,7 @@ public class menu_user extends AppCompatActivity {
         }
 
         et_time = (EditText) findViewById(R.id.et_user_time);
+        ranking = (RecyclerView) findViewById(R.id.ranking);
         btn_rentAsset = (Button) findViewById(R.id.btn_user_rentAsset);
         btn_returnAsset = (Button) findViewById(R.id.btn_user_returnAsset);
 
@@ -77,6 +84,7 @@ public class menu_user extends AppCompatActivity {
         SpinnerZone();
         SpinnerParkings();
         SpinnerParkingsReturn();
+        SpinnerRanking();
 
 
         btn_rentAsset.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +107,19 @@ public class menu_user extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 zoneactive = (Zone) parent.getSelectedItem();
                 SpinnerParkings();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        sp_rankingZone.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                rankingZone = (Zone) parent.getSelectedItem();
+                SpinnerRanking();
             }
 
             @Override
@@ -195,5 +216,19 @@ public class menu_user extends AppCompatActivity {
 
        // AssetParkingReturn = (AssetParking) sp_assetparkingReturn.getSelectedItem();
 
+    }
+    private void SpinnerRanking(){
+        ArrayList<Zone> zoneArrayList = mooveme.getZoneRepository().getRepository();
+        ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zoneArrayList);
+        sp_rankingZone.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        rankingZone = (Zone)sp_rankingZone.getSelectedItem();
+
+        ArrayList<RankingInPointTable> rankingTable = zoneactive.getTop10Leaders();
+
+        ranking.setLayoutManager(new LinearLayoutManager(this));
+
+        RankingAdapter rankingAdapter = new RankingAdapter(this, rankingTable);
+        this.ranking.setAdapter(rankingAdapter);
     }
 }
