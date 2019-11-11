@@ -59,7 +59,7 @@ public class User extends Operators {
             throw new UserCantStartNewTrip();
         } else {
             try {
-                actualTravel = new Travel(assetParking.rentAsset(assetType),expectedTimeInMinutes); //inicia un nuevo viaje pidiendo el asset al puesto de assets
+                actualTravel = new Travel(assetParking.rentAsset(assetType,this),expectedTimeInMinutes); //inicia un nuevo viaje pidiendo el asset al puesto de assets
             } catch (AssetTypeDoesNotExistInSpecifiedZoneException assetTypeDoesNotExistInSpecifiedZoneException) {
                 actualTravel = null;
                 throw new AssetTypeDoesNotExistInSpecifiedZoneException();//explota si no hay assest de los que el quiere

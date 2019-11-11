@@ -19,8 +19,8 @@ public class AssetParking {
         return name;
     }
 
-    public Asset rentAsset(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZoneException {
-        return zone.getAssetwithDesignatedType(assetType);
+    public Asset rentAsset(AssetType assetType,User user) throws AssetTypeDoesNotExistInSpecifiedZoneException {
+        return zone.getAssetwithDesignatedType(assetType,user);
     }
 
     public Fee returnAsset(Travel travel, User user) {

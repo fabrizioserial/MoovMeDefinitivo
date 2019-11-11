@@ -28,7 +28,6 @@ import com.spacetech.moovme.Exceptions.UserDoesntExistException;
 import com.spacetech.moovme.Exceptions.UserIsNotInATripException;
 import com.spacetech.moovme.Mooveme;
 import com.spacetech.moovme.Persistence;
-import com.spacetech.moovme.Points.Points;
 import com.spacetech.moovme.Points.RankingInPointTable;
 import com.spacetech.moovme.R;
 import com.spacetech.moovme.Users.Data;
@@ -41,7 +40,7 @@ public class menu_user extends AppCompatActivity {
 
     String assetTypename;
     EditText et_time;
-    Button btn_rentAsset;
+    Button btn_rentAsset,btn_updateRanking;
     //Actives
     AssetType assetTypeActive;
     Zone zoneactive,zoneRent,rankingZone;
@@ -78,6 +77,7 @@ public class menu_user extends AppCompatActivity {
         ranking = (RecyclerView) findViewById(R.id.ranking);
         btn_rentAsset = (Button) findViewById(R.id.btn_user_rentAsset);
         btn_returnAsset = (Button) findViewById(R.id.btn_user_returnAsset);
+        btn_updateRanking = (Button) findViewById(R.id.btn_updateranking) ;
 
         ///metodos
         SpinnerAssets();
@@ -115,11 +115,18 @@ public class menu_user extends AppCompatActivity {
             }
         });
 
+        btn_updateRanking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Ranking();
+            }
+        });
+        /*
         sp_rankingZone.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 rankingZone = (Zone) parent.getSelectedItem();
-                SpinnerRanking();
+                Ranking();
             }
 
             @Override
@@ -127,6 +134,8 @@ public class menu_user extends AppCompatActivity {
 
             }
         });
+
+         */
 
         btn_returnAsset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,14 +230,15 @@ public class menu_user extends AppCompatActivity {
         ArrayList<Zone> zoneArrayList = mooveme.getZoneRepository().getRepository();
         ZoneAdapter adapter = new ZoneAdapter(getApplicationContext(),zoneArrayList);
         sp_rankingZone.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+
+    }
+
+    private  void Ranking(){
         rankingZone = (Zone)sp_rankingZone.getSelectedItem();
 
-        ArrayList<RankingInPointTable> rankingTable = zoneactive.getTop10Leaders();
-
+        ArrayList<RankingInPointTable> rankingTable = rankingZone.getTop10Leaders();
         ranking.setLayoutManager(new LinearLayoutManager(this));
-
         RankingAdapter rankingAdapter = new RankingAdapter(this, rankingTable);
-        this.ranking.setAdapter(rankingAdapter);
+        ranking.setAdapter(rankingAdapter);
     }
 }

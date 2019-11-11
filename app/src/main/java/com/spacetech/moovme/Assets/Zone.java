@@ -149,12 +149,13 @@ public class Zone {
         return totalAssets;
     }
 
-    public Asset getAssetwithDesignatedType(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZoneException {//metodo usado para alquilar un asset
+    public Asset getAssetwithDesignatedType(AssetType assetType,User user) throws AssetTypeDoesNotExistInSpecifiedZoneException {//metodo usado para alquilar un asset
         for(AssetBatch batch : totalAssetsBatchList){
             if(batch.getType().equals(assetType)){
                 for(Asset asset: batch.getAssetList()){
                     if(!asset.assetIsOcupied){
                         asset.occupy();
+                        asset.setUser(user);
                         return asset;
                     }
                 }
