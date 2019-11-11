@@ -15,12 +15,10 @@ public class AssetParking {
         this.name = name;
     }
 
-
     public String getName(){
         return name;
     }
-    public void setZone(Zone zone){ this.zone = zone;
-    }
+
     public Asset rentAsset(AssetType assetType) throws AssetTypeDoesNotExistInSpecifiedZoneException {
         return zone.getAssetwithDesignatedType(assetType);
     }

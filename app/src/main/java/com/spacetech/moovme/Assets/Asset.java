@@ -15,6 +15,10 @@ public class Asset {
 
     public void returnAsset(){ assetIsOcupied=false; }
 
+    public boolean isOcupied(){
+        return assetIsOcupied;
+    }
+
     public AssetType getAssetType() {
         return assetType;
     }

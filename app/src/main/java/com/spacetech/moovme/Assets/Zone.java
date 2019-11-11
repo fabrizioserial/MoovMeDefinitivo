@@ -11,6 +11,7 @@ import com.spacetech.moovme.Users.Data;
 import com.spacetech.moovme.Users.User;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -66,7 +67,15 @@ public class Zone {
                 posibleAssetsUsed=assetBatch.getAssetList();
             }
         }
-        posibleAssetsUsed.get(posibleAssetsUsed.indexOf(actalTravel.getAsset())).returnAsset();
+        boolean wasReturned=false;
+        for (Asset asset:posibleAssetsUsed) {
+            if(asset.assetIsOcupied&&!wasReturned){
+                asset.returnAsset();
+                wasReturned=true;
+            }
+        }
+        if(!wasReturned) throw new RuntimeException("Algo malo paso");
+
         pointTable.updateScore(pointCounter.calculateAquiredPointsTimeTest(actalTravel,time),user.getData());
         user.addPoints(pointCounter.calculateAquiredPointsTimeTest(actalTravel,time));
         return tarifario.calculatePrice(actalTravel.getAsset().getAssetType());

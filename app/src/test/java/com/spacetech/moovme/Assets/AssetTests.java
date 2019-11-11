@@ -127,28 +127,38 @@ public class AssetTests {
 
     }
 
-    @Test
-    public void whenCreating2AssetParkingsShouldSucced(){
-        Zone zone1=new Zone("SanFernando");
-        AssetParking assetParking1=new AssetParking("puesto1",zone1);
-        AssetParking assetParking2=new AssetParking("puesto2",zone1);
-
-        Assert.assertEquals(2,zone1.getAssetParkings().size());
-    }
-
 
     @Test
     public void moovMe() throws ElementExistException {
-        Mooveme mooveme=new Mooveme();
-        Zone zone1=new Zone("SanFernando");
-        AssetParking assetParking1=new AssetParking("puesto1",zone1);
-        AssetParking assetParking2=new AssetParking("puesto2",zone1);
-        Repository<Zone> zoneRepository=new Repository<>();
-        Repository<AssetParking>assetParkingRepository=new Repository<>();
+        Mooveme mooveme = new Mooveme();
+        Zone zone1 = new Zone("SanFernando");
+        AssetParking assetParking1 = new AssetParking("puesto1", zone1);
+        AssetParking assetParking2 = new AssetParking("puesto2", zone1);
+        Repository<Zone> zoneRepository = new Repository<>();
+        Repository<AssetParking> assetParkingRepository = new Repository<>();
 
         mooveme.addAssetParkingRepository(assetParkingRepository);
         mooveme.addZoneRepository(zoneRepository);
         mooveme.addZone(zone1);
+
+    }
+
+    @Test
+    public void WhenRentingAnAssetCanReturnAssetInSameZone() throws PriceIsAlreadySetException, UserCantStartNewTrip, AssetTypeDoesNotExistInSpecifiedZoneException, UserIsNotInATripException {
+        Data data=new Data("pepe");
+        Administrator administrator=new Administrator(data);
+        AssetType bici=new AssetType(50,"Bici");
+        Zone zone=new Zone("CABA");
+        ListAssetBachCodes listAssetBachCodes=new ListAssetBachCodes();
+        Fee fee =new Fee(40);
+        administrator.buyBatch(bici,6,zone,listAssetBachCodes.createNewCode(), fee);
+        AssetParking assetParking=new AssetParking("puesto1",zone);
+        AssetParking assetParking2=new AssetParking("puesto2",zone);
+        User user1=new User(new Data("agustin",new PhoneNumber(420)));
+
+        user1.rentAsset(assetParking,bici,50);
+        user1.returnAsset(assetParking2);
+
 
     }
 
